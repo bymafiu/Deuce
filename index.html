@@ -119,6 +119,7 @@
         <h2 style="font-size:27px;font-weight:700;margin:12px 0 12px;letter-spacing:-.02em">{{ motivoTitulo }}</h2>
         <p style="font-size:15px;color:#4c5158;margin:0 0 26px">{{ motivoTexto }}</p>
         <button onClick="{{ volver }}" style="width:100%;border:1px solid #c9c4b7;border-radius:999px;background:transparent;color:#1c1e22;padding:14px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer">{{ otraSolicitud }}</button>
+        <div style="width:300px;height:250px;max-width:100%;margin:16px auto 0" id="anuncio-denegado"></div>
       </div>
     </sc-if>
 
@@ -2097,6 +2098,7 @@ class Component extends DCLogic {
     const racha = nuevoRank < rank ? s.racha + 1 : 0;
     const edad = s.edad + 1;
     const retiro = this.props.edadRetiro ?? 34;
+    const terminaCarrera = euros < 0 || edad > retiro;
 
     // logros: unos se cierran en la temporada, otros se acumulan durante la carrera
     const unicos = (a) => a.filter((x, i) => a.indexOf(x) === i);
@@ -2166,7 +2168,7 @@ class Component extends DCLogic {
     if (fx) {
       const nFilas = (this.state.escritorio ? todos : mejores).length;
       const finRevelado = this.ST_DUR + nFilas * 600;
-      const espera = fx.tipo === 'open' ? (fx.revelaMs || 0) : finRevelado;
+      const espera = fx.tipo === 'open' ? (fx.revelaMs || 0) : (terminaCarrera ? 0 : finRevelado);
       this.fxProgramado = setTimeout(() => {
         fx.t0 = performance.now();
         clearTimeout(this.fxT);
@@ -2196,7 +2198,7 @@ class Component extends DCLogic {
       euros: Math.max(euros, -3000),
       temporada: s.temporada + 1,
       ...this.siguienteDecision(puntos, s.decision, s.usadas, s.puntos),
-      fin: euros < 0 || edad > retiro,
+      fin: terminaCarrera,
     });
   }
 
