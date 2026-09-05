@@ -123,6 +123,28 @@
       </div>
     </sc-if>
 
+    <sc-if value="{{ mostrarEleccionDemo }}">
+      <div style="{{ estiloEleccionDemo }}">
+        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a3319a;font-weight:700;margin-bottom:6px">{{ calendarioKicker }}</div>
+        <h2 style="font-size:22px;font-weight:700;margin:0 0 16px;letter-spacing:-.02em;white-space:nowrap">Elige los siguientes torneos</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ demoTorneos }}" as="dt" hint-placeholder-count="5">
+            <div onClick="{{ dt.toggle }}" style="{{ dt.estilo }}">
+              <div>
+                <div style="font-size:14px;font-weight:700">{{ dt.nombre }}</div>
+                <div style="font-size:11px;{{ dt.estiloSub }}">{{ dt.sub }}</div>
+              </div>
+              <div style="{{ dt.estiloCheck }}">{{ dt.marca }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size:11px;color:#8b9096;margin:9px 0 0;line-height:1.35">{{ demoContador }}</p>
+        <div style="padding-top:14px">
+          <button onClick="{{ demoConfirmar }}" style="{{ demoEstiloBtn }}">Confirmar calendario</button>
+        </div>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ jugando }}">
       <div style="{{ estiloJuego }}">
        <div style="{{ estiloIzq }}">
@@ -135,6 +157,9 @@
           <div style="background:#f2f0ea;border-radius:12px;padding:8px 6px;text-align:center">
             <div style="font-size:10px;color:#6d7278;margin-bottom:2px">{{ lEdad }}</div>
             <div style="{{ estiloEdad }}">{{ edad }}</div>
+            <sc-if value="{{ hayDeclive }}">
+              <div style="{{ estiloDeclive }}">{{ declive }}</div>
+            </sc-if>
           </div>
           <div style="background:#f2f0ea;border-radius:12px;padding:8px 6px;text-align:center">
             <div style="font-size:10px;color:#6d7278;margin-bottom:2px">{{ lCaja }}</div>
@@ -157,7 +182,7 @@
           </div>
         </sc-if>
 
-        <div ref="{{ setResultsRef }}" style="background:#f2f0ea;border-radius:14px;padding:11px 11px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden">
+        <div ref="{{ setResultsRef }}" style="{{ estiloResultsBox }}">
           <div style="height:0;overflow:hidden" data-mas-probe="1"><div style="font-size:11px;color:#8b9096;margin-top:8px">{{ masProbeTexto }}</div></div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;flex:none">
             <span style="font-size:14px;font-weight:700">{{ mejores }}</span>
@@ -190,7 +215,7 @@
             <p style="font-size:13px;color:#6d7278;margin:4px 0 0">{{ txtSinTorneos }}</p>
           </sc-if>
           <sc-if value="{{ hayMas }}">
-            <div style="font-size:11px;color:#8b9096;margin-top:8px">{{ masTexto }}</div>
+            <div onClick="{{ expandirMas }}" style="font-size:11px;color:#a3319a;font-weight:700;margin-top:8px;cursor:pointer">{{ masTexto }}</div>
           </sc-if>
         </div>
 
@@ -232,40 +257,68 @@
           </sc-if>
 
           <sc-if value="{{ fin }}">
-            <div style="text-align:center">
-              <div style="font-size:18px;font-weight:700;margin-bottom:16px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ finLinea }}</div>
-              <div style="text-align:left;margin:0 0 16px">
-                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+            <div style="text-align:center;display:flex;flex-direction:column">
+              <div style="font-size:17px;font-weight:700;margin-bottom:12px;letter-spacing:-.02em;flex:none">{{ finLinea }}</div>
+              <div style="text-align:left;margin:0 0 10px;flex:none">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex:none">
                   <span style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a3319a;font-weight:700">{{ lPalmares }}</span>
                   <span style="font-size:11px;color:#8b9096">{{ titulosEtiqueta }}</span>
                 </div>
                 <sc-if value="{{ hayPalmares }}">
-                  <div style="display:flex;flex-direction:column;gap:0;max-height:225px;overflow:auto">
+                  <div style="display:flex;flex-direction:column;gap:0;flex:none;max-height:176px;overflow:auto;background:#f2f0ea;border-radius:12px;padding:2px 10px">
                     <sc-for list="{{ palmaresLista }}" as="p" hint-placeholder-count="4">
-                      <div style="display:grid;grid-template-columns:18px 1fr auto;gap:9px;align-items:center;padding:7px 2px;border-top:1px solid #e2dfd6">
+                      <div style="display:grid;grid-template-columns:18px 1fr auto;gap:9px;align-items:center;height:44px;flex:0 0 44px;box-sizing:border-box;padding:0;{{ p.estiloBorde }}">
                         <span style="{{ p.estiloSup }}"></span>
-                        <div>
-                          <div style="font-size:13px;font-weight:700;line-height:1.25">{{ p.sede }}</div>
-                          <div style="font-size:11px;color:#8b9096">{{ p.detalle }}</div>
+                        <div style="overflow:hidden">
+                          <div style="font-size:13px;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.sede }}</div>
+                          <div style="font-size:11px;color:#8b9096;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.detalle }}</div>
                         </div>
                         <span style="{{ p.estiloCuenta }}">{{ p.cuenta }}</span>
                       </div>
                     </sc-for>
                   </div>
                   <sc-if value="{{ hayMasPalmares }}">
-                    <p style="font-size:10px;color:#8b9096;margin:6px 2px 0">{{ lPalmaresScroll }}</p>
+                    <p style="font-size:10px;color:#8b9096;margin:5px 0 0;text-align:left;flex:none">{{ lPalmaresScroll }}</p>
                   </sc-if>
                 </sc-if>
                 <sc-if value="{{ sinPalmares }}">
-                  <p style="font-size:13px;color:#6d7278;margin:4px 0 0">{{ lPalmaresVacio }}</p>
+                  <p style="font-size:13px;color:#6d7278;margin:4px 0 0;flex:none">{{ lPalmaresVacio }}</p>
                 </sc-if>
               </div>
-              <button onClick="{{ reiniciar }}" style="width:100%;border:0;border-radius:999px;background:#1c1e22;color:#fbfaf7;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer">{{ nuevaCarrera }}</button>
-              <div style="width:300px;height:250px;max-width:100%;margin:16px auto 0" id="anuncio-final"></div>
+              <sc-if value="{{ hayArcos }}">
+                <div onClick="{{ abrirHistoria }}" style="flex:none;border:1px solid #c9c4b7;border-radius:999px;padding:10px;font-size:15px;font-weight:700;color:#1c1e22;cursor:pointer;margin-bottom:10px">{{ lVerHistoria }}</div>
+              </sc-if>
+              <div style="display:flex;gap:8px;flex:none">
+                <button onClick="{{ reiniciar }}" style="flex:1;border:0;border-radius:999px;background:#1c1e22;color:#fbfaf7;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer">{{ nuevaCarrera }}</button>
+                <button onClick="{{ abrirCompartir }}" aria-label="{{ lCompartir }}" style="flex:none;width:52px;border:1px solid #c9c4b7;border-radius:999px;background:transparent;color:#1c1e22;padding:0;font-size:20px;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center">↗</button>
+              </div>
+              <div style="width:300px;height:250px;max-width:100%;margin:14px auto 0;flex:none" id="anuncio-final"></div>
             </div>
           </sc-if>
         </div>
        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ mostrarHistoria }}">
+      <div onClick="{{ cerrarHistoria }}" style="position:fixed;inset:0;background:rgba(28,30,34,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:70">
+        <div onClick="{{ pararClic }}" style="background:#fbfaf7;border-radius:18px;padding:20px 20px 16px;width:100%;max-width:420px;max-height:78vh;overflow:auto;animation:copaPop .3s ease both">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
+            <span style="font-size:19px;font-weight:700;letter-spacing:-.02em">{{ lArcos }}</span>
+            <span onClick="{{ cerrarHistoria }}" style="font-size:20px;color:#8b9096;cursor:pointer;line-height:1">×</span>
+          </div>
+          <sc-if value="{{ hayLegado }}">
+            <div style="text-align:left;margin:0 0 14px">
+              <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a3319a;font-weight:700;margin-bottom:6px">{{ lLegado }}</div>
+              <sc-for list="{{ legadoLista }}" as="lg" hint-placeholder-count="1">
+                <div style="font-size:13px;font-weight:600;padding:6px 0;border-top:1px solid #e2dfd6">{{ lg }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-for list="{{ arcosLista }}" as="arc" hint-placeholder-count="3">
+            <div style="font-size:14px;color:#1c1e22;line-height:1.4;padding:8px 0;border-top:1px solid #e2dfd6;text-align:left">{{ arc }}</div>
+          </sc-for>
+        </div>
       </div>
     </sc-if>
 
@@ -314,6 +367,67 @@
       </div>
     </sc-if>
   </div>
+
+  <sc-if value="{{ mostrarCompartir }}">
+    <div style="position:fixed;inset:0;background:rgba(16,16,18,.94);z-index:80;display:flex;flex-direction:column;align-items:center;overflow:auto;padding:22px 16px 28px">
+      <div style="width:100%;max-width:380px;position:relative">
+        <div onClick="{{ cerrarCompartir }}" style="position:absolute;right:0;top:-4px;width:34px;height:34px;border-radius:999px;background:rgba(255,255,255,.08);color:#fbfaf7;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer">×</div>
+        <div style="text-align:center;margin:6px 0 18px">
+          <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#e0559f;font-weight:700;margin-bottom:6px">{{ compKicker }}</div>
+          <h2 style="font-size:24px;font-weight:700;color:#fbfaf7;margin:0;letter-spacing:-.02em">{{ compTitulo }}</h2>
+        </div>
+
+        <div style="background:#fbfaf7;border-radius:20px;padding:24px 22px 22px;color:#1c1e22">
+          <div style="text-align:center;margin-bottom:18px">
+            <span style="font-size:26px;font-weight:800;letter-spacing:-.02em">deuce</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+            <span style="font-size:26px;line-height:1">{{ compBandera }}</span>
+            <span style="font-size:18px;font-weight:700">{{ compNombre }}</span>
+            <sc-for list="{{ compTags }}" as="tg" hint-placeholder-count="2">
+              <span style="font-size:11px;font-weight:600;color:#6d7278;background:#f2f0ea;border-radius:10px;padding:3px 9px">{{ tg }}</span>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px">
+            <span style="font-size:22px;font-weight:800">{{ compBadgeValor }}</span>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span style="font-size:44px;font-weight:800;color:#1c1e22;line-height:1">{{ compTitulosNum }}</span>
+              <span style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8b9096">{{ compTitulosLabelBig }}</span>
+            </div>
+          </div>
+
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8b9096;margin-bottom:8px">{{ compTitulosLabel }}</div>
+          <sc-if value="{{ compHayTitulos }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ compTitulos }}" as="tt" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:10px" dangerouslySetInnerHTML="{{ tt.htmlIcono }}"></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ compSinTitulos }}">
+            <div style="font-size:13px;color:#8b9096">{{ compTitulosVacio }}</div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:22px;margin-top:22px">
+          <div style="text-align:center">
+            <div onClick="{{ compartirNativo }}" style="width:56px;height:56px;border-radius:999px;background:#a3319a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;margin:0 auto">↗</div>
+            <div style="font-size:11px;color:#fbfaf7;margin-top:6px">{{ compLabelCompartir }}</div>
+          </div>
+          <div style="text-align:center">
+            <div onClick="{{ copiarImagen }}" style="width:56px;height:56px;border-radius:999px;background:rgba(255,255,255,.1);color:#fbfaf7;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;margin:0 auto">⧉</div>
+            <div style="font-size:11px;color:#fbfaf7;margin-top:6px">{{ compLabelCopiar }}</div>
+          </div>
+          <div style="text-align:center">
+            <div onClick="{{ descargarImagen }}" style="width:56px;height:56px;border-radius:999px;background:rgba(255,255,255,.1);color:#fbfaf7;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;margin:0 auto">⇩</div>
+            <div style="font-size:11px;color:#fbfaf7;margin-top:6px">{{ compLabelDescargar }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:460,&quot;height&quot;:940},&quot;torneosTemporada&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:13,&quot;min&quot;:10,&quot;max&quot;:22,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Reglas&quot;},&quot;edadRetiro&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:34,&quot;min&quot;:28,&quot;max&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Reglas&quot;}}">
@@ -442,8 +556,6 @@ class Component extends DCLogic {
 
   GRUPOS = {
     bajo: [
-      { e: 'plan', kicker: 'Calendario', q: 'Un torneo pequeño en la costa coincide con la boda de tu hermana.',
-        a: 'Jugar el torneo', b: 'Ir a la boda', nota: 'Los puntos de esa semana o la cabeza tranquila el resto del año.' },
       { e: 'gira', kicker: 'Viajes', q: 'Te ofrecen tres semanas seguidas de torneos en Túnez.',
         a: 'Hacer la gira', b: 'Quedarme cerca', nota: 'Muchos partidos lejos, o menos puntos y menos gasto.' },
       { e: 'spon', kicker: 'Dinero', q: 'Una tienda de deportes del barrio te da material si apareces en su escaparate.',
@@ -520,7 +632,7 @@ class Component extends DCLogic {
         nota: 'Mejores condiciones, más gasto.' },
       { e: 'spon', kicker: 'Dinero', q: 'Tu ayuntamiento te da una beca si juegas el torneo local todos los años.',
         a: 'Aceptar la beca', b: 'Sin compromisos',
-        nota: 'Dinero seguro y una semana atada en el calendario.' },
+        nota: 'Dinero seguro y una semana atada en el calendario.', atado: 'Serie 25 Torneo Local' },
       { e: 'plan', kicker: 'Ranking', q: '¿Buscas puntos ya o preparas el año que viene?',
         a: 'Buscarlos a toda costa', b: 'Preparar el año que viene',
         nota: 'Forzar da puntos ya; preparar mejora cada resultado.' },
@@ -748,7 +860,7 @@ class Component extends DCLogic {
         nota: 'Más torneos, más puntos; menos torneos, mejores resultados.' },
       { e: 'spon', kicker: 'Dinero', q: 'Puedes montar tu propio torneo en casa y presidirlo.',
         a: 'Montarlo', b: 'No es el momento',
-        nota: 'Ingresos y actos que te quitan entrenamiento.' },
+        nota: 'Ingresos y actos que te quitan entrenamiento.', legado: 'torneo' },
       { e: 'plan', kicker: 'Dobles', q: 'Te proponen jugar dobles en los Juegos con tu compatriota.',
         a: 'Jugar dobles también', b: 'Solo individuales',
         nota: 'Más partidos y dinero, más desgaste.' },
@@ -793,14 +905,15 @@ class Component extends DCLogic {
       notaFed: 'La federación revisa cada solicitud. Casi siempre la aprueba.',
       denegada: 'Solicitud denegada', otraSolicitud: 'Rellenar otra solicitud',
       lRanking: 'Ranking', lEdad: 'Edad', lPuntos: 'Puntos', lCaja: 'Caja €',
+      declive1: 'Declive leve', declive2: 'En declive', declive3: 'Límite físico',
       mejores: 'Mejores resultados', temporadaCompleta: 'Temporada completa', evolucion: 'Evolución del ranking', mejorPuesto: 'Mejor: ', thTorneo: 'Torneo', thRes: 'Res', thPts: 'Pts', thPremio: 'Premio',
       susp: 'Suspendido',
       suspTexto: 'Control positivo. Un año entero sin competir y dos tercios de los puntos por el suelo.',
       txtSinTorneos: 'Licencia emitida. Todavía sin torneos.',
-      nuevaCarrera: 'Nueva carrera', temporada: 'Temporada', siguiente: 'Siguiente: ',
+      nuevaCarrera: 'Nueva carrera', temporada: 'Temporada', siguiente: 'Siguiente: ', lCompartir: 'Compartir', lVerHistoria: 'Ver tu historia',
       vitrina: 'Logros', cerrar: 'Cerrar', desbloqueado: 'Logro desbloqueado', dificil: 'Ultrararo',
       objetivo1: 'Objetivo: número 1', sinTitulos: 'sin títulos',
-      palmares: 'Palmarés', palmaresVacio: 'Ningún título en toda la carrera.', palmaresScroll: 'Desliza para ver el resto',
+      palmares: 'Palmarés', palmaresVacio: 'Ningún título en toda la carrera.', palmaresScroll: 'Desliza para ver más',
       tiers: { itf: 'Circuito de base', ch: 'Circuito de ascenso', atp: 'Circuito mundial', m1000: 'Serie 1000', gs: 'Grandes Opens' },
       diestro: 'diestro', zurdo: 'zurdo',
       titulos: n => n === 1 ? '1 título' : n + ' títulos',
@@ -826,11 +939,12 @@ class Component extends DCLogic {
       notaFed: 'The federation reviews every application. It almost always approves them.',
       denegada: 'Application denied', otraSolicitud: 'Fill in another application',
       lRanking: 'Ranking', lEdad: 'Age', lPuntos: 'Points', lCaja: 'Cash €',
+      declive1: 'Mild decline', declive2: 'In decline', declive3: 'Physical limit',
       mejores: 'Best results', temporadaCompleta: 'Full season', evolucion: 'Ranking history', mejorPuesto: 'Best: ', thTorneo: 'Event', thRes: 'Res', thPts: 'Pts', thPremio: 'Prize',
       susp: 'Suspended',
       suspTexto: 'Positive test. A full year out of competition and two thirds of your points gone.',
       txtSinTorneos: 'Licence issued. No tournaments yet.',
-      nuevaCarrera: 'New career', temporada: 'Season', siguiente: 'Next: ',
+      nuevaCarrera: 'New career', temporada: 'Season', siguiente: 'Next: ', lCompartir: 'Share', lVerHistoria: 'See your story',
       vitrina: 'Achievements', cerrar: 'Close', desbloqueado: 'Achievement unlocked', dificil: 'Ultra-rare',
       objetivo1: 'Target: world No. 1', sinTitulos: 'no titles',
       palmares: 'Honours', palmaresVacio: 'Not a single title in the whole career.', palmaresScroll: 'Scroll for the rest',
@@ -861,8 +975,6 @@ class Component extends DCLogic {
 
   GRUPOS_EN = {
     bajo: [
-      { e: 'plan', kicker: 'Calendar', q: 'A small event on the coast falls on your sister\'s wedding.',
-        a: 'Play the event', b: 'Go to the wedding', nota: 'That week\'s points, or a clear head for the rest of the year.' },
       { e: 'gira', kicker: 'Travel', q: 'You are offered three straight weeks of tournaments in Tunisia.',
         a: 'Do the swing', b: 'Stay close to home', nota: 'Many matches far away, or fewer points and less expense.' },
       { e: 'spon', kicker: 'Money', q: 'A local sports shop gives you gear if you appear in its window.',
@@ -933,7 +1045,7 @@ class Component extends DCLogic {
         nota: 'Better conditions, more spending.' },
       { e: 'spon', kicker: 'Money', q: 'Your town hall offers a grant if you play the local event every year.',
         a: 'Take the grant', b: 'No strings',
-        nota: 'Guaranteed money and one week tied up in the calendar.' },
+        nota: 'Guaranteed money and one week tied up in the calendar.', atado: 'Serie 25 Torneo Local' },
       { e: 'plan', kicker: 'Ranking', q: 'Do you chase points now or build for next year?',
         a: 'Chase them at all costs', b: 'Build for next year',
         nota: 'Forcing it gives points now; building improves every result.' },
@@ -1147,7 +1259,7 @@ class Component extends DCLogic {
         nota: 'More events, more points; fewer events, better results.' },
       { e: 'spon', kicker: 'Money', q: 'You can start your own event at home and chair it.',
         a: 'Start it', b: 'Not the moment',
-        nota: 'Income and events that take training time.' },
+        nota: 'Income and events that take training time.', legado: 'torneo' },
       { e: 'plan', kicker: 'Doubles', q: 'You are asked to play doubles at the Games with your compatriot.',
         a: 'Play doubles too', b: 'Singles only',
         nota: 'More matches and money, more wear.' },
@@ -1317,6 +1429,159 @@ class Component extends DCLogic {
       ],
     },
   };
+  // ── arco: la rodilla — tres momentos disparados por estado, no por temporada fija ──
+  DEC_RODILLA = {
+    es: {
+      plantea: { e: 'rodilla1', arco: 'rodilla', kicker: 'El cuerpo', q: 'La rodilla te avisa después de cada torneo en pista dura.',
+        a: 'Infiltrarte y seguir', b: 'Parar dos semanas',
+        nota: 'Hay riesgo: seguir ahora y pagarlo después, o parar y perder ritmo.' },
+      complica: { e: 'rodilla2', arco: 'rodilla', kicker: 'El cuerpo', q: 'La rodilla ha vuelto, y peor que antes.',
+        a: 'Operarte ya y perder medio año', b: 'Aguantar con antiinflamatorios',
+        nota: 'Nadie te lo recomienda, pero se puede seguir compitiendo así.' },
+      resuelve: { e: 'rodilla3', arco: 'rodilla', kicker: 'El cuerpo', q: 'Se acerca el final. La rodilla decide por ti tarde o temprano.',
+        a: 'Operarte y cerrar la carrera bien', b: 'Retirarte ya, sin más operaciones',
+        nota: 'Casi seguro que jugando así no aguantas mucho más.' },
+    },
+    en: {
+      plantea: { e: 'rodilla1', arco: 'rodilla', kicker: 'The body', q: 'Your knee talks to you after every hard-court event.',
+        a: 'Get an injection and keep going', b: 'Stop for two weeks',
+        nota: 'There is risk: push now and pay later, or stop and lose rhythm.' },
+      complica: { e: 'rodilla2', arco: 'rodilla', kicker: 'The body', q: 'The knee is back, worse than before.',
+        a: 'Operate now and lose half a season', b: 'Manage it with anti-inflammatories',
+        nota: 'Nobody recommends it, but you can keep competing this way.' },
+      resuelve: { e: 'rodilla3', arco: 'rodilla', kicker: 'The body', q: 'The end is near. The knee decides for you sooner or later.',
+        a: 'Operate and close the career properly', b: 'Retire now, no more surgeries',
+        nota: 'Almost certain you cannot keep playing like this much longer.' },
+    },
+  };
+  decisionRodilla(s, fase) {
+    const D = (s.idioma === 'en' ? this.DEC_RODILLA.en : this.DEC_RODILLA.es);
+    return fase === 1 ? D.plantea : fase === 2 ? D.complica : D.resuelve;
+  }
+
+  // ── arco: la familia — dos momentos, eco permanente en la pantalla final ──
+  DEC_FAMILIA = {
+    es: {
+      plantea: { e: 'familia1', arco: 'familia', kicker: 'Familia', q: 'Un torneo pequeño en la costa coincide con la boda de tu hermana.',
+        a: 'Jugar el torneo', b: 'Ir a la boda',
+        nota: 'Nadie te lo puede poner en números: es una decisión de vida.' },
+      complica: { e: 'familia2', arco: 'familia', kicker: 'Familia', q: 'El nacimiento de tu sobrino coincide con un Masters importante.',
+        a: 'Jugar el Masters', b: 'Estar en el nacimiento',
+        nota: 'Otra vez sin cifra posible: la carrera no espera, la familia tampoco.' },
+    },
+    en: {
+      plantea: { e: 'familia1', arco: 'familia', kicker: 'Family', q: 'A small event on the coast falls on your sister\'s wedding.',
+        a: 'Play the event', b: 'Go to the wedding',
+        nota: 'Nobody can put a number on this: it is a life decision.' },
+      complica: { e: 'familia2', arco: 'familia', kicker: 'Family', q: 'Your nephew\'s birth coincides with a big Masters event.',
+        a: 'Play the Masters', b: 'Be there for the birth',
+        nota: 'No number to give here either: the career does not wait, and neither does family.' },
+    },
+  };
+  decisionFamilia(s, fase) {
+    const D = (s.idioma === 'en' ? this.DEC_FAMILIA.en : this.DEC_FAMILIA.es);
+    return fase === 1 ? D.plantea : D.complica;
+  }
+
+  // ── arco: el técnico — la complicación del maestro, si lo contrataste ──
+  DEC_TECNICO2 = {
+    es: { e: 'tecnico2', arco: 'tecnico', kicker: 'El maestro', q: 'Tu maestro quiere rehacerte el juego desde cero, a estas alturas.',
+      a: 'Aceptar el cambio radical', b: 'Seguir como estás',
+      nota: 'Es un salto: si prende, otro techo. Si no, una temporada perdida.' },
+    en: { e: 'tecnico2', arco: 'tecnico', kicker: 'The master', q: 'Your master wants to rebuild your game from scratch, at this stage.',
+      a: 'Accept the radical change', b: 'Stay as you are',
+      nota: 'It is a leap: if it lands, a new ceiling. If not, a lost season.' },
+  };
+
+  // ── fondo de 16 arcos comunes: se activan por estado, máx. 3 por carrera, con menor prioridad los vistos la partida anterior ──
+  ARCOS_POOL = [
+    { id: 'agente', gate: s => s.temporada >= 4 && s.temporada <= 10,
+      es: { plantea: { kicker: 'Representación', q: 'Un agente grande quiere ficharte y dejar a quien te representa desde el principio.', a: 'Cambiar de agente', b: 'Seguir con quien empezó contigo', nota: 'Hay riesgo: mejores contratos, o lealtad que se nota en los años difíciles.' } },
+      en: { plantea: { kicker: 'Representation', q: 'A major agency wants to sign you, dropping whoever has repped you since the start.', a: 'Switch agents', b: 'Stay with who started with you', nota: 'There is risk: better deals, or loyalty that shows in the hard years.' } } },
+    { id: 'davis', gate: s => s.temporada >= 3 && this.rankDe(s.puntos) <= 150,
+      es: { plantea: { kicker: 'Selección', q: 'Tu federación te llama para la Copa por equipos justo antes de un torneo grande.', a: 'Jugar con el equipo', b: 'Cuidar el calendario individual', nota: 'Hay riesgo: cansancio extra, u orgullo de vestir la selección.' } },
+      en: { plantea: { kicker: 'National team', q: 'Your federation calls you for the team cup right before a big event.', a: 'Play for the team', b: 'Protect your own calendar', nota: 'There is risk: extra fatigue, or the pride of playing for your country.' } } },
+    { id: 'marcarival', gate: s => s.temporada >= 5 && !!s.patrocinio,
+      es: { plantea: { kicker: 'Patrocinio', q: 'La marca rival de tu patrocinador actual dobla la oferta.', a: 'Romper e irme con ellos', b: 'Ser fiel a quien apostó primero', nota: 'Nadie te lo puede medir: es cuestión de lealtad, no de números.' } },
+      en: { plantea: { kicker: 'Sponsorship', q: 'Your sponsor\'s rival brand doubles the offer.', a: 'Break away and join them', b: 'Stay loyal to who backed you first', nota: 'No number can settle this: it is about loyalty, not math.' } } },
+    { id: 'muneca', gate: s => s.temporada >= 8 && s.nivel >= s.techo * 0.8,
+      es: { plantea: { kicker: 'El cuerpo', q: 'La muñeca del saque te avisa. Un especialista dice que un 65% de que aguante sin cambiar el gesto.', a: 'Seguir igual', b: 'Cambiar el gesto de saque', nota: '' },
+        resuelve: { kicker: 'El cuerpo', q: 'La muñeca vuelve a fallar en un momento clave.', a: 'Jugar con ella vendada el resto de la carrera', b: 'Aceptar que tu saque nunca volverá a ser el mismo', nota: 'Hay riesgo en las dos: dolor constante, o un golpe menos.' } },
+      en: { plantea: { kicker: 'The body', q: 'Your serving wrist is warning you. A specialist says 65% it holds without changing the motion.', a: 'Keep it as is', b: 'Change the service motion', nota: '' },
+        resuelve: { kicker: 'The body', q: 'The wrist fails again at a key moment.', a: 'Play the rest of your career strapped up', b: 'Accept your serve will never be the same', nota: 'Risk either way: constant pain, or a weaker shot.' } } },
+    { id: 'streamer', gate: s => s.temporada >= 6 && this.rankDe(s.puntos) <= 100,
+      es: { plantea: { kicker: 'Prensa', q: 'Un streamer con millones de seguidores pide una entrevista sin filtro, con preguntas incómodas.', a: 'Hacerla', b: 'Rechazarla', nota: 'Hay riesgo: exposición y dinero, o un titular que no controlas.' } },
+      en: { plantea: { kicker: 'Media', q: 'A streamer with millions of followers wants an unfiltered interview, uncomfortable questions included.', a: 'Do it', b: 'Turn it down', nota: 'There is risk: exposure and money, or a headline you do not control.' } } },
+    { id: 'pasaporte', gate: s => s.temporada >= 5 && s.temporada <= 12,
+      es: { plantea: { kicker: 'Nacionalidad', q: 'Otro país te ofrece pasaporte deportivo y mucho más apoyo económico.', a: 'Cambiar de bandera', b: 'Seguir representando la tuya', nota: 'Nadie te lo puede medir: no hay modelo para lo que pesa una bandera.' } },
+      en: { plantea: { kicker: 'Nationality', q: 'Another country offers you sporting citizenship and far more financial backing.', a: 'Switch flags', b: 'Keep representing your own', nota: 'No number can settle this: nothing measures what a flag is worth.' } } },
+    { id: 'pareja', gate: s => s.temporada >= 4,
+      es: { plantea: { kicker: 'Vida', q: 'Te enamoras de otro jugador del circuito. Girar juntos significa coordinar calendarios y perder margen.', a: 'Coordinar la gira con él/ella', b: 'Mantener las giras separadas', nota: 'Nadie te lo puede poner en números: es tu vida, no tu ranking.' },
+        resuelve: { kicker: 'Vida', q: 'Después de años de girar juntos, uno de los dos recibe una oferta que os separaría medio año.', a: 'Que la acepte', b: 'Que la rechace por la relación', nota: 'Otra vez sin cifra posible.' } },
+      en: { plantea: { kicker: 'Life', q: 'You fall for another player on tour. Touring together means syncing calendars and losing margin.', a: 'Sync your tour together', b: 'Keep touring separately', nota: 'No number can settle this: it is your life, not your ranking.' },
+        resuelve: { kicker: 'Life', q: 'After years touring together, one of you gets an offer that would split you up for half a year.', a: 'Take the offer', b: 'Turn it down for the relationship', nota: 'Again, no number to give here.' } } },
+    { id: 'dopaje', gate: s => s.temporada >= 6 && !!s.coach,
+      es: { plantea: { kicker: 'Escándalo', q: 'Tu entrenador aparece señalado en un caso de dopaje ajeno a ti.', a: 'Desvincularte ya, por si acaso', b: 'Mantenerte a su lado hasta que se aclare', nota: 'Es un salto: tu imagen o tu lealtad.' } },
+      en: { plantea: { kicker: 'Scandal', q: 'Your coach is named in a doping case that has nothing to do with you.', a: 'Cut ties immediately, just in case', b: 'Stand by him until it is clarified', nota: 'It is a leap: your image, or your loyalty.' } } },
+    { id: 'pupilo', gate: s => s.temporada >= 10 && this.rankDe(s.puntos) <= 60,
+      es: { plantea: { kicker: 'El pupilo', q: 'Un juvenil de tu academia te pide que le entrenes en los ratos libres.', a: 'Aceptar entrenarle', b: 'No tienes tiempo que dar', nota: 'Hay riesgo: menos horas para ti, un legado que no sale en ningún ranking.' } },
+      en: { plantea: { kicker: 'The apprentice', q: 'A junior from your academy asks you to coach him in your spare time.', a: 'Agree to coach him', b: 'You have no time to give', nota: 'There is risk: fewer hours for yourself, a legacy no ranking shows.' } } },
+    { id: 'negocio', gate: s => s.temporada >= 3 && s.temporada <= 7,
+      es: { plantea: { kicker: 'Familia', q: 'Tu familia quiere meter tus primeros ingresos grandes en un negocio propio.', a: 'Confiar el dinero', b: 'Guardarlo aparte', nota: 'Nadie te lo puede medir: es confianza familiar, no una inversión con datos.' },
+        resuelve: { kicker: 'Familia', q: 'El negocio familiar quiebra y te piden ayuda para no perderlo todo.', a: 'Rescatarlo con tu dinero', b: 'Dejar que se cierre', nota: 'Otra vez sin cifra: es tu familia, no un balance.' } },
+      en: { plantea: { kicker: 'Family', q: 'Your family wants to put your first big earnings into a business of their own.', a: 'Trust them with the money', b: 'Keep it aside', nota: 'No number can settle this: it is family trust, not a spreadsheet.' },
+        resuelve: { kicker: 'Family', q: 'The family business goes under and they ask for your help to save it.', a: 'Bail it out with your own money', b: 'Let it close', nota: 'Again, no number to give here.' } } },
+    { id: 'casa', gate: s => s.temporada >= 7 && s.euros > 300000,
+      es: { plantea: { kicker: 'Vida', q: 'Puedes comprarte una casa fija en vez de vivir de hotel en hotel.', a: 'Comprarla', b: 'Seguir ligero, sin ataduras', nota: 'Hay riesgo: gasto grande, o un sitio al que volver cuando todo esto acabe.' } },
+      en: { plantea: { kicker: 'Life', q: 'You can buy a permanent home instead of living hotel to hotel.', a: 'Buy it', b: 'Stay light, no ties', nota: 'There is risk: a big expense, or a place to return to when this ends.' } } },
+    { id: 'tardia', gate: s => s.temporada >= 11 && !s.especialista,
+      es: { plantea: { kicker: 'Superficie', q: 'A estas alturas, tu equipo propone especializarte por fin en una sola superficie.', a: 'Especializarte ahora', b: 'Seguir jugando todas', nota: 'Hay riesgo: menos años para que rinda, o seguir sin bandera propia.' } },
+      en: { plantea: { kicker: 'Surface', q: 'At this stage, your team proposes finally specializing in one surface.', a: 'Specialize now', b: 'Keep playing them all', nota: 'There is risk: fewer years for it to pay off, or staying without a signature surface.' } } },
+    { id: 'idolo', gate: s => s.temporada >= 5 && s.temporada <= 14,
+      es: { plantea: { kicker: 'El ídolo', q: 'Tu ídolo de infancia se retira. Antes de irse, te ofrece un consejo o una despedida pública juntos.', a: 'Pedirle el consejo en privado', b: 'Compartir la despedida pública', nota: 'Nadie te lo puede medir: es lo que ese jugador significó para ti.' } },
+      en: { plantea: { kicker: 'The idol', q: 'Your childhood idol retires. Before leaving, they offer you private advice or a shared public farewell.', a: 'Ask for the advice privately', b: 'Share the public farewell', nota: 'No number can settle this: it is what that player meant to you.' } } },
+    { id: 'jjoo', gate: s => s.temporada >= 3 && this.rankDe(s.puntos) <= 20 && s.edad <= 25, rara: true,
+      es: { plantea: { kicker: 'Juegos Olímpicos', q: 'Solo pasa cada cuatro años: puedes ir a representar a tu país, aunque descanses un Masters clave.', a: 'Ir a los Juegos', b: 'Cuidar el ranking en el Masters', nota: 'Nadie te lo puede medir: unos Juegos no vuelven en cuatro años.' } },
+      en: { plantea: { kicker: 'Olympics', q: 'It only happens every four years: you can represent your country, skipping a key Masters.', a: 'Go to the Olympics', b: 'Protect your ranking at the Masters', nota: 'No number can settle this: the Games do not come back for four years.' } } },
+    { id: 'exhibicion', gate: s => s.temporada >= 6 && this.rankDe(s.puntos) <= 10, rara: true,
+      es: { plantea: { kicker: 'Dinero', q: 'Te ofrecen una gira de exhibiciones que paga más que un año entero de torneos oficiales.', a: 'Hacer la gira', b: 'Seguir compitiendo por puntos', nota: 'Hay riesgo: mucho dinero seguro, o el ranking que de verdad cuenta.' } },
+      en: { plantea: { kicker: 'Money', q: 'You are offered an exhibition tour that pays more than a full year of official events.', a: 'Do the tour', b: 'Keep competing for ranking points', nota: 'There is risk: a lot of guaranteed money, or the ranking that actually counts.' } } },
+    { id: 'documental', gate: s => s.temporada >= 8 && this.rankDe(s.puntos) <= 5, rara: true,
+      es: { plantea: { kicker: 'Exposición', q: 'Un estudio quiere rodar un documental sobre tu vida antes de que tu carrera termine.', a: 'Abrir tu vida a las cámaras', b: 'Guardarte esto para ti', nota: 'Nadie te lo puede medir: es cuánto de ti quieres dar.' } },
+      en: { plantea: { kicker: 'Exposure', q: 'A studio wants to film a documentary about your life before your career ends.', a: 'Open your life to the cameras', b: 'Keep this for yourself', nota: 'No number can settle this: it is how much of yourself you want to give.' } } },
+  ];
+
+  arcosVistosGuardados() { try { return JSON.parse(localStorage.getItem('deuce.arcosVistos') || '[]'); } catch (e) { return []; } }
+  guardarArcosVistos(ids) { try { localStorage.setItem('deuce.arcosVistos', JSON.stringify(ids)); } catch (e) {} }
+
+  // primer arco del fondo elegible: activos < 3, condición de estado cumplida, prioridad baja a los ya vistos la partida anterior
+  // pseudo-aleatorio estable durante toda la temporada (evita que decisionActual "parpadee" al recalcularse en cada render)
+  rollEstable(s, salt) {
+    const seed = (Math.abs(s.temporada || 0) * 9301 + Math.abs(s.decision || 0) * 49297 + salt * 233) % 233280;
+    return seed / 233280;
+  }
+
+  elegibleArcoPool(s) {
+    const estado = s.arcosPool || {};
+    const vistos = this.arcosVistosGuardados();
+    // primero: arcos ya empezados que tienen nodo de resolución pendiente
+    for (const arc of this.ARCOS_POOL) {
+      const D = s.idioma === 'en' ? arc.en : arc.es;
+      if (estado[arc.id] === 1 && D.resuelve && s.temporada >= (s.arcosPoolT ? s.arcosPoolT[arc.id] || 0 : 0) + 3) {
+        return { id: arc.id, d: Object.assign({ e: 'arcopool', poolId: arc.id, poolFase: 2 }, D.resuelve) };
+      }
+    }
+    if ((s.arcosPoolCount || 0) >= 3) return null;
+    const candidatos = this.ARCOS_POOL.filter(arc => !estado[arc.id] && arc.gate(s));
+    if (!candidatos.length) return null;
+    const ordenados = candidatos.slice().sort((a, b) => (vistos.indexOf(a.id) >= 0 ? 1 : 0) - (vistos.indexOf(b.id) >= 0 ? 1 : 0));
+    const elegido = ordenados[0];
+    const salt = elegido.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    if (this.rollEstable(s, salt) > (elegido.rara ? 0.9 : 0.22)) return null;
+    const D = s.idioma === 'en' ? elegido.en : elegido.es;
+    return { id: elegido.id, d: Object.assign({ e: 'arcopool', poolId: elegido.id, poolFase: 1 }, D.plantea) };
+  }
+
   decisionRival(s, rank) {
     const en = s.idioma === 'en';
     const rel = s.rivalAccion === 'gana' ? 'gana' : s.rivalAccion === 'lesion' ? 'lesion' : (rank === 1 ? 'delante' : 'detras');
@@ -1332,7 +1597,17 @@ class Component extends DCLogic {
       const m = this.MAESTROS[s.maestroId || 0] || this.MAESTROS[0];
       return s.idioma === 'en' ? m.en : m.es;
     }
+    if (s.maestro && !s.tecnicoOfrecido && s.temporada >= (s.maestroTemporada || 0) + 4) {
+      return s.idioma === 'en' ? this.DEC_TECNICO2.en : this.DEC_TECNICO2.es;
+    }
     if (s.rival > 0 && s.temporada % 2 === 0) return this.decisionRival(s, rank);
+    if ((s.rodillaFase || 0) === 0 && s.temporada >= 6 && s.nivel >= s.techo * 0.85 && s.temporada % 2 === 1) return this.decisionRodilla(s, 1);
+    if (s.rodillaFase === 1 && s.rodillaInfiltrado && s.temporada >= (s.rodillaTemporada || 0) + 2) return this.decisionRodilla(s, 2);
+    if ((s.rodillaFase === 1 || s.rodillaFase === 2) && s.edad >= (this.props.edadRetiro ?? 34) - 3) return this.decisionRodilla(s, 3);
+    if ((s.familiaFase || 0) === 0 && s.temporada >= 3 && s.temporada <= 8) return this.decisionFamilia(s, 1);
+    if (s.familiaFase === 1 && s.temporada >= (s.familiaTemporada || 0) + 3) return this.decisionFamilia(s, 2);
+    const pool = this.elegibleArcoPool(s);
+    if (pool) return pool.d;
     if (s.temporada === 1 && (s.torneos || []).length === 0) return this.primeraDecision(s);
     return this.decisionDe(rank, s.decision);
   }
@@ -1354,8 +1629,11 @@ class Component extends DCLogic {
       edad: 17, temporada: 1, puntos: 20, euros: 9000, titulos: 0,
       nivel: 0.26, techo: 0.7, agresivo: false, coach: false, gira: false, especialista: false, supEsp: 'Tierra',
       patrocinio: false, cambio: false, sancionado: false, ganados: 0, rankPrev: 1050, hito: '', racha: 0,
-      misterioso: false, maestro: false, maestroVisto: false, maestroId: 0,
+      misterioso: false, maestro: false, maestroVisto: false, maestroId: 0, maestroTemporada: 0, tecnicoOfrecido: false,
       rival: 0, rivalVisto: false, rivalPts: 0, rivalAccion: '',
+      rodillaFase: 0, rodillaTemporada: 0, rodillaInfiltrado: false, rodillaOperada: false, rodillaCierre: '',
+      familiaFase: 0, familiaTemporada: 0, familiaPerdioBoda: false, familiaPerdioNacimiento: false,
+      arcosPool: {}, arcosPoolT: {}, arcosPoolSi: {}, arcosPoolCount: 0,
       fx: null, fxAhora: 0, fxVistos: [],
       st: null, stAhora: 0,
       mejorRank: 1050,
@@ -1363,9 +1641,39 @@ class Component extends DCLogic {
       coachAlguna: false, patrocinioAlguna: false, sancionadoAlguna: false, rivalesVencidos: [],
       torneos: [], todos: [], historial: [], extra: 0, delta: 0, fin: false, decision: Math.floor(Math.random() * 36), usadas: this.vistasGuardadas(),
       escritorio: typeof window !== 'undefined' && window.innerWidth >= 900,
+      torneosElegidos: [], demoSel: [], legado: [], atado: null,
+      mostrarCompartir: false,
+      mostrarHistoria: false,
     };
   }
-  state = this.inicial();
+  state = this.cargarPartida() || (() => {
+    const base = this.inicial();
+    base.torneosCandidatos = this.candidatosTorneo(base);
+    return base;
+  })();
+
+  cargarPartida() {
+    try {
+      const raw = localStorage.getItem('deuce.partida');
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      if (!saved || saved.fase === 'crear') return null;
+      const merged = Object.assign(this.inicial(), saved, { st: null, fx: null, filasVisibles: null, expandido: false });
+      const mostrarElec = merged.mostrarEleccionDemo ?? true;
+      if (mostrarElec && !(merged.torneosCandidatos || []).length) {
+        merged.torneosCandidatos = this.candidatosTorneo(merged);
+      }
+      return merged;
+    } catch (e) { return null; }
+  }
+  guardarPartida = () => {
+    const s = this.state;
+    if (s.fase === 'crear' || s.st) return;
+    try {
+      const { st, fx, filasVisibles, ...resto } = s;
+      localStorage.setItem('deuce.partida', JSON.stringify(resto));
+    } catch (e) {}
+  };
 
   onResize = () => {
     const d = window.innerWidth >= 900;
@@ -1393,7 +1701,7 @@ class Component extends DCLogic {
     if (visibles !== this.state.filasVisibles) this.setState({ filasVisibles: visibles });
   };
   componentDidMount() { this.onResize(); window.addEventListener('resize', this.onResize); }
-  componentDidUpdate() { this.medirFilas(); }
+  componentDidUpdate() { this.medirFilas(); this.guardarPartida(); }
   componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearTimeout(this.fxT); if (this.fxLoop) cancelAnimationFrame(this.fxLoop); }
 
   // diez logros, guardados en el navegador y compartidos por todas las carreras
@@ -1439,11 +1747,12 @@ class Component extends DCLogic {
   }
   guardarLogros(v) { try { localStorage.setItem('deuce.logros', JSON.stringify(v)); } catch (e) {} }
 
-  COSTE = { itf: 920, ch: 1550, atp: 1700, m1000: 2400, gs: 2900 };
+  COSTE = { itf: 950, ch: 2200, atp: 5200, m1000: 13000, gs: 26000 };
   // el patrocinio paga una cifra propia de cada categoría: decisiva abajo, marginal arriba
   PATROCINIO = { itf: 9000, ch: 22000, atp: 48000, m1000: 95000, gs: 150000 };
 
-  costeCoach(banco) { return Math.round(Math.min(800000, Math.max(4600, banco * 0.27))); }
+  COACH_MIN = { itf: 4600, ch: 9000, atp: 22000, m1000: 60000, gs: 140000 };
+  costeCoach(banco, tier) { return Math.round(Math.min(800000, Math.max(this.COACH_MIN[tier] || 4600, banco * 0.27))); }
 
   grupoDe(rank) { return rank > 170 ? 'bajo' : rank > 45 ? 'medio' : 'alto'; }
   decisionDe(rank, i) { const g = this.grupos()[this.grupoDe(rank)]; return g[Math.abs(i) % g.length]; }
@@ -1477,6 +1786,24 @@ class Component extends DCLogic {
     return 1;
   }
   tierDe(r) { return r > 420 ? 'itf' : r > 170 ? 'ch' : r > 45 ? 'atp' : r > 14 ? 'm1000' : 'gs'; }
+  barajar(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+  candidatosTorneo(s) {
+    const rank = this.rankDe(s.puntos);
+    const tier = this.tierDe(rank);
+    const region = s.gira ? (s.region === 'EUR' ? 'NAM' : 'EUR') : (s.region || 'EUR');
+    const ORDEN = ['gs', 'm1000', 'atp', 'ch', 'itf'];
+    const N = 7;
+    let items = this.barajar(this.pool(tier, region).slice()).map(nombre => ({ nombre, t: tier }));
+    let i = ORDEN.indexOf(tier) + 1;
+    while (items.length < N && i < ORDEN.length) {
+      items = items.concat(this.barajar(this.pool(ORDEN[i], region).slice()).map(nombre => ({ nombre, t: ORDEN[i] })));
+      i++;
+    }
+    return items.slice(0, N).map(it => ({
+      nombre: it.nombre, sub: this.TIER[it.t].label + ' · ' + this.superficieDe(it.nombre, it.t, region),
+    }));
+  }
+
   pool(tier, region) {
     if (tier === 'm1000') return this.M1000;
     if (tier === 'gs') return this.GS;
@@ -1506,6 +1833,8 @@ class Component extends DCLogic {
     const d = this.decisionActual(s);
     const si = d.inv ? k === 'b' : k === 'a';
     const patch = {};
+    if (d.legado && si) patch.legadoNuevo = d.legado;
+    if (d.atado && si) patch.atadoNuevo = d.atado;
     if (d.e === 'maestro') {
       patch.maestroVisto = true;
       patch.coach = si; patch.maestro = si;
@@ -1517,10 +1846,114 @@ class Component extends DCLogic {
     if (d.e === 'esp') { patch.especialista = si; if (si) patch.supEsp = d.sup || 'Tierra'; }
     if (d.e === 'spon') patch.patrocinio = si;
     if (d.e === 'cambio') patch.cambio = si;
+    if (d.e === 'tecnico2') { patch.tecnicoOfrecido = true; if (si) patch.cambio = true; }
+    if (d.e === 'rodilla1') { patch.rodillaFase = 1; patch.rodillaTemporada = s.temporada; patch.rodillaInfiltrado = si; if (!si) patch.rodillaFase = 0; }
+    if (d.e === 'rodilla2') { patch.rodillaFase = si ? 3 : 2; patch.rodillaOperada = si; }
+    if (d.e === 'rodilla3') { patch.rodillaFase = 4; patch.rodillaCierre = si ? 'operado' : 'retiro'; }
+    if (d.e === 'familia1') { patch.familiaFase = 1; patch.familiaTemporada = s.temporada; patch.familiaPerdioBoda = si; }
+    if (d.e === 'familia2') { patch.familiaFase = 2; patch.familiaPerdioNacimiento = si; }
+    if (d.e === 'maestro' && si) patch.maestroTemporada = s.temporada;
+    if (d.e === 'arcopool') {
+      const estado = Object.assign({}, s.arcosPool || {});
+      const t = Object.assign({}, s.arcosPoolT || {});
+      const elecciones = Object.assign({}, s.arcosPoolSi || {});
+      estado[d.poolId] = d.poolFase === 1 ? 1 : 2;
+      if (d.poolFase === 1) { t[d.poolId] = s.temporada; patch.arcosPoolCount = (s.arcosPoolCount || 0) + 1; }
+      elecciones[d.poolId] = si;
+      patch.arcosPool = estado; patch.arcosPoolT = t; patch.arcosPoolSi = elecciones;
+    }
     this.jugar(patch);
   };
 
   // recopilatorio de títulos de toda la carrera, agrupado por sede
+  // ── eco narrativo en la pantalla final: cómo terminó cada arco vivido ──
+  arcosFinal(s) {
+    const en = s.idioma === 'en';
+    const out = [];
+    if (s.rival > 0) {
+      const mote = (en ? this.RIV_MOTE.en : this.RIV_MOTE.es)[(s.rival || 1) - 1];
+      out.push(en ? 'You closed your career still measured against ' + mote + '.' : 'Cerraste tu carrera medido siempre contra ' + mote + '.');
+    }
+    if (s.maestro) {
+      out.push(s.tecnicoOfrecido
+        ? (s.cambio ? (en ? 'You took the master\'s late gamble and it changed your game.' : 'Aceptaste el salto tardío del maestro y te cambió el juego.')
+                    : (en ? 'You stayed on your own path even when the master pushed for more.' : 'Seguiste tu camino aunque el maestro insistiera en más.'))
+        : (en ? 'You trained with a master who never gave his name.' : 'Entrenaste con un maestro que nunca dio su nombre.'));
+    }
+    if (s.rodillaFase >= 1) {
+      if (s.rodillaFase === 4) out.push(s.rodillaCierre === 'operado'
+        ? (en ? 'The knee forced one last surgery before you closed your career.' : 'La rodilla te obligó a una última operación antes de cerrar la carrera.')
+        : (en ? 'You retired early, before the knee decided for you.' : 'Te retiraste antes de tiempo, antes de que la rodilla decidiera por ti.'));
+      else if (s.rodillaFase === 3) out.push(en ? 'You had knee surgery mid-career and came back.' : 'Pasaste por el quirófano de la rodilla en plena carrera y volviste.');
+      else out.push(s.rodillaInfiltrado
+        ? (en ? 'You played through the pain in your knee more than once.' : 'Jugaste con la rodilla dolorida más de una vez.')
+        : (en ? 'You protected your knee when it first complained.' : 'Protegiste la rodilla la primera vez que avisó.'));
+    }
+    if (s.familiaFase >= 1) {
+      const perdidas = (s.familiaPerdioBoda ? 1 : 0) + (s.familiaPerdioNacimiento ? 1 : 0);
+      out.push(perdidas === 0
+        ? (en ? 'You never missed a family moment for the tour.' : 'Nunca te perdiste un momento familiar por el circuito.')
+        : perdidas === 1
+        ? (en ? 'You missed one family moment for the tour, and it still crosses your mind.' : 'Te perdiste un momento familiar por el circuito, y aún lo piensas.')
+        : (en ? 'You built your career at a real distance from your family.' : 'Construiste tu carrera a una distancia real de tu familia.'));
+    }
+    Object.keys(s.arcosPool || {}).forEach(id => {
+      const arc = this.ARCOS_POOL.find(a => a.id === id);
+      if (!arc) return;
+      const D = en ? arc.en : arc.es;
+      const si = !!(s.arcosPoolSi || {})[id];
+      const nodo = s.arcosPool[id] === 2 && D.resuelve ? D.resuelve : D.plantea;
+      const elegido = si ? nodo.a : nodo.b;
+      out.push((en ? 'You chose: ' : 'Elegiste: ') + elegido.charAt(0).toLowerCase() + elegido.slice(1) + '.');
+    });
+    return out;
+  }
+
+  SUP_EN = { Tierra: 'Clay', Hierba: 'Grass', Dura: 'Hard' };
+  tierDeSede(nombre) {
+    if (this.GS.indexOf(nombre) >= 0) return 'gs';
+    if (this.M1000.indexOf(nombre) >= 0) return 'm1000';
+    const regiones = ['SAM', 'EUR', 'NAM', 'ASI'];
+    for (const tier of ['atp', 'ch', 'itf']) {
+      for (const r of regiones) if ((this.CAL[r][tier] || []).indexOf(nombre) >= 0) return tier;
+    }
+    return 'atp';
+  }
+  TROFEO_GS = {
+    'Open de Australia': '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M7 3h10v4a5 5 0 0 1-10 0V3z" fill="#4a7fc1"/><path d="M5 4H3v2a4 4 0 0 0 4 4V8a2 2 0 0 1-2-2V4zM19 4h2v2a4 4 0 0 1-4 4V8a2 2 0 0 0 2-2V4z" fill="#4a7fc1"/><rect x="10.5" y="12" width="3" height="5" fill="#4a7fc1"/><path d="M8 20h8l-1-3H9z" fill="#4a7fc1"/></svg>',
+    'Open de Francia': '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M6 3h12v6a6 6 0 0 1-12 0V3z" fill="#c2673f"/><rect x="10.5" y="15" width="3" height="4" fill="#c2673f"/><path d="M7 19h10l-1 2H8z" fill="#c2673f"/></svg>',
+    'Open de Londres': '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M7 3h10v3a5 5 0 0 1-10 0V3z" fill="#4f9e4a"/><path d="M5 4H3v3a4 4 0 0 0 4 3V8a2 2 0 0 1-2-2V4zM19 4h2v3a4 4 0 0 1-4 3V8a2 2 0 0 0 2-2V4z" fill="#4f9e4a"/><rect x="10.5" y="11" width="3" height="6" fill="#4f9e4a"/><path d="M7.5 20h9l-.8-2.5h-7.4z" fill="#4f9e4a"/></svg>',
+    'Open de Estados Unidos': '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 3h14v2a7 7 0 0 1-14 0V3z" fill="#3a6fb0"/><rect x="10.5" y="12" width="3" height="5" fill="#3a6fb0"/><path d="M8 20h8l-1-3H9z" fill="#3a6fb0"/></svg>',
+  };
+  TROFEO_CAT = '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M7 3h10v4a5 5 0 0 1-10 0V3z" fill="#8b9096"/><rect x="10.5" y="12" width="3" height="5" fill="#8b9096"/><path d="M8 20h8l-1-3H9z" fill="#8b9096"/></svg>';
+  // agrupa el palmarés para la tarjeta de compartir: Opens uno a uno con su trofeo propio, el resto por categoría
+  compPalmaresAgrupado(s) {
+    const en = s.idioma === 'en';
+    const lista = s.palmares || [];
+    const gsMapa = {};
+    const catMapa = {};
+    lista.forEach(x => {
+      const tier = this.tierDeSede(x.n);
+      if (tier === 'gs') {
+        if (!gsMapa[x.n]) gsMapa[x.n] = 0;
+        gsMapa[x.n]++;
+      } else {
+        if (!catMapa[tier]) catMapa[tier] = 0;
+        catMapa[tier]++;
+      }
+    });
+    const gsList = Object.keys(gsMapa).map(n => ({
+      texto: this.sede(n) + (gsMapa[n] > 1 ? ' ×' + gsMapa[n] : ''),
+      icono: this.TROFEO_GS[n] || this.TROFEO_CAT,
+    }));
+    const ORDEN = ['m1000', 'atp', 'ch', 'itf'];
+    const catList = ORDEN.filter(t => catMapa[t]).map(t => ({
+      texto: this.L.tiers[t] + ' ×' + catMapa[t],
+      icono: this.TROFEO_CAT,
+    }));
+    return gsList.concat(catList);
+  }
+
   valoresPalmares(s) {
     const lista = s.palmares || [];
     const mapa = {};
@@ -1536,14 +1969,25 @@ class Component extends DCLogic {
     return {
       hayPalmares: lista.length > 0,
       sinPalmares: lista.length === 0,
-      hayMasPalmares: grupos.length > 5,
-      palmaresLista: grupos.map(g => ({
+      hayLegado: (s.legado || []).length > 0,
+      lLegado: s.idioma === 'en' ? 'LEGACY' : 'LEGADO',
+      legadoLista: (s.legado || []).map(id => ({
+        torneo: s.idioma === 'en' ? 'Founded your own tournament' : 'Fundaste tu propio torneo',
+      }[id] || id)),
+      hayArcos: !!(s.rival > 0 || s.maestro || s.rodillaFase || s.familiaFase || (s.legado || []).length || Object.keys(s.arcosPool || {}).length),
+      lArcos: s.idioma === 'en' ? 'YOUR STORY' : 'TU HISTORIA',
+      arcosLista: this.arcosFinal(s),
+      palmaresLista: grupos.map((g, i) => ({
         sede: this.sede(g.n),
-        detalle: g.sup + ' · ' + L.temporada + ' ' + g.anios.join(', '),
+        sup: g.sup,
+        detalle: (s.idioma === 'en' ? (this.SUP_EN[g.sup] || g.sup) : g.sup) + ' · ' + L.temporada + ' ' + g.anios.join(', '),
         cuenta: g.anios.length > 1 ? '×' + g.anios.length : '',
         estiloSup: 'width:18px;height:18px;border-radius:5px;display:block;background:' + (this.COLOR_SUP[g.sup] || '#4a7fc1'),
         estiloCuenta: 'font-size:12px;font-weight:700;color:#a3319a',
+        estiloBorde: i === 0 ? '' : 'border-top:1px solid #e2dfd6',
+        esGS: this.GS.indexOf(g.n) >= 0,
       })),
+      hayMasPalmares: grupos.length > 4,
     };
   }
 
@@ -1975,11 +2419,11 @@ class Component extends DCLogic {
     const region = s.gira ? (s.region === 'EUR' ? 'NAM' : 'EUR') : s.region;
 
     // el nivel se acerca al techo del jugador y baja pasados los 29
-    const coste = s.coach ? this.costeCoach(s.euros) : 0;
+    const coste = s.coach ? this.costeCoach(s.euros, tier) : 0;
     const ayuda = s.maestro ? 0.25 : s.coach ? 0.23 + Math.min(0.15, coste / 500000 * 0.15) : 0.14;
     const supEsp = s.supEsp || 'Tierra';
     let nivel = s.nivel + (techo - s.nivel) * ayuda + (s.agresivo ? -0.005 : 0.01) + (s.gira ? 0.02 : 0)
-      + (s.patrocinio ? -0.02 : 0) + (s.cambio ? -0.13 : 0);
+      + (s.patrocinio ? -0.02 : 0) + (s.cambio ? -0.13 : 0) + (s.mano === 'Izquierda' ? 0.012 : 0);
     if (s.edad > 30) nivel -= 0.035 * (s.edad - 30);
     nivel = Math.max(0.1, Math.min(1.2, nivel));
 
@@ -1995,7 +2439,16 @@ class Component extends DCLogic {
       const abajo = Object.keys(this.SIG).find(k => this.SIG[k] === tier);
       if (abajo) calendario = calendario.concat(mezcla(comoEntradas(abajo)));
     }
-    let sel = calendario.slice(0, n);
+    let sel;
+    const forzados = s.atado ? [{ nombre: s.atado, t: 'itf' }] : [];
+    if (s.torneosElegidos && s.torneosElegidos.length) {
+      const elegidos = calendario.filter(c => s.torneosElegidos.includes(c.nombre));
+      const resto = calendario.filter(c => !s.torneosElegidos.includes(c.nombre) && c.nombre !== s.atado);
+      sel = forzados.concat(elegidos).concat(resto).slice(0, n);
+    } else {
+      const resto = calendario.filter(c => c.nombre !== s.atado);
+      sel = forzados.concat(resto).slice(0, n);
+    }
     if (s.especialista) {
       // un especialista busca su superficie: casi la mitad del año en ella si existe
       const mia = [], resto = [];
@@ -2184,19 +2637,29 @@ class Component extends DCLogic {
       fase: 'jugando', agresivo: s.agresivo, coach: s.coach, gira: s.gira,
       techo, nivel, titulos, edad, puntos, mejorRank, rankPrev: rank, hito, racha,
       especialista: s.especialista, supEsp: s.supEsp, patrocinio: s.patrocinio, cambio: false, sancionado: false,
-      maestro: s.maestro, maestroVisto: s.maestroVisto, maestroId: s.maestroId,
+      maestro: s.maestro, maestroVisto: s.maestroVisto, maestroId: s.maestroId, maestroTemporada: s.maestroTemporada, tecnicoOfrecido: s.tecnicoOfrecido,
       rival, rivalVisto: s.rivalVisto || rival > 0, rivalPts, rivalAccion,
+      rodillaFase: s.rodillaFase, rodillaTemporada: s.rodillaTemporada, rodillaInfiltrado: s.rodillaInfiltrado, rodillaOperada: s.rodillaOperada, rodillaCierre: s.rodillaCierre,
+      familiaFase: s.familiaFase, familiaTemporada: s.familiaTemporada, familiaPerdioBoda: s.familiaPerdioBoda, familiaPerdioNacimiento: s.familiaPerdioNacimiento,
+      arcosPool: s.arcosPool, arcosPoolT: s.arcosPoolT, arcosPoolSi: s.arcosPoolSi, arcosPoolCount: s.arcosPoolCount,
       ganados: puntosGanados,
       logros: yaTenia.concat(logrosNuevos), logrosNuevos, supGanadas, gsGanados, palmares,
       coachAlguna, patrocinioAlguna, sancionadoAlguna, rivalesVencidos,
       fx: null, fxVistos: fx ? fxVistos.concat([fx.k]) : fxVistos,
       torneos: mejores, todos, historial: (s.historial || []).concat([{ t: s.temporada, r: nuevoRank }]).slice(-24),
-      extra: torneos.length - mejores.length,
+      extra: torneos.length - mejores.length, expandido: false,
+      legado: (patch && patch.legadoNuevo && !(s.legado || []).includes(patch.legadoNuevo))
+        ? (s.legado || []).concat([patch.legadoNuevo]) : (s.legado || []),
+      atado: patch.atadoNuevo || s.atado || null,
       delta: puntos - s.puntos,
       st: { edad: s.edad, euros: s.euros, puntos: s.puntos, rank, t0: performance.now() },
       stAhora: performance.now(),
       euros: Math.max(euros, -3000),
       temporada: s.temporada + 1,
+      torneosElegidos: [], demoSel: [],
+      mostrarEleccionDemo: !terminaCarrera && (s.temporada + 1) % 4 === 1,
+      torneosCandidatos: !terminaCarrera && (s.temporada + 1) % 4 === 1
+        ? this.candidatosTorneo({ puntos, region: s.region, gira: s.gira }) : s.torneosCandidatos,
       ...this.siguienteDecision(puntos, s.decision, s.usadas, s.puntos),
       fin: terminaCarrera,
     });
@@ -2232,12 +2695,154 @@ class Component extends DCLogic {
       rival: 0, rivalVisto: false, rivalPts: 0, rivalAccion: '',
     });
   };
-  volver = () => this.setState({ fase: 'crear' });
+  volver = () => { try { localStorage.removeItem('deuce.partida'); } catch (e) {} this.setState({ fase: 'crear' }); };
+  abrirCompartir = () => this.setState({ mostrarCompartir: true });
+  cerrarCompartir = () => this.setState({ mostrarCompartir: false });
+  abrirHistoria = () => this.setState({ mostrarHistoria: true });
+  cerrarHistoria = () => this.setState({ mostrarHistoria: false });
+  pararClic = (e) => e.stopPropagation();
+
+  chipColor(r) {
+    return r <= 10 ? '#5b1a63' : r <= 50 ? '#8b2f96' : r <= 200 ? '#c27fc9' : '#e8d5ec';
+  }
+
+  // dibuja un trofeo simple en canvas (silueta genérica, coloreada según el open o categoría)
+  dibujarTrofeo(ctx, x, y, s, color) {
+    const rr = (px, py, w, h, r) => { ctx.beginPath(); ctx.moveTo(px + r, py); ctx.arcTo(px + w, py, px + w, py + h, r); ctx.arcTo(px + w, py + h, px, py + h, r); ctx.arcTo(px, py + h, px, py, r); ctx.arcTo(px, py, px + w, py, r); ctx.closePath(); };
+    ctx.fillStyle = color;
+    rr(x + s * 0.18, y, s * 0.64, s * 0.42, s * 0.06); ctx.fill();
+    ctx.fillRect(x + s * 0.42, y + s * 0.42, s * 0.16, s * 0.3);
+    rr(x + s * 0.28, y + s * 0.74, s * 0.44, s * 0.12, s * 0.03); ctx.fill();
+  }
+
+  async generarImagenCompartir() {
+    const s = this.state;
+    const en = s.idioma === 'en';
+    const pais = this.paisesData.find(x => x.nombre === s.pais) || this.paisesData[0];
+    const titulos = (s.palmares || []).length;
+    const grupos = this.compPalmaresAgrupado(s);
+
+    const W = 1080, H = 1400;
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#141416'; ctx.fillRect(0, 0, W, H);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#e0559f'; ctx.font = '700 26px system-ui, sans-serif';
+    ctx.fillText((en ? 'CAREER FINISHED' : 'CARRERA FINALIZADA'), 60, 68);
+
+    const cardX = 60, cardY = 110, cardW = W - 120;
+    const cardH = 260 + Math.max(1, grupos.length) * 56 + 80;
+    const rr = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+    ctx.fillStyle = '#fbfaf7'; rr(cardX, cardY, cardW, cardH, 28); ctx.fill();
+
+    const pad = 46;
+    let y = cardY + pad;
+    ctx.fillStyle = '#1c1e22'; ctx.font = '800 34px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('deuce', W / 2, y);
+
+    y += 60;
+    ctx.font = '38px system-ui, sans-serif';
+    const bandera = this.bandera(pais.code);
+    const nombre = s.nombre || 'Sin nombre';
+    const tagTxt = (s.mano === 'Derecha' ? (en ? 'Right-handed' : 'Diestro') : (en ? 'Left-handed' : 'Zurdo')) + ' · ' + s.reves;
+    ctx.font = '700 26px system-ui, sans-serif';
+    const wNombre = ctx.measureText(nombre).width;
+    ctx.font = '38px system-ui, sans-serif';
+    const wBandera = ctx.measureText(bandera).width;
+    ctx.font = '600 15px system-ui, sans-serif';
+    const wTag = ctx.measureText(tagTxt).width;
+    const totalW = wBandera + 10 + wNombre + 10 + wTag + 16;
+    let cx = W / 2 - totalW / 2;
+    ctx.textAlign = 'left';
+    ctx.font = '38px system-ui, sans-serif';
+    ctx.fillText(bandera, cx, y + 8); cx += wBandera + 10;
+    ctx.fillStyle = '#1c1e22'; ctx.font = '700 26px system-ui, sans-serif';
+    ctx.fillText(nombre, cx, y + 6); cx += wNombre + 14;
+    ctx.fillStyle = '#6d7278'; ctx.font = '600 15px system-ui, sans-serif';
+    rr(cx - 8, y - 18, wTag + 16, 26, 10); ctx.fillStyle = '#f2f0ea'; ctx.fill();
+    ctx.fillStyle = '#6d7278'; ctx.fillText(tagTxt, cx, y + 2);
+
+    y += 66;
+    ctx.fillStyle = '#1c1e22'; ctx.font = '800 30px system-ui, sans-serif';
+    ctx.fillText(s.mejorRank + 'º', cardX + pad, y);
+    ctx.textAlign = 'right';
+    ctx.font = '800 60px system-ui, sans-serif';
+    ctx.fillText('' + titulos, cardX + cardW - pad - 90, y);
+    ctx.font = '700 16px system-ui, sans-serif';
+    ctx.fillStyle = '#8b9096';
+    ctx.fillText((en ? 'TITLES' : 'TÍTULOS'), cardX + cardW - pad, y);
+    ctx.textAlign = 'left';
+
+    y += 40;
+    ctx.fillStyle = '#8b9096'; ctx.font = '700 15px system-ui, sans-serif';
+    ctx.fillText((en ? 'HONOURS' : 'PALMARÉS'), cardX + pad, y);
+    y += 30;
+    if (grupos.length) {
+      grupos.forEach(g => {
+        const color = /fill="(#[0-9a-fA-F]{3,6})"/.exec(g.icono);
+        this.dibujarTrofeo(ctx, cardX + pad, y - 24, 30, color ? color[1] : '#8b9096');
+        ctx.fillStyle = '#1c1e22'; ctx.font = '700 22px system-ui, sans-serif';
+        ctx.fillText(g.texto.replace(/×/g, '×'), cardX + pad + 44, y);
+        y += 56;
+      });
+    } else {
+      ctx.fillStyle = '#8b9096'; ctx.font = '500 20px system-ui, sans-serif';
+      ctx.fillText(en ? 'No titles this career' : 'Sin títulos esta carrera', cardX + pad, y);
+    }
+
+    return await new Promise(res => cv.toBlob(res, 'image/png'));
+  }
+
+  compartirNativo = async () => {
+    const blob = await this.generarImagenCompartir();
+    const archivo = new File([blob], 'deuce.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+      try { await navigator.share({ files: [archivo], title: 'deuce' }); return; } catch (e) {}
+    }
+    this.descargarBlob(blob);
+  };
+  copiarImagen = async () => {
+    const blob = await this.generarImagenCompartir();
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        return;
+      }
+    } catch (e) {}
+    this.descargarBlob(blob);
+  };
+  descargarImagen = async () => this.descargarBlob(await this.generarImagenCompartir());
+  descargarBlob(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'deuce.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+
+  envolverTexto(ctx, texto, x, y, maxAncho, salto) {
+    const palabras = texto.split(' ');
+    let linea = '', ly = y;
+    palabras.forEach((p, i) => {
+      const prueba = linea + p + ' ';
+      if (ctx.measureText(prueba).width > maxAncho && i > 0) {
+        ctx.fillText(linea, x, ly);
+        linea = p + ' '; ly += salto;
+      } else linea = prueba;
+    });
+    ctx.fillText(linea, x, ly);
+  }
+
   reiniciar = () => {
     const s = this.state;
+    const vistos = Object.keys(s.arcosPool || {});
+    if (vistos.length) this.guardarArcosVistos(vistos);
+    try { localStorage.removeItem('deuce.partida'); } catch (e) {}
     this.setState(Object.assign(this.inicial(), {
       nombre: s.nombre, pais: s.pais, region: s.region, mano: s.mano, reves: s.reves,
-      filasVisibles: null,
+      filasVisibles: null, expandido: false,
     }));
   };
 
@@ -2247,6 +2852,20 @@ class Component extends DCLogic {
       + ';background:' + (activo ? 'rgba(163,49,154,.10)' : '#f2f0ea')
       + ';color:' + (activo ? '#a3319a' : '#4c5158');
   }
+
+  demoToggle = (nombre) => {
+    const sel = new Set(this.state.demoSel || []);
+    if (sel.has(nombre)) sel.delete(nombre);
+    else if (sel.size < 4) sel.add(nombre);
+    this.setState({ demoSel: [...sel] });
+  };
+
+  demoConfirmar = () => {
+    if (this.state.demoSel && this.state.demoSel.length < 4) return;
+    this.setState({ mostrarEleccionDemo: false, torneosElegidos: this.state.demoSel || [] });
+  };
+
+  expandirMas = () => this.setState({ expandido: true });
 
   renderVals() {
     const s = this.state;
@@ -2308,8 +2927,9 @@ class Component extends DCLogic {
       : ['Licencia', 'en vigor', 'var(--color-accent-700)'];
     return {
       ...L,
-      estiloCard: 'width:100%;max-width:' + (s.escritorio ? '1120px' : '392px') + ';height:100dvh;max-height:100dvh;'
-        + 'background:#fbfaf7;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(28,30,34,.14)',
+      estiloCard: 'width:100%;max-width:' + (s.escritorio ? (s.creando ? 'none' : '1120px') : '392px') + ';height:100dvh;max-height:100dvh;'
+        + 'background:#fbfaf7;overflow:hidden;display:flex;flex-direction:column'
+        + (s.escritorio && s.creando ? '' : ';box-shadow:0 0 60px rgba(28,30,34,.14)'),
       estiloJuego: s.escritorio
         ? 'flex:1;display:grid;grid-template-columns:1.55fr 1fr;gap:26px;padding:20px 26px 22px;min-height:0'
         : 'flex:1;display:flex;flex-direction:column;padding:14px 14px 0;min-height:0',
@@ -2318,13 +2938,15 @@ class Component extends DCLogic {
         ? 'display:flex;flex-direction:column;min-height:0'
         : 'display:flex;flex-direction:column;min-height:0;flex:1',
       estiloDer: s.fin
-        ? 'display:flex;flex-direction:column;justify-content:center;min-height:0;overflow:auto;grid-column:1/-1;justify-self:center;max-width:520px;width:100%'
+        ? 'display:flex;flex-direction:column;justify-content:flex-start;min-height:0;overflow:auto;grid-column:1/-1;justify-self:center;max-width:520px;width:100%'
         : s.escritorio
         ? 'display:flex;flex-direction:column;justify-content:center;border-left:1px solid #e2dfd6;padding-left:26px;min-height:0;overflow:auto'
         : 'flex:none',
       hayGrafico: s.escritorio && (s.historial || []).length > 1,
       estiloAlta: 'flex:1;display:flex;flex-direction:column;min-height:0;overflow:auto;width:100%;'
-        + (s.escritorio ? 'max-width:452px;margin:0 auto;padding:26px 16px 0' : 'padding:16px 16px 0'),
+        + (s.escritorio ? 'max-width:452px;margin:0 auto;padding:48px 16px 0' : 'padding:16px 16px 0'),
+      estiloEleccionDemo: 'flex:1;display:flex;flex-direction:column;min-height:0;overflow:auto;width:100%;'
+        + (s.escritorio ? 'max-width:452px;margin:0 auto;padding:48px 16px 24px' : 'padding:16px 16px 20px'),
       estiloDenegado: 'flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;justify-content:center;width:100%;'
         + (s.escritorio ? 'max-width:452px;margin:0 auto;padding:28px 16px' : 'padding:28px 20px'),
       graficoLinea: grafico.linea, gx: grafico.x, gy: grafico.y,
@@ -2368,7 +2990,7 @@ class Component extends DCLogic {
         .map(id => { const l = this.LOGROS.find(x => x.id === id); return l ? (s.idioma === 'en' ? l.en[0] : l.es[0]) : id; })
         .join(' · '),
       denegado: s.fase === 'denegado',
-      jugando: s.fase === 'jugando',
+      jugando: s.fase === 'jugando' && !(s.mostrarEleccionDemo ?? true),
       nombre: s.nombre,
       meta: s.fase === 'jugando' ? pais.code + ' · ' + s.edad + ' AÑOS · T' + s.temporada : 'FEDERACIÓN',
       motivoTitulo: mot.t,
@@ -2397,6 +3019,9 @@ class Component extends DCLogic {
       jugadorEtiqueta: pais.code + ' · ' + (s.mano === 'Derecha' ? L.diestro : L.zurdo) + ' · ' + (s.reves === 'Una mano' ? L.reves1 : L.reves2),
       titulosEtiqueta: s.titulos > 0 ? nTitulos : L.sinTitulos,
       edad: stEdad,
+      hayDeclive: stEdad >= 30,
+      declive: stEdad >= 36 ? L.declive3 : stEdad >= 33 ? L.declive2 : L.declive1,
+      estiloDeclive: 'font-size:9px;font-weight:700;margin-top:2px;color:' + (stEdad >= 36 ? '#c8384f' : stEdad >= 33 ? '#b8632f' : '#8b9096'),
       siguienteNivel: prog.etiqueta,
       estiloProgreso: 'height:6px;border-radius:999px;width:' + prog.pct + '%;background:linear-gradient(90deg,#7d2fb0,#a3319a 55%,#e0559f)',
       selloL1: sello[0], selloL2: sello[1],
@@ -2422,10 +3047,11 @@ class Component extends DCLogic {
             premioTexto: this.fmt(rolando ? this.rollNum(idx * 13 + 3, paso, premioFinal) : premioFinal),
           });
         });
-        const visibles = s.filasVisibles != null ? Math.min(s.filasVisibles, procesada.length) : procesada.length;
-        this._ocultasPorEspacio = procesada.length - visibles;
+        const visibles = s.expandido ? procesada.length : (s.filasVisibles != null ? Math.min(s.filasVisibles, procesada.length) : procesada.length);
+        this._ocultasPorEspacio = s.expandido ? 0 : procesada.length - visibles;
         return procesada.slice(0, visibles);
       })(),
+      estiloResultsBox: 'background:#f2f0ea;border-radius:14px;padding:11px 11px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:' + (s.expandido ? 'auto' : 'hidden'),
       sinTorneos: s.torneos.length === 0 && !s.sancionado,
       hayEncabezado: !(s.torneos.length === 0 && !s.sancionado),
       hayMas: ((s.escritorio ? 0 : (s.extra || 0)) + (this._ocultasPorEspacio || 0)) > 0,
@@ -2437,25 +3063,93 @@ class Component extends DCLogic {
       caja: this.fmt(s.euros),
       cajaCorta: this.fmtCorto(stEuros),
 
+      mostrarEleccionDemo: s.fase === 'jugando' && (s.mostrarEleccionDemo ?? true),
+      calendarioKicker: 'CALENDARIO · TEMPORADA ' + s.temporada,
+      demoTorneos: (s.torneosCandidatos || []).map(t => {
+        const sel = (s.demoSel || []).includes(t.nombre);
+        return {
+          nombre: t.nombre, sub: t.sub, marca: sel ? '✓' : '',
+          toggle: () => this.demoToggle(t.nombre),
+          estilo: 'display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:12px 13px;cursor:pointer;'
+            + (sel ? 'background:#1c1e22;color:#fbfaf7' : 'border:1px solid #c9c4b7;color:#1c1e22'),
+          estiloSub: sel ? 'color:#c9c4c9' : 'color:#8b9096',
+          estiloCheck: 'width:20px;height:20px;border-radius:999px;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;'
+            + (sel ? 'background:#a3319a;color:#fff' : 'border:1px solid #c9c4b7'),
+        };
+      }),
+      demoContador: (s.demoSel || []).length + '/4 elegidos · el resto del calendario se completa con torneos automáticos',
+      demoConfirmar: this.demoConfirmar,
+      demoEstiloBtn: 'width:100%;margin-top:12px;border:0;border-radius:999px;background:'
+        + ((s.demoSel || []).length === 4 ? '#1c1e22' : '#c9c4b7') + ';color:#fbfaf7;padding:13px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer',
+
       activo: !s.fin && s.fase === 'jugando',
       fin: s.fin,
       kicker: d.kicker, pregunta: d.q,
-      opcionA: d.e === 'coach' ? d.a + ' · ' + this.fmt(this.costeCoach(s.euros))
+      opcionA: d.e === 'coach' ? d.a + ' · ' + this.fmt(this.costeCoach(s.euros, this.tierDe(this.rankDe(s.puntos))))
         : d.e === 'spon' ? d.a + ' · ' + this.fmt(this.PATROCINIO[this.tierDe(this.rankDe(s.puntos))]) + '/año'
         : d.a,
       opcionB: d.b, nota: d.nota,
       lPalmares: L.palmares, lPalmaresVacio: L.palmaresVacio, lPalmaresScroll: L.palmaresScroll,
       hayFx: !!s.fx, vistaFx: this.vistaFx(s), cerrarFx: this.cerrarFx,
       ...this.valoresPalmares(s),
-      finLinea: quiebra
-        ? L.finTextoQuiebra(nTitulos, s.mejorRank)
-        : L.finTexto(s.edad, s.mejorRank, nTitulos),
+      finLinea: (quiebra ? (s.idioma === 'en' ? 'Bankrupt at ' : 'Quiebra a los ') : (s.idioma === 'en' ? 'Retired at ' : 'Retiro a los '))
+        + s.edad + (s.idioma === 'en' ? ' — Best rank: ' : ' - Mejor puesto: ') + s.mejorRank + 'º',
       elegirA: () => this.elegir('a'),
       elegirB: () => this.elegir('b'),
       empezar: this.empezar,
       volver: this.volver,
       onNombre: this.onNombre, onPais: this.onPais,
       reiniciar: this.reiniciar,
+      abrirCompartir: this.abrirCompartir,
+      cerrarCompartir: this.cerrarCompartir,
+      abrirHistoria: this.abrirHistoria,
+      cerrarHistoria: this.cerrarHistoria,
+      pararClic: this.pararClic,
+      mostrarHistoria: !!s.mostrarHistoria,
+      compartirNativo: this.compartirNativo,
+      copiarImagen: this.copiarImagen,
+      descargarImagen: this.descargarImagen,
+      mostrarCompartir: !!s.mostrarCompartir,
+      compKicker: s.idioma === 'en' ? 'CAREER FINISHED' : 'CARRERA FINALIZADA',
+      compTitulo: s.idioma === 'en' ? 'Share your career' : 'Comparte tu carrera',
+      compBadgeEstilo: 'background:#1c1e22;color:#fbfaf7;border-radius:10px;padding:5px 11px;font-size:13px;font-weight:800;flex:none',
+      compBadgeValor: s.mejorRank + 'º',
+      compBandera: this.bandera((this.paisesData.find(x => x.nombre === s.pais) || this.paisesData[0]).code),
+      compNombre: s.nombre || 'Sin nombre',
+      compTags: [
+        (s.mano === 'Derecha' ? (s.idioma === 'en' ? 'Right-handed' : 'Diestro') : (s.idioma === 'en' ? 'Left-handed' : 'Zurdo')),
+        s.reves,
+      ],
+      compTitulosNum: (s.palmares || []).length,
+      compTitulosLabelBig: s.idioma === 'en' ? 'Titles' : 'Títulos',
+      compTemporadas: Math.max(1, s.temporada - 1),
+      compTemporadasLabel: s.idioma === 'en' ? 'seasons' : 'temporadas',
+      compRetiroLinea: (s.idioma === 'en' ? 'Retired at ' : 'Retiro a los ') + s.edad,
+      compTrayectoria: s.idioma === 'en' ? 'Season by season' : 'Temporada a temporada',
+      compChips: (s.historial || []).slice(-18).map(h =>
+        'aspect-ratio:1;border-radius:4px;background:' + this.chipColor(h.r)),
+      compEdadIni: (s.historial && s.historial.length) ? (17 + (s.historial[0].t || 1)) : 17,
+      compEdadMed: (() => {
+        const h = (s.historial || []).slice(-18);
+        if (!h.length) return '';
+        const mid = h[Math.floor((h.length - 1) / 2)];
+        return 17 + (mid.t || 0);
+      })(),
+      compEdadFin: (() => {
+        const h = (s.historial || []).slice(-18);
+        return h.length ? 17 + (h[h.length - 1].t || 0) : s.edad;
+      })(),
+      compTitulosLabel: s.idioma === 'en' ? 'Honours' : 'Palmarés',
+      compHayTitulos: this.compPalmaresAgrupado(s).length > 0,
+      compSinTitulos: this.compPalmaresAgrupado(s).length === 0,
+      compTitulos: this.compPalmaresAgrupado(s).map(t => ({
+        htmlIcono: { __html: t.icono + '<span style="font-size:14px;font-weight:700">' + t.texto + '</span>' },
+      })),
+      compTitulosVacio: s.idioma === 'en' ? 'No titles this career' : 'Sin títulos esta carrera',
+      compLabelCompartir: s.idioma === 'en' ? 'Share' : 'Compartir',
+      compLabelCopiar: s.idioma === 'en' ? 'Copy' : 'Copiar',
+      compLabelDescargar: s.idioma === 'en' ? 'Save' : 'Descargar',
+      expandirMas: this.expandirMas,
     };
   }
 }
