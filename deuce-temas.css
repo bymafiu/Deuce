@@ -1,0 +1,164 @@
+/* ============================================================
+   deuce · temas
+   ------------------------------------------------------------
+   Un tema por defecto y cuatro desbloqueables.
+   Se aplican poniendo data-tema en <html>:
+
+       document.documentElement.dataset.tema = 'tierra';
+
+   REGLA QUE NO SE ROMPE NUNCA:
+   --sup-* son los colores de superficie y son idénticos en los
+   cinco temas (solo se aclaran en los oscuros para mantener el
+   contraste). Llevan información, así que no pueden cambiar con
+   la decoración ni coincidir con el acento.
+   ============================================================ */
+
+:root,
+:root[data-tema="base"]{
+  /* ---- por defecto · sin acento ----
+     Lo único con color en pantalla son las superficies.       */
+  --paper:      #FAF8F3;   /* fondo de la pantalla            */
+  --surface:    #FFFFFF;   /* tarjetas, campos, pastillas     */
+  --rule:       #E4DED2;   /* líneas y bordes                 */
+  --ink:        #15130F;   /* texto principal                 */
+  --ink-soft:   #857E72;   /* texto secundario                */
+
+  --accent:     #15130F;   /* acento: aquí es la propia tinta */
+  --accent-bg:  #E8E4D9;   /* fondo de elemento seleccionado  */
+  --accent-ink: #15130F;   /* texto sobre accent-bg           */
+
+  --btn:        #15130F;
+  --btn-ink:    #FAF8F3;
+
+  --shadow:     0 1px 2px rgba(30,20,10,.06);
+
+  /* superficies · fijas */
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   TIERRA · se desbloquea al ganar un Grand Slam en tierra
+   ------------------------------------------------------------ */
+:root[data-tema="tierra"]{
+  --paper:      #FAF5EE;
+  --surface:    #FFFDFA;
+  --rule:       #E8DACA;
+  --ink:        #2A1B12;
+  --ink-soft:   #8A7461;
+
+  --accent:     #B4562C;
+  --accent-bg:  #F7E6D9;
+  --accent-ink: #A04A22;
+
+  --btn:        #2A1B12;
+  --btn-ink:    #FAF5EE;
+
+  --shadow:     0 1px 2px rgba(60,35,15,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   DURA · se desbloquea al llegar al número uno
+   ------------------------------------------------------------ */
+:root[data-tema="dura"]{
+  --paper:      #F7F6F2;
+  --surface:    #FFFFFF;
+  --rule:       #DEDCD3;
+  --ink:        #101820;
+  --ink-soft:   #75808A;
+
+  --accent:     #1F5C8C;
+  --accent-bg:  #E2EDF5;
+  --accent-ink: #1F5C8C;
+
+  --btn:        #101820;
+  --btn-ink:    #F7F6F2;
+
+  --shadow:     0 1px 2px rgba(16,24,32,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   HIERBA · se desbloquea al ganar un título en hierba
+   ------------------------------------------------------------ */
+:root[data-tema="hierba"]{
+  --paper:      #F8F7F0;
+  --surface:    #FFFFFE;
+  --rule:       #E0E0D2;
+  --ink:        #16281B;
+  --ink-soft:   #72806F;
+
+  --accent:     #2F6B3C;
+  --accent-bg:  #E4EEE3;
+  --accent-ink: #2F6B3C;
+
+  --btn:        #16281B;
+  --btn-ink:    #F8F7F0;
+
+  --shadow:     0 1px 2px rgba(22,40,27,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   GRAFITO · se desbloquea al llegar hasta la retirada. El nocturno. Sin acento de color, igual que el tema
+   por defecto: el premio es la noche, no otro color.
+   Las superficies van aclaradas para mantener contraste sobre
+   fondo oscuro.
+   ------------------------------------------------------------ */
+:root[data-tema="grafito"]{
+  --paper:      #121314;
+  --surface:    #1C1E20;
+  --rule:       #2B2E31;
+  --ink:        #EDEEEF;
+  --ink-soft:   #8A8F94;
+
+  --accent:     #EDEEEF;
+  --accent-bg:  #26292C;
+  --accent-ink: #EDEEEF;
+
+  --btn:        #EDEEEF;
+  --btn-ink:    #121314;
+
+  --shadow:     0 1px 3px rgba(0,0,0,.4);
+
+  --sup-tierra: #E0774A;
+  --sup-dura:   #5C9FE0;
+  --sup-duraus: #3AB2BD;
+  --sup-hierba: #52AF63;
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------
+   Transición al cambiar de tema. Se desactiva para quien
+   prefiera menos movimiento.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference){
+  body, .card, .stat, .btn, .seg, .inp{
+    transition: background-color .28s ease, color .28s ease,
+                border-color .28s ease;
+  }
+}

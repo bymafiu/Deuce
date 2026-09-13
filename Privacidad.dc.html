@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="deuce-temas.css">
+<script src="deuce-temas.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#fbfaf7"></rect>
+    <g transform="translate(50 50) scale(2.6) translate(-12 -12)" fill="none" stroke="#a3319a" stroke-width="1.7">
+      <g transform="rotate(-24 12 12)">
+        <ellipse cx="12" cy="8" rx="5.6" ry="7"></ellipse>
+        <path d="M12 15v6.6M9.4 20.4h5.2" stroke-linecap="round"></path>
+        <path d="M8 5.5h8M8 8h8M8 10.5h8M10 2.2v11.6M14 2.2v11.6" stroke-width="0.7" opacity=".5"></path>
+      </g>
+    </g>
+  </svg>
+</template>
+<helmet>
+  <title>Privacidad — deuce</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--paper);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:var(--accent)}
+    @keyframes copaIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--surface);color:var(--ink);display:flex;flex-direction:column">
+
+<sc-if value="{{ mostrarCookies }}">
+      <div style="flex:none;padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <p style="font-size:11px;color:var(--ink-soft);margin:0;line-height:1.35;flex:1;min-width:140px">{{ textoCookies }}</p>
+        <div style="display:flex;gap:6px;flex:none">
+          <button onClick="{{ rechazarCookies }}" style="border:1px solid var(--rule);border-radius:999px;background:transparent;color:var(--ink);padding:6px 10px;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lRechazar }}</button>
+          <button onClick="{{ aceptarCookies }}" style="border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);padding:6px 10px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lAceptar }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="padding:16px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--rule);flex-wrap:wrap;max-width:1400px;margin:0 auto;width:100%">
+      <a href="Inicio.dc.html" style="font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">deuce</a>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <a href="Sobre el Juego.dc.html" style="font-size:13px;color:var(--ink-soft);font-weight:600">{{ lSobre }}</a>
+        <div style="display:flex;gap:2px;background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:2px">
+          <span onClick="{{ setEs }}" style="{{ estiloEs }}">ES</span>
+          <span onClick="{{ setEn }}" style="{{ estiloEn }}">EN</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;padding:clamp(24px,6vw,40px) clamp(20px,5vw,32px) 40px;max-width:640px;margin:0 auto;width:100%">
+      <h1 style="font-size:clamp(24px,5vw,32px);font-weight:700;letter-spacing:-.02em;margin:0 0 4px">{{ titulo }}</h1>
+      <p style="font-size:12px;color:var(--ink-soft);margin:0 0 26px">{{ actualizado }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h1 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 22px; text-align: justify">{{ p1 }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h2 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 8px; text-align: justify">{{ p2 }}</p>
+      <ul style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0 0 22px;padding-left:20px">
+        <li style="text-align: justify">{{ li1 }}</li>
+        <li style="text-align: justify">{{ li2 }}</li>
+        <li style="text-align: justify">{{ li3 }}</li>
+      </ul>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h3 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 22px; text-align: justify">{{ p3 }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h4 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 22px; text-align: justify">{{ p4 }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h5 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 22px; text-align: justify">{{ p5 }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h6 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 22px; text-align: justify">{{ p6 }}</p>
+
+      <h2 style="font-size:16px;font-weight:700;margin:0 0 8px">{{ h7 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 28px; text-align: justify">{{ p7 }}</p>
+
+      <a href="Copa v3 - Tarjeta.dc.html" style="display:block;text-align:center;background:var(--btn);color:var(--btn-ink);border-radius:999px;padding:14px;font-size:15px;font-weight:700">{{ lJugar }}</a>
+    </div>
+
+    <div style="padding:16px 20px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-soft);text-align:center">
+      {{ lContacto }} <a href="mailto:nuketown2025zombis@gmail.com">nuketown2025zombis@gmail.com</a>
+    </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    idioma: (() => { try { return localStorage.getItem('deuce.lang') === 'en' ? 'en' : 'es'; } catch (e) { return 'es'; } })(),
+    cookieConsent: (() => { try { return localStorage.getItem('deuce.cookieConsent'); } catch (e) { return null; } })(),
+  };
+
+  cargarAnalytics() {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX';
+    s.async = true;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-XXXXXXX');
+  }
+  componentDidMount() { if (this.state.cookieConsent === 'granted') this.cargarAnalytics(); }
+
+  setIdioma = (v) => { try { localStorage.setItem('deuce.lang', v); } catch (e) {} this.setState({ idioma: v }); };
+  aceptarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'granted'); } catch (e) {} this.setState({ cookieConsent: 'granted' }); this.cargarAnalytics(); };
+  rechazarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'denied'); } catch (e) {} this.setState({ cookieConsent: 'denied' }); };
+
+  renderVals() {
+    const s = this.state;
+    const en = s.idioma === 'en';
+    const chip = (on) => 'cursor:pointer;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;' + (on ? 'background:var(--btn);color:var(--btn-ink)' : 'background:transparent;color:var(--ink-soft)');
+    return {
+      esEs: !en, esEn: en, estiloEs: chip(!en), estiloEn: chip(en),
+      setEs: () => this.setIdioma('es'), setEn: () => this.setIdioma('en'),
+      lSobre: en ? 'About the game' : 'Sobre el juego',
+      lJugar: en ? 'Play deuce' : 'Jugar a deuce',
+      lContacto: en ? 'Privacy questions:' : 'Consultas de privacidad:',
+      titulo: en ? 'Privacy policy' : 'Política de privacidad',
+      actualizado: en ? 'Last updated: September 2026' : 'Última actualización: septiembre de 2026',
+      h1: en ? '1. Who is responsible' : '1. Quién es el responsable',
+      p1: en
+        ? 'This site (deuce) is run by Oliver Cano Hopkins, as an individual, contactable at nuketown2025zombis@gmail.com. This policy explains what data is collected when you use deuce and why.'
+        : 'Este sitio web es gestionado por una única persona, Oliver, contactable en el siguiente correo: nuketown2025zombis@gmail.com. Esta política explica qué datos se recogen al usar deuce y para qué.',
+      h2: en ? '2. What data is collected' : '2. Qué datos se recogen',
+      p2: en ? 'deuce has no accounts and no server-side database. Your career progress is saved only on your own device:' : 'Deuce no tiene cuentas ni base de datos en servidor, el progreso de tu carrera se guarda solo en tu propio dispositivo:',
+      li1: en ? 'Game progress and language preference, stored locally in your browser (localStorage) — never sent to us.' : 'El progreso de la partida y el idioma elegido son guardados localmente en tu navegador.',
+      li2: en ? 'Your cookie consent choice, stored the same way.' : 'Tu decisión sobre cookies es guardada del mismo modo.',
+      li3: en ? 'If you accept cookies, anonymised usage statistics (Google Analytics) and, once approved, ads (Google AdSense) — see section 4.' : 'Si aceptas las cookies habrá estadísticas de uso anonimizadas (Google Analytics) y, cuando se apruebe, anuncios (Google AdSense), ver sección 4.',
+      h3: en ? '3. Legal basis and consent' : '3. Base legal y consentimiento',
+      p3: en
+        ? 'Analytics and advertising cookies are only loaded after you accept them in the cookie banner (GDPR Art. 6.1.a — consent). You can decline them and still play the full game; declining only disables analytics and ads.'
+        : 'Las cookies de analítica y publicidad solo se cargan si las aceptas en el banner de cookies (art. 6.1.a RGPD sobre consentimiento). Puedes rechazarlas y seguir jugando la partida completa; rechazarlas solo desactiva la analítica y los anuncios.',
+      h4: en ? '4. Cookies and third parties' : '4. Cookies y terceros',
+      p4: en
+        ? 'Google Analytics (usage statistics) and Google AdSense (ads, once the site is approved) may set cookies on your device if you accept them. Google processes this data under its own privacy policy: policies.google.com/privacy. We do not control or receive any personal data from these services beyond aggregate statistics.'
+        : 'Google Analytics (estadísticas de uso) y Google AdSense (anuncios) pueden instalar cookies en tu dispositivo si las aceptas. Google trata estos datos bajo su propia política de privacidad: policies.google.com/privacy. Nosotros no controlamos ni recibimos datos personales de estos servicios más allá de estadísticas agregadas.',
+      h5: en ? '5. Your rights' : '5. Tus derechos',
+      p5: en
+        ? 'Under GDPR you can access, correct, delete or object to the processing of your data. Since we store no personal data ourselves, this mainly concerns Google\'s services — you can withdraw cookie consent anytime by clearing the banner\'s choice in your browser, or contact us at the email below for anything else.'
+        : 'Según el RGPD puedes acceder, rectificar, suprimir u oponerte al tratamiento de tus datos. Como no almacenamos datos personales nosotros mismos, esto afecta sobre todo a los servicios de Google. Puedes retirar el consentimiento de cookies en cualquier momento borrando esa elección en tu navegador, o escribirnos al correo de abajo para cualquier otra cosa.',
+      h6: en ? '6. Children' : '6. Menores',
+      p6: en
+        ? 'deuce is suitable for a general audience and collects no personal data directly. If ads are shown, they follow Google AdSense\'s own policies on child-directed content where applicable.'
+        : 'Deuce está pensado para público general y no recoge datos personales directamente. Si se muestran anuncios, siguen las propias políticas de Google AdSense sobre contenido dirigido a menores cuando corresponda.',
+      h7: en ? '7. Changes to this policy' : '7. Cambios en esta política',
+      p7: en
+        ? 'This policy may be updated as the site evolves (for example, once ads are actually enabled). Changes will be reflected on this page with an updated date.'
+        : 'Esta política puede actualizarse a medida que el sitio evolucione. \nLos cambios se reflejarán en esta página con la fecha actualizada.',
+      mostrarCookies: !s.cookieConsent,
+      textoCookies: en
+        ? 'We use cookies for analytics and, in the future, ads.'
+        : 'Usamos cookies para analítica y, en el futuro, anuncios.',
+      lRechazar: en ? 'Decline' : 'Rechazar',
+      lAceptar: en ? 'Accept' : 'Aceptar',
+      aceptarCookies: this.aceptarCookies,
+      rechazarCookies: this.rechazarCookies,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

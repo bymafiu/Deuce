@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="deuce-temas.css">
+<script src="deuce-temas.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#fbfaf7"></rect>
+    <g transform="translate(50 50) scale(2.6) translate(-12 -12)" fill="none" stroke="#a3319a" stroke-width="1.7">
+      <g transform="rotate(-24 12 12)">
+        <ellipse cx="12" cy="8" rx="5.6" ry="7"></ellipse>
+        <path d="M12 15v6.6M9.4 20.4h5.2" stroke-linecap="round"></path>
+        <path d="M8 5.5h8M8 8h8M8 10.5h8M10 2.2v11.6M14 2.2v11.6" stroke-width="0.7" opacity=".5"></path>
+      </g>
+    </g>
+  </svg>
+</template>
+<helmet>
+  <title>Sobre deuce</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--paper);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:var(--accent)}
+    @keyframes copaIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--surface);color:var(--ink);display:flex;flex-direction:column">
+
+    <sc-if value="{{ mostrarCookies }}">
+      <div style="flex:none;padding:10px 14px;background:var(--paper);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <p style="font-size:11px;color:var(--ink-soft);margin:0;line-height:1.35;flex:1;min-width:140px">{{ textoCookies }} <a href="Privacidad.dc.html" style="color:var(--accent)">{{ lPrivacidad2 }}</a>.</p>
+        <div style="display:flex;gap:6px;flex:none">
+          <button onClick="{{ rechazarCookies }}" style="border:1px solid var(--rule);border-radius:999px;background:transparent;color:var(--ink);padding:6px 10px;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lRechazar }}</button>
+          <button onClick="{{ aceptarCookies }}" style="border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);padding:6px 10px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lAceptar }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="padding:16px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--rule);flex-wrap:wrap;max-width:1400px;margin:0 auto;width:100%">
+      <a href="Inicio.dc.html" style="font-size: 20px; font-weight: 700; letter-spacing: -.02em; color: var(--ink); text-align: left">deuce</a>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <a href="Privacidad.dc.html" style="font-size:13px;color:var(--ink-soft);font-weight:600">{{ lPrivacidad }}</a>
+        <div style="display:flex;gap:2px;background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:2px">
+          <span onClick="{{ setEs }}" style="{{ estiloEs }}">ES</span>
+          <span onClick="{{ setEn }}" style="{{ estiloEn }}">EN</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;padding:clamp(24px,6vw,40px) clamp(20px,5vw,32px) 40px;max-width:640px;margin:0 auto;width:100%">
+      <h1 style="font-size:clamp(26px,5vw,34px);font-weight:700;letter-spacing:-.02em;margin:0 0 6px">{{ titulo }}</h1>
+      
+
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 10px">{{ h1 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 28px; text-align: justify; margin-bottom: 14px; margin-top: 14px">{{ intro }}</p><p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 24px; text-align: justify">{{ p1 }}</p>
+
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 10px">{{ h2Caja }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 14px; text-align: justify">{{ pCajaIntro }}</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px">
+        <div style="background:var(--paper);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px">{{ lIngresos }}</div>
+          <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin: 0; text-align: justify">{{ pIngresos }}</p>
+        </div>
+        <div style="background:var(--paper);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px">{{ lGastos }}</div>
+          <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin: 0; text-align: justify">{{ pGastos }}</p>
+        </div>
+        <div style="background:var(--paper);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px">{{ lPatrocinio }}</div>
+          <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin: 0; text-align: justify">{{ pPatrocinio }}</p>
+        </div>
+      </div>
+
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 10px">{{ h3 }}</h2>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 28px; text-align: justify">{{ p3 }}</p>
+
+      <a href="Copa v3 - Tarjeta.dc.html" style="display:block;text-align:center;background:var(--btn);color:var(--btn-ink);border-radius:999px;padding:14px;font-size:15px;font-weight:700">{{ lJugar }}</a>
+    </div>
+
+    <div style="padding:16px 20px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-soft);text-align:center">
+      {{ lContacto }} <a href="mailto:nuketown2025zombis@gmail.com">nuketown2025zombis@gmail.com</a>
+    </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    idioma: (() => { try { return localStorage.getItem('deuce.lang') === 'en' ? 'en' : 'es'; } catch (e) { return 'es'; } })(),
+    cookieConsent: (() => { try { return localStorage.getItem('deuce.cookieConsent'); } catch (e) { return null; } })(),
+  };
+
+  cargarAnalytics() {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX';
+    s.async = true;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-XXXXXXX');
+  }
+  componentDidMount() { if (this.state.cookieConsent === 'granted') this.cargarAnalytics(); }
+
+  setIdioma = (v) => { try { localStorage.setItem('deuce.lang', v); } catch (e) {} this.setState({ idioma: v }); };
+  aceptarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'granted'); } catch (e) {} this.setState({ cookieConsent: 'granted' }); this.cargarAnalytics(); };
+  rechazarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'denied'); } catch (e) {} this.setState({ cookieConsent: 'denied' }); };
+
+  renderVals() {
+    const s = this.state;
+    const en = s.idioma === 'en';
+    const chip = (on) => 'cursor:pointer;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;' + (on ? 'background:var(--btn);color:var(--btn-ink)' : 'background:transparent;color:var(--ink-soft)');
+    return {
+      esEs: !en, esEn: en, estiloEs: chip(!en), estiloEn: chip(en),
+      setEs: () => this.setIdioma('es'), setEn: () => this.setIdioma('en'),
+      lPrivacidad: en ? 'Privacy' : 'Privacidad',
+      lPrivacidad2: en ? 'privacy policy' : 'política de privacidad',
+      lJugar: en ? 'Play deuce' : 'Jugar a deuce',
+      lContacto: en ? 'Questions or requests:' : 'Preguntas o solicitudes:',
+      titulo: en ? 'About deuce' : 'Sobre deuce',
+      intro: en
+        ? 'deuce is a solo-made browser game: you play a tennis career season by season, from your first ITF tournament to retirement, through the decisions that shape it.'
+        : 'Deuce es un juego de navegador hecho por una sola persona: juegas una carrera de tenis temporada a temporada, desde tu primer torneo ITF hasta el retiro, a través de las decisiones que la definen.',
+      h1: en ? 'How a season works' : 'Cómo funciona una temporada',
+      p1: en
+        ? 'Each season you play a calendar of tournaments based on your current ranking. Every four seasons you pick part of that calendar yourself. Between seasons, decisions come up — sponsorships, injuries, coaches, family — that shift your level, your money or your schedule for the rest of the career.'
+        : 'Cada temporada juegas un calendario de torneos según tu ranking actual. Cada cuatro temporadas eliges tú parte de ese calendario. Entre temporada y temporada aparecen decisiones —patrocinios, lesiones, entrenadores, familia— que cambian tu nivel, tu dinero o tu calendario para el resto de la carrera.',
+      h2Caja: en ? 'How the cash box works' : 'Cómo funciona la caja',
+      pCajaIntro: en
+        ? 'The number at the top of the card is your career cash. It moves with three things:'
+        : 'La cifra de arriba de la tarjeta es el dinero de tu carrera. Se mueve por tres cosas:',
+      lIngresos: en ? 'Prize money' : 'Ingresos',
+      pIngresos: en
+        ? 'Every tournament you play pays prize money based on how far you go: champion earns the full purse, a finalist about 55%, semifinalist 30%, quarterfinalist 17%, and so on. Purses scale hugely with the tournament\'s size — a small ITF event pays a few thousand euros to its champion, a Grand Slam pays millions.'
+        : 'Cada torneo que juegas reparte un premio en metálico según hasta dónde llegas: el campeón se lleva el bote completo, un finalista alrededor del 55%, un semifinalista el 30%, un cuartofinalista el 17%, y así. El bote escala muchísimo con el tamaño del torneo — un ITF pequeño reparte unos pocos miles de euros al campeón, un Grand Slam reparte millones.',
+      lGastos: en ? 'Costs' : 'Gastos',
+      pGastos: en
+        ? 'Entering and travelling to each tournament costs money — more for bigger tournaments, and more still if you tour outside your home region. Hiring a coach is optional and adds a running cost, scaled to your category, in exchange for improving faster.'
+        : 'Inscribirte y viajar a cada torneo cuesta dinero — más cuanto mayor es el torneo, y más todavía si giras fuera de tu región. Contratar un entrenador es opcional y añade un gasto fijo, según tu categoría, a cambio de mejorar más rápido.',
+      lPatrocinio: en ? 'Sponsorships, lessons and exhibitions' : 'Patrocinios, clases y exhibiciones',
+      pPatrocinio: en
+        ? 'Some decisions offer a sponsorship deal, paid coaching lessons or an exhibition tour. Accepting any of them pays a fixed amount for the season — scaled to your category — but costs you a bit of playing level, since it eats into your training time. It is a trade-off between steady income and performance.'
+        : 'Algunas decisiones ofrecen un contrato de patrocinio, clases remuneradas o una gira de exhibiciones. Aceptar cualquiera de ellas paga una cantidad fija esa temporada —según tu categoría— pero te resta algo de nivel de juego, porque quita horas de entreno. Es un cambio entre ingresos seguros y rendimiento.',
+      h3: en ? 'Who makes this' : 'Quién hace esto',
+      p3: en
+        ? 'deuce is an independent project by Oliver Cano Hopkins. It is free to play; ads may appear to help cover its costs. Get in touch for anything else at the email below.'
+        : 'Deuce es un proyecto independiente. Es totalmente gratuito, por lo que puede que aparezcan anuncios para ayudar a cubrir los costes.',
+      mostrarCookies: !s.cookieConsent,
+      textoCookies: en
+        ? 'We use cookies for analytics and, in the future, ads. Read our'
+        : 'Usamos cookies para analítica y, en el futuro, anuncios. Consulta nuestra',
+      lRechazar: en ? 'Decline' : 'Rechazar',
+      lAceptar: en ? 'Accept' : 'Aceptar',
+      aceptarCookies: this.aceptarCookies,
+      rechazarCookies: this.rechazarCookies,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
