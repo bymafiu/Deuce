@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>/* ============================================================
+   deuce · temas
+   ------------------------------------------------------------
+   Un tema por defecto y cuatro desbloqueables.
+   Se aplican poniendo data-tema en <html>:
+
+       document.documentElement.dataset.tema = 'tierra';
+
+   REGLA QUE NO SE ROMPE NUNCA:
+   --sup-* son los colores de superficie y son idénticos en los
+   cinco temas (solo se aclaran en los oscuros para mantener el
+   contraste). Llevan información, así que no pueden cambiar con
+   la decoración ni coincidir con el acento.
+   ============================================================ */
+
+:root,
+:root[data-tema="base"]{
+  /* ---- por defecto · sin acento ----
+     Lo único con color en pantalla son las superficies.       */
+  --paper:      #FAF8F3;   /* fondo de la pantalla            */
+  --surface:    #FFFFFF;   /* tarjetas, campos, pastillas     */
+  --rule:       #E4DED2;   /* líneas y bordes                 */
+  --ink:        #15130F;   /* texto principal                 */
+  --ink-soft:   #6E6860;   /* texto secundario                */
+
+  --accent:     #15130F;   /* acento: aquí es la propia tinta */
+  --accent-bg:  #E8E4D9;   /* fondo de elemento seleccionado  */
+  --accent-ink: #15130F;   /* texto sobre accent-bg           */
+
+  --btn:        #15130F;
+  --btn-ink:    #FAF8F3;
+
+  --shadow:     0 1px 2px rgba(30,20,10,.06);
+
+  /* superficies · fijas */
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  --alerta:       #C8384F;   /* aviso: sanción, solicitud denegada */
+  --alerta-borde: #C8384F;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   TIERRA · se desbloquea al ganar un Grand Slam en tierra
+   ------------------------------------------------------------ */
+:root[data-tema="tierra"]{
+  --paper:      #FAF5EE;
+  --surface:    #FFFDFA;
+  --rule:       #E8DACA;
+  --ink:        #2A1B12;
+  --ink-soft:   #756251;
+
+  --accent:     #B4562C;
+  --accent-bg:  #F7E6D9;
+  --accent-ink: #A04A22;
+
+  --btn:        #2A1B12;
+  --btn-ink:    #FAF5EE;
+
+  --shadow:     0 1px 2px rgba(60,35,15,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  --alerta:       #C8384F;   /* aviso: sanción, solicitud denegada */
+  --alerta-borde: #C8384F;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   DURA · se desbloquea al llegar al número uno
+   ------------------------------------------------------------ */
+:root[data-tema="dura"]{
+  --paper:      #F7F6F2;
+  --surface:    #FFFFFF;
+  --rule:       #DEDCD3;
+  --ink:        #101820;
+  --ink-soft:   #616B75;
+
+  --accent:     #1F5C8C;
+  --accent-bg:  #E2EDF5;
+  --accent-ink: #1F5C8C;
+
+  --btn:        #101820;
+  --btn-ink:    #F7F6F2;
+
+  --shadow:     0 1px 2px rgba(16,24,32,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  --alerta:       #C8384F;   /* aviso: sanción, solicitud denegada */
+  --alerta-borde: #C8384F;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   HIERBA · se desbloquea al ganar un título en hierba
+   ------------------------------------------------------------ */
+:root[data-tema="hierba"]{
+  --paper:      #F8F7F0;
+  --surface:    #FFFFFE;
+  --rule:       #E0E0D2;
+  --ink:        #16281B;
+  --ink-soft:   #5E6B5C;
+
+  --accent:     #2F6B3C;
+  --accent-bg:  #E4EEE3;
+  --accent-ink: #2F6B3C;
+
+  --btn:        #16281B;
+  --btn-ink:    #F8F7F0;
+
+  --shadow:     0 1px 2px rgba(22,40,27,.07);
+
+  --sup-tierra: #C4653A;
+  --sup-dura:   #4A8AC0;
+  --sup-duraus: #268D96;
+  --sup-hierba: #3E8A4A;
+
+  --alerta:       #C8384F;   /* aviso: sanción, solicitud denegada */
+  --alerta-borde: #C8384F;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------
+   GRAFITO · se desbloquea al llegar hasta la retirada. El nocturno. Sin acento de color, igual que el tema
+   por defecto: el premio es la noche, no otro color.
+   Las superficies van aclaradas para mantener contraste sobre
+   fondo oscuro.
+   ------------------------------------------------------------ */
+:root[data-tema="grafito"]{
+  --paper:      #121314;
+  --surface:    #1C1E20;
+  --rule:       #2B2E31;
+  --ink:        #EDEEEF;
+  --ink-soft:   #8A8F94;
+
+  --accent:     #EDEEEF;
+  --accent-bg:  #26292C;
+  --accent-ink: #EDEEEF;
+
+  --btn:        #EDEEEF;
+  --btn-ink:    #121314;
+
+  --shadow:     0 1px 3px rgba(0,0,0,.4);
+
+  --sup-tierra: #E0774A;
+  --sup-dura:   #5C9FE0;
+  --sup-duraus: #3AB2BD;
+  --sup-hierba: #52AF63;
+
+  --alerta:       #F4707F;   /* aclarado: 11px en mayúsculas sobre fondo oscuro */
+  --alerta-borde: #8A3B46;
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------
+   Transición al cambiar de tema. Se desactiva para quien
+   prefiera menos movimiento.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference){
+  body, .card, .stat, .btn, .seg, .inp{
+    transition: background-color .28s ease, color .28s ease,
+                border-color .28s ease;
+  }
+}
+</style>
+<style>x-dc{display:none!important}html,body{background:#1E1C19}</style>
+<script src="69034183-2c84-4dec-af0e-712ebb2b0b91"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <title>Hall of Fame — el modo infinito de Supersticiones · deuce</title>
+  <meta name="description" content="El Hall of Fame de deuce: al retirarte en Supersticiones, cada temporada es un partido a tres sets contra una leyenda. Las diez leyendas, sus reglas y cómo se puntúa.">
+  <link rel="canonical" href="https://deucecareer.com/hall-of-fame.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b53739fa-e8ae-401b-9c12-d6a56fde5f5f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("4c1338e6-59cd-44e8-8428-a452f631148c") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("4a160a9a-cd2e-42bf-b8ca-95337bd539e8") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("f38889a3-b226-4eb7-b506-ef7fda7ab605") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("7c4d9795-de15-47f9-86f4-ccfa6833dc68") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("cfe2a1c0-c108-4ea1-8119-52607703f3c8") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("e8aa45c6-e0d6-46cc-b7e2-d2a0539a4b62") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("b53739fa-e8ae-401b-9c12-d6a56fde5f5f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4c1338e6-59cd-44e8-8428-a452f631148c") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4a160a9a-cd2e-42bf-b8ca-95337bd539e8") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("f38889a3-b226-4eb7-b506-ef7fda7ab605") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("7c4d9795-de15-47f9-86f4-ccfa6833dc68") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("cfe2a1c0-c108-4ea1-8119-52607703f3c8") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("e8aa45c6-e0d6-46cc-b7e2-d2a0539a4b62") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b53739fa-e8ae-401b-9c12-d6a56fde5f5f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("4c1338e6-59cd-44e8-8428-a452f631148c") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("4a160a9a-cd2e-42bf-b8ca-95337bd539e8") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("f38889a3-b226-4eb7-b506-ef7fda7ab605") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("7c4d9795-de15-47f9-86f4-ccfa6833dc68") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("cfe2a1c0-c108-4ea1-8119-52607703f3c8") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("e8aa45c6-e0d6-46cc-b7e2-d2a0539a4b62") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("b53739fa-e8ae-401b-9c12-d6a56fde5f5f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4c1338e6-59cd-44e8-8428-a452f631148c") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4a160a9a-cd2e-42bf-b8ca-95337bd539e8") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("f38889a3-b226-4eb7-b506-ef7fda7ab605") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("7c4d9795-de15-47f9-86f4-ccfa6833dc68") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("cfe2a1c0-c108-4ea1-8119-52607703f3c8") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("e8aa45c6-e0d6-46cc-b7e2-d2a0539a4b62") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("b53739fa-e8ae-401b-9c12-d6a56fde5f5f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("4c1338e6-59cd-44e8-8428-a452f631148c") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("4a160a9a-cd2e-42bf-b8ca-95337bd539e8") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("f38889a3-b226-4eb7-b506-ef7fda7ab605") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("7c4d9795-de15-47f9-86f4-ccfa6833dc68") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("cfe2a1c0-c108-4ea1-8119-52607703f3c8") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("e8aa45c6-e0d6-46cc-b7e2-d2a0539a4b62") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--paper);font-family:'Inter',system-ui,-apple-system,sans-serif;font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:var(--accent)}
+    @keyframes copaIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  </style>
+  <style>
+
+/* ── Hall of Fame: capa nocturna, oro para el hall y amarillo pelota para lo que suma ── */
+:root{ --hof-oro:#E9C46A; --hof-oro-2:#B8901A; }
+html.hof-abierto,html.hof-abierto body{overflow:hidden}
+.hof-capa{position:fixed;inset:0;z-index:80;background:radial-gradient(120% 60% at 50% 0%,#2E2A22 0%,var(--rl-night) 55%);color:var(--rl-night-ink);overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:'Inter',system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);animation:hofFundido .35s ease both}
+.hof-capa[hidden]{display:none}
+@keyframes hofFundido{from{opacity:0}to{opacity:1}}
+.hof-in{max-width:460px;margin:0 auto;padding:10px 16px 28px;display:flex;flex-direction:column;gap:12px;min-height:100%}
+.hof-cab{display:flex;align-items:center;gap:10px;min-height:44px}
+.hof-marca{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--hof-oro)}
+.hof-tot{margin-left:auto;font-size:12px;color:var(--rl-night-fg);white-space:nowrap}
+.hof-tot b{color:var(--rl-night-ink);font-weight:800;font-variant-numeric:tabular-nums}
+.hof-x{width:36px;height:36px;margin-right:-8px;border:0;border-radius:50%;background:transparent;color:var(--rl-night-fg);font-size:15px;cursor:pointer;flex:none}
+.hof-cab .hof-marca + .hof-x{margin-left:auto}
+.hof-x:hover{background:var(--rl-night-2);color:var(--rl-night-ink)}
+.hof-btn{width:100%;border:0;border-radius:999px;background:var(--rl-night-ink);color:var(--rl-night);padding:15px;font:700 16px/1.2 'Inter',system-ui,sans-serif;cursor:pointer;transition:transform .08s ease}
+.hof-btn:active{transform:scale(.97)}
+.hof-btn[disabled]{background:var(--rl-night-2);color:var(--rl-night-3);cursor:default;transform:none}
+.hof-btn.oro{background:linear-gradient(135deg,var(--hof-oro),#F6E3A1 50%,var(--hof-oro));color:#1E1A10;box-shadow:0 0 22px -6px var(--hof-oro)}
+.hof-btn.sec{background:transparent;color:var(--rl-night-ink);border:1.5px solid var(--rl-night-line)}
+.hof-btn:focus-visible,.hof-carta:focus-visible,.hof-x:focus-visible{outline:3px solid var(--rl-optic);outline-offset:2px}
+
+/* entrada */
+.hof-entrada{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:6px 0 4px;isolation:isolate}
+.hof-rayos{pointer-events:none;position:absolute;left:50%;top:70px;width:560px;height:560px;margin-left:-280px;margin-top:-280px;z-index:-1;border-radius:50%;background:repeating-conic-gradient(rgba(233,196,106,.16) 0 6deg,transparent 6deg 20deg);-webkit-mask:radial-gradient(circle,#000 12%,transparent 62%);mask:radial-gradient(circle,#000 12%,transparent 62%);animation:hofRayos 1.2s cubic-bezier(.2,.8,.3,1) both,hofGira 40s linear 1.2s infinite}
+@keyframes hofRayos{from{opacity:0;transform:scale(.4) rotate(-30deg)}to{opacity:1;transform:none}}
+@keyframes hofGira{to{transform:rotate(360deg)}}
+.hof-ek{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rl-night-fg);margin-top:18px;animation:hofSube .5s ease .1s both}
+.hof-barrido{width:100%;height:3px;background:linear-gradient(90deg,transparent,var(--hof-oro),transparent);transform-origin:left;animation:hofBarre .9s cubic-bezier(.7,0,.2,1) .2s both}
+@keyframes hofBarre{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hof-titulo{margin:0;font-weight:800;font-size:clamp(46px,15vw,74px);line-height:.95;letter-spacing:-.045em;text-wrap:balance}
+.hof-titulo span{display:inline-block;background:linear-gradient(180deg,#FFF3C4 0%,var(--hof-oro) 55%,var(--hof-oro-2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:hofSube .7s cubic-bezier(.2,.9,.3,1.2) both}
+.hof-titulo span:nth-child(1){animation-delay:.45s}.hof-titulo span:nth-child(2){animation-delay:.6s}.hof-titulo span:nth-child(3){animation-delay:.75s}
+@keyframes hofSube{from{opacity:0;transform:translateY(22px) scale(.92)}to{opacity:1;transform:none}}
+.hof-quien{margin:0;font-size:14px;color:var(--rl-night-fg);animation:hofSube .5s ease 1s both}
+.hof-cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;width:100%}
+.hof-cifras > div{background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;gap:4px;align-items:center}
+.hof-cifras b{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.hof-cifras span{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rl-night-3)}
+.hof-cifras.e{animation:hofSube .5s ease 1.15s both}
+.hof-ventaja{display:flex;flex-direction:column;gap:3px;align-items:center;font-size:12px;color:var(--rl-night-fg);animation:hofSube .5s ease 1.3s both}
+.hof-ventaja b{font-size:16px;color:var(--rl-optic);font-weight:800}
+.hof-reglas{list-style:none;margin:2px 0 0;padding:14px 16px;display:grid;gap:9px;text-align:left;background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:16px;font-size:13.5px;line-height:1.45;color:var(--rl-night-fg);animation:hofSube .5s ease 1.45s both}
+.hof-reglas li{padding-left:16px;position:relative}
+.hof-reglas li::before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;background:var(--hof-oro);transform:rotate(45deg)}
+.hof-entrada .hof-btn{animation:hofSube .5s ease 1.6s both}
+
+/* la leyenda */
+.hof-boss{position:relative;background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:18px;padding:14px 16px 13px;box-shadow:inset 0 3px 0 var(--sup)}
+.hof-boss.entra{animation:hofBoss .6s cubic-bezier(.2,.9,.3,1.15) both}
+@keyframes hofBoss{from{opacity:0;transform:translateY(-14px) scale(.96)}to{opacity:1;transform:none}}
+.hof-boss.vencido{opacity:.75}
+.hof-bk{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rl-night-3)}
+.hof-bfila{display:flex;align-items:center;gap:12px;margin-top:9px}
+.hof-retrato{width:48px;height:48px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:17px;letter-spacing:-.02em;color:#fff;background:var(--sup);box-shadow:0 0 0 3px var(--rl-night),0 0 0 4.5px var(--hof-oro)}
+.hof-bn{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.hof-ba{font-size:13px;color:var(--hof-oro);font-weight:600;margin-top:2px}
+.hof-regla{margin:11px 0 0;padding-top:10px;border-top:1px dashed var(--rl-night-line);font-size:13.5px;line-height:1.45;color:var(--rl-night-fg)}
+.hof-regla b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--rl-optic);margin-bottom:3px}
+
+/* marcador del partido */
+.hof-score{background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:14px;padding:4px 12px}
+.hof-sf{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,30px);align-items:center;gap:4px;padding:7px 0;font-size:14px}
+.hof-sf + .hof-sf{border-top:1px solid var(--rl-night-line)}
+.hof-sq{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hof-g{text-align:center;font-weight:600;color:var(--rl-night-3);font-variant-numeric:tabular-nums}
+.hof-g.w{color:var(--rl-night-ink);font-weight:800}
+.hof-g.ahora{color:var(--rl-optic)}
+
+/* el set en juego */
+.hof-setinfo{font-size:13px;color:var(--rl-night-fg);line-height:1.4}
+.hof-setinfo b{color:var(--rl-night-ink)}
+.hof-duelo{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px}
+.hof-duelo > div{background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.hof-duelo span{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--rl-night-3)}
+.hof-duelo b{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.05;font-variant-numeric:tabular-nums}
+.hof-duelo small{font-size:11px;color:var(--rl-alerta);font-weight:600;line-height:1.3}
+.hof-el{text-align:right;align-items:flex-end}
+.hof-yo.gana{border-color:var(--rl-optic);box-shadow:0 0 0 1px var(--rl-optic) inset}
+.hof-yo.gana b{color:var(--rl-optic)}
+.hof-yo.pierde b{color:#F4707F}
+.hof-vs{font-size:12px;font-weight:800;color:var(--rl-night-3);text-transform:uppercase}
+.hof-calc{font-size:13px;color:var(--rl-night-fg);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;font-variant-numeric:tabular-nums}
+.hof-calc i{font-style:normal;color:var(--rl-optic);font-weight:800}
+.hof-calc b{color:var(--rl-night-ink)}
+.hof-calcn{flex-basis:100%;font-size:11px;color:var(--rl-night-3)}
+.hof-det{display:flex;flex-wrap:wrap;gap:6px}
+.hof-chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:var(--rl-night-2);border:1px solid var(--rl-night-line);color:var(--rl-night-fg)}
+.hof-chip.on{color:var(--rl-on-optic);background:var(--rl-optic);border-color:var(--rl-optic)}
+.hof-chip.neg{background:transparent;border-color:#8A3B46;color:#F4707F}
+.hof-chip i{width:7px;height:7px;border-radius:50%;background:var(--fam);box-shadow:0 0 0 1.5px var(--rl-on-optic)}
+
+/* las cartas de la bolsa */
+.hof-mano{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hof-carta{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;text-align:left;border:1px solid var(--rl-night-line);border-radius:12px;background:var(--rl-night-2);color:var(--rl-night-ink);padding:9px 9px 8px;font:inherit;cursor:pointer;box-shadow:inset 0 3px 0 var(--fam);transition:transform .12s ease,box-shadow .12s ease}
+.hof-carta:active{transform:scale(.96)}
+.hof-carta.r-rara,.hof-carta.r-mitica{border-color:var(--rl-night-fg)}
+.hof-carta.r-mitica{background:linear-gradient(160deg,#3D3A1E,var(--rl-night-2) 60%)}
+.hof-carta.cursed{background:#121110;border-color:#5A2A31}
+.hof-carta.sel{border-color:var(--rl-optic);box-shadow:inset 0 3px 0 var(--fam),0 0 0 2px var(--rl-optic),0 8px 20px -10px var(--rl-optic);transform:translateY(-3px)}
+.hof-carta.usada{opacity:.38;cursor:default}
+.hof-carta.anulada .hof-cf{color:#F4707F;text-decoration:line-through}
+.hof-code{position:absolute;top:7px;right:8px;font-size:11px;font-weight:800;color:var(--rl-night-3)}
+.hof-carta.cursed .hof-code{color:#F4707F}
+.hof-carta.r-mitica .hof-code{color:var(--rl-optic)}
+.hof-ord{position:absolute;top:-7px;left:-6px;width:20px;height:20px;border-radius:50%;background:var(--rl-optic);color:var(--rl-on-optic);font-size:11.5px;font-weight:800;display:grid;place-items:center;box-shadow:0 0 0 2px var(--rl-night)}
+.hof-ci{width:32px;height:32px}
+.hof-ci svg,.hof-mini svg{display:block;width:100%;height:100%;image-rendering:pixelated}
+.hof-cn{font-size:12.5px;font-weight:700;line-height:1.2;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em}
+.hof-cm{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rl-night-3);white-space:nowrap;overflow:hidden;max-width:100%}
+.hof-cm i{width:6px;height:6px;border-radius:50%;background:var(--fam);flex:none}
+.hof-cf{font-size:11.5px;font-weight:700;color:var(--rl-optic)}
+.hof-carta.usada .hof-cf{color:var(--rl-night-fg)}
+.hof-cx{font-size:10.5px;font-weight:700;line-height:1.25;color:var(--rl-night-fg);margin-top:2px}
+.hof-mano.oferta .hof-carta{padding:11px 9px 10px}
+.hof-mano.oferta .hof-ci{width:48px;height:48px}
+.hof-vacia{grid-column:1/-1;margin:0;font-size:13px;color:var(--rl-night-fg)}
+
+/* resultado del set y del partido */
+.hof-res{background:var(--rl-night-2);border:1px solid var(--rl-night-line);border-radius:18px;padding:18px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;animation:hofRes .5s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes hofRes{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.hof-res.gana{border-color:var(--rl-optic);box-shadow:0 0 30px -12px var(--rl-optic)}
+.hof-res.pierde{border-color:#8A3B46}
+.hof-res.grande.gana{border-color:var(--hof-oro);box-shadow:0 0 34px -10px var(--hof-oro)}
+.hof-rk{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--rl-night-3)}
+.hof-rj{font-size:40px;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.hof-res.grande .hof-rj{font-size:24px;letter-spacing:-.02em;word-spacing:.2em;color:var(--rl-night-fg)}
+.hof-rt{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.hof-res.gana .hof-rt{color:var(--rl-optic)}
+.hof-res.grande.gana .hof-rt{color:var(--hof-oro);font-size:22px}
+.hof-res.pierde .hof-rt{color:#F4707F}
+.hof-rp{font-size:13px;color:var(--rl-night-fg)}
+.hof-rp b{font-size:18px;color:var(--rl-night-ink);font-variant-numeric:tabular-nums}
+.hof-ricos{display:flex;gap:4px;margin-top:4px}
+.hof-mini{width:32px;height:32px}
+.hof-suma{list-style:none;margin:8px 0 0;padding:0;width:100%;display:grid;gap:7px;text-align:left}
+.hof-suma li{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;color:var(--rl-night-fg)}
+.hof-suma b{color:var(--rl-night-ink);font-variant-numeric:tabular-nums}
+.hof-suma li.t{border-top:1px solid var(--rl-night-line);padding-top:8px;font-weight:700;color:var(--rl-night-ink)}
+.hof-suma li.t b{color:var(--hof-oro);font-size:16px}
+.hof-res .hof-cifras{margin-top:8px}
+.hof-rec{margin:6px 0 0;font-size:13px;font-weight:700;color:var(--hof-oro)}
+
+/* carta nueva entre leyendas: las cartas del juego, sobre la noche */
+.hof-draft{display:flex;flex-direction:column;gap:10px;padding-top:4px}
+.hof-draft .rl-q{color:var(--rl-night-ink);font-size:18px}
+.hof-draft .rl-mitban{align-self:flex-start}
+.hof-nota{margin:0;font-size:13px;line-height:1.45;color:var(--rl-night-fg)}
+.hof-nota b{color:var(--rl-night-ink)}
+.hof-draft .rl-hand{gap:8px}
+.hof-draft .rl-opt{background:transparent;color:var(--rl-night-ink);border-color:var(--rl-night-line)}
+.hof-draft .rl-opt i{color:var(--rl-night-fg)}
+
+@media (prefers-reduced-motion: reduce){
+  .hof-capa,.hof-rayos,.hof-ek,.hof-barrido,.hof-titulo span,.hof-quien,.hof-cifras.e,.hof-ventaja,.hof-reglas,.hof-entrada .hof-btn,.hof-boss.entra,.hof-res{animation:none!important}
+}
+
+    /* ── página del Hall of Fame: la noche del modo, oro para el hall ── */
+    html:root{--paper:#1E1C19;--surface:#292620;--rule:#3B372F;--ink:#FAF8F3;--ink-soft:#BDB6A8;--accent:#E9C46A;--accent-bg:#3A3220;--accent-ink:#E9C46A;--btn:#E9C46A;--btn-ink:#1E1A10;color-scheme:dark;
+      --rl-optic:#D6EF45;--rl-optic-dim:rgba(214,239,69,.5);--rl-on-optic:#15130F;--rl-night:#1E1C19;--rl-night-2:#2E2B26;--rl-night-line:#46423A;--rl-night-fg:#CFC9BC;--rl-night-3:#9C968A;--rl-night-ink:#FAF8F3;--rl-alerta:#F4707F}
+    body{background:var(--paper)}
+    .rl-ico{display:inline-block;line-height:0;flex:none}
+    .rl-ico img{display:block;width:100%;height:100%;image-rendering:pixelated}
+    .g-pagina{overflow-x:hidden;overflow-x:clip}
+    .h-col{--gut:clamp(20px,5vw,32px);max-width:720px;margin:0 auto;width:100%;padding:clamp(8px,3vw,20px) var(--gut) 48px}
+    .h-hero{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:6px 0 10px}
+    .h-rayos{top:150px}
+    .h-hero .hof-ek{margin-top:22px}
+    .h-hero .hof-titulo{font-size:clamp(54px,15vw,96px)}
+    .h-intro{font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:44ch;text-wrap:pretty;animation:hofSube .5s ease 1s both}
+    .h-record{width:100%;max-width:420px;background:var(--rl-night-2);border:1px solid var(--hof-oro);border-radius:18px;padding:14px 16px 13px;box-shadow:0 0 30px -14px var(--hof-oro);animation:hofSube .5s ease 1.15s both}
+    .h-reck{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--hof-oro)}
+    .h-recfila{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .h-recfila div{display:flex;flex-direction:column;gap:3px}
+    .h-recfila b{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+    .h-recfila > div > span{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rl-night-3)}
+    .h-recnota{margin-top:9px;padding-top:9px;border-top:1px solid var(--rl-night-line);font-size:12.5px;color:var(--rl-night-fg)}
+    .h-sinrec{margin:0;font-size:13px;color:var(--rl-night-3);animation:hofSube .5s ease 1.15s both}
+    .h-botones{width:100%;max-width:520px;display:flex;gap:8px;padding-top:4px;animation:hofSube .5s ease 1.3s both}
+    .h-btn{flex:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15.5px;border-radius:999px;padding:14px 14px;text-align:center;line-height:1.2;background:linear-gradient(135deg,var(--hof-oro),#F6E3A1 50%,var(--hof-oro));color:#1E1A10;box-shadow:0 0 22px -8px var(--hof-oro)}
+    .h-btn:hover{color:#1E1A10}
+    .h-btn.sec{background:transparent;color:var(--ink);border:1.5px solid var(--rl-night-line);box-shadow:none}
+    .h-btn.sec:hover{color:var(--ink);border-color:var(--hof-oro)}
+    .h-sec{margin-top:clamp(44px,8vw,60px)}
+    .h-h2{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:0 0 10px;text-wrap:balance}
+    .h-h3{font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--hof-oro);margin:22px 0 10px}
+    .h-p{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;text-wrap:pretty}
+    .h-nota{margin:12px 0 0;font-size:13.5px}
+    .h-entrada{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:18px 16px}
+    .h-fakebtn{width:100%;max-width:360px;text-align:center;border:1.5px solid var(--hof-oro);border-radius:999px;background:var(--rl-night);color:var(--hof-oro);padding:13px;font-size:15px;font-weight:800;box-shadow:0 0 22px -6px var(--hof-oro)}
+    .h-entnota{font-size:12.5px;color:var(--ink-soft);text-align:center}
+    .h-sets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}
+    .h-set{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:14px 15px}
+    .h-setk{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--rl-optic)}
+    .h-sett{font-size:17px;font-weight:800;letter-spacing:-.02em;margin:4px 0 5px}
+    .h-set p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+    .h-fichas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:2px 0 14px}
+    .h-ficha{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:11px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+    .h-ficha b{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+    .h-ficha > span{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rl-night-3)}
+    .h-ficha.mit{border-color:var(--rl-optic)}
+    .h-ficha.mit b{color:var(--rl-optic)}
+    .h-ficha.mal{background:#121110;border-color:#5A2A31}
+    .h-ficha.mal b{color:#F4707F}
+    .h-lista{list-style:none;margin:0;padding:14px 16px;display:grid;gap:10px;background:var(--surface);border:1px solid var(--rule);border-radius:16px}
+    .h-lista li{position:relative;padding-left:16px;font-size:14px;line-height:1.5;color:var(--ink-soft)}
+    .h-lista li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--hof-oro);transform:rotate(45deg)}
+    .h-lista b{color:var(--ink)}
+    .h-ejs{display:grid;gap:12px}
+    .h-ej{background:var(--surface);border:1px solid var(--rule);border-radius:18px;padding:13px 13px 14px;display:flex;flex-direction:column;gap:10px}
+    .h-ej.gana{box-shadow:inset 3px 0 0 var(--rl-optic)}
+    .h-ej.pierde{box-shadow:inset 3px 0 0 #F4707F}
+    .h-ejk{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--rl-night-3)}
+    .h-ej .hof-carta{cursor:default}
+    .h-ej .hof-carta:active{transform:none}
+    .h-ejdet{display:flex;flex-wrap:wrap;gap:6px}
+    .h-ejdet:empty{display:none}
+    .h-ejcalc{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+    .h-ejver{font-size:13px;font-weight:700}
+    .h-ej.gana .h-ejver{color:var(--rl-optic)}
+    .h-ej.pierde .h-ejver{color:#F4707F}
+    .h-leyendas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px}
+    .h-boss .hof-bn{margin:0}
+    .h-fin{margin-top:clamp(44px,8vw,60px);display:flex;flex-direction:column;gap:10px}
+    @media (max-width:420px){ .h-fichas{grid-template-columns:repeat(2,minmax(0,1fr))} .h-botones{flex-direction:column} }
+    @media (prefers-reduced-motion: reduce){ .h-intro,.h-record,.h-sinrec,.h-botones{animation:none!important} }
+
+  </style>
+</helmet>
+
+<div class="g-pagina" style="min-height:100vh;background:var(--paper);color:var(--ink);display:flex;flex-direction:column">
+
+    <sc-if value="{{ mostrarCookies }}">
+      <div style="flex:none;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <p style="font-size:11px;color:var(--ink-soft);margin:0;line-height:1.35;flex:1;min-width:140px">{{ textoCookies }} <a href="Privacidad.dc.html" style="color:var(--accent)">{{ lPrivacidad2 }}</a>.</p>
+        <div style="display:flex;gap:6px;flex:none">
+          <button sc-camel-on-click="{{ rechazarCookies }}" style="border:1px solid var(--rule);border-radius:999px;background:transparent;color:var(--ink);padding:6px 10px;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lRechazar }}</button>
+          <button sc-camel-on-click="{{ aceptarCookies }}" style="border:0;border-radius:999px;background:var(--btn);color:var(--btn-ink);padding:6px 10px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap">{{ lAceptar }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="border-bottom:1px solid var(--rule);padding:10px clamp(16px,2.5vw,28px);display:flex;align-items:center;gap:12px;width:100%;min-height:62px">
+      <sc-if value="{{ anchoEstrecho }}">
+        <button sc-camel-on-click="{{ alternarMenu }}" aria-label="{{ lMenu }}" style="display:flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;margin-left:-11px;padding:0 11px;border:0;background:transparent;cursor:pointer;flex:none">
+          <span style="display:block;height:2px;background:var(--ink);border-radius:2px"></span>
+          <span style="display:block;height:2px;background:var(--ink);border-radius:2px"></span>
+          <span style="display:block;height:2px;background:var(--ink);border-radius:2px"></span>
+        </button>
+      </sc-if>
+      <sc-if value="{{ anchoAmplio }}" hint-placeholder-val="{{ true }}">
+        <a href="Inicio.dc.html" style="font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--ink)">deuce</a>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:18px;margin-left:auto">
+        <sc-if value="{{ anchoAmplio }}" hint-placeholder-val="{{ true }}">
+          <a href="supersticiones.html" style="font-size:13px;color:var(--ink-soft);font-weight:600">{{ lSuperNav }}</a>
+        </sc-if>
+        <sc-if value="{{ anchoAmplio }}" hint-placeholder-val="{{ true }}">
+          <a href="Sobre el Juego.dc.html" style="font-size:13px;color:var(--ink-soft);font-weight:600">{{ lSobre }}</a>
+        </sc-if>
+        <sc-if value="{{ anchoAmplio }}" hint-placeholder-val="{{ true }}">
+          <a href="Privacidad.dc.html" style="font-size:13px;color:var(--ink-soft);font-weight:600">{{ lPrivacidad }}</a>
+        </sc-if>
+        <div style="display:flex;gap:2px;background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:2px;flex:none">
+          <span sc-camel-on-click="{{ setEs }}" style="{{ estiloEs }}">ES</span>
+          <span sc-camel-on-click="{{ setEn }}" style="{{ estiloEn }}">EN</span>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ menuAbierto }}">
+      <div role="dialog" aria-modal="true" aria-label="{{ lMenu }}" style="position:fixed;inset:0;z-index:200;background:var(--paper);overflow-y:auto;animation:deuceMenuFondo .25s ease both">
+        <style>@keyframes deuceMenuFondo{from{opacity:0}to{opacity:1}}@keyframes deuceMenuItem{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}@media (prefers-reduced-motion: reduce){@keyframes deuceMenuItem{from{opacity:0}to{opacity:1}}}</style>
+        <div style="display:flex;justify-content:flex-end;align-items:center;min-height:62px;padding:10px clamp(16px,2.5vw,28px)">
+          <button sc-camel-on-click="{{ alternarMenu }}" aria-label="{{ lCerrarMenu }}" style="width:44px;height:44px;margin-right:-10px;border:0;background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:deuceMenuItem .3s ease both"><svg width="20" height="20" sc-camel-view-box="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 3l14 14M17 3 3 17"></path></svg></button>
+        </div>
+        <nav style="display:flex;flex-direction:column;padding:6px clamp(32px,12vw,56px) 48px">
+          <a href="Inicio.dc.html" style="display:block;padding:9px 0;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink);text-decoration:none;animation:deuceMenuItem .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:0.060s">{{ lInicioMenu }}</a>
+          <a href="Copa v3 - Tarjeta.dc.html" style="display:block;padding:9px 0;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink);text-decoration:none;animation:deuceMenuItem .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:0.105s">{{ lJugar }}</a>
+          <a href="supersticiones.html" style="display:block;padding:9px 0;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink);text-decoration:none;animation:deuceMenuItem .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:0.150s">{{ lSuperNav }}</a>
+          <a href="Sobre el Juego.dc.html" style="display:block;padding:9px 0;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink);text-decoration:none;animation:deuceMenuItem .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:0.195s">{{ lSobre }}</a>
+          <a href="Privacidad.dc.html" style="display:block;padding:9px 0;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink);text-decoration:none;animation:deuceMenuItem .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:0.240s">{{ lPrivacidad }}</a>
+        </nav>
+      </div>
+    </sc-if>
+
+    <main class="h-col" style="flex:1">
+
+      <section class="h-hero">
+        <div class="hof-rayos h-rayos" aria-hidden="true"></div>
+        <div class="hof-ek">{{ lKicker }}</div>
+        <div class="hof-barrido" aria-hidden="true"></div>
+        <h1 class="hof-titulo"><span>Hall</span> <span>of</span> <span>Fame</span></h1>
+        <p class="h-intro" lang="{{ langCode }}">{{ intro }}</p>
+        <sc-if value="{{ hayRecord }}">
+          <div class="h-record">
+            <div class="h-reck">{{ lTuRecord }}</div>
+            <div class="h-recfila">
+              <div><b>{{ recPuntos }}</b><span>{{ lPuntos }}</span></div>
+              <div><b>{{ recLeyendas }}</b><span>{{ lLeyendasVencidas }}</span></div>
+            </div>
+            <div class="h-recnota">{{ recNota }}</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sinRecord }}">
+          <p class="h-sinrec">{{ lSinRecord }}</p>
+        </sc-if>
+        <div class="h-botones">
+          <a class="h-btn" href="supersticiones.html">{{ lJugarSuper }}</a>
+          <a class="h-btn sec" href="supersticiones-como-se-juega.html">{{ lGuia }}</a>
+        </div>
+      </section>
+
+      <section class="h-sec">
+        <h2 class="h-h2">{{ hEntrar }}</h2>
+        <p class="h-p">{{ pEntrar1 }}</p>
+        <div class="h-entrada">
+          <span class="h-fakebtn">🏆 {{ lBotonJuego }}</span>
+          <span class="h-entnota">{{ pEntrar2 }}</span>
+        </div>
+      </section>
+
+      <section class="h-sec">
+        <h2 class="h-h2">{{ hPartido }}</h2>
+        <p class="h-p">{{ pPartido }}</p>
+        <div class="h-sets">
+          <sc-for list="{{ sets }}" as="x">
+            <div class="h-set"><div class="h-setk">{{ x.k }}</div><div class="h-sett">{{ x.t }}</div><p>{{ x.x }}</p></div>
+          </sc-for>
+        </div>
+        <p class="h-p h-nota">{{ pPartido2 }}</p>
+      </section>
+
+      <section class="h-sec">
+        <h2 class="h-h2">{{ hPuntua }}</h2>
+        <p class="h-p">{{ pPuntua }}</p>
+        <div class="h-fichas">
+          <sc-for list="{{ fichas }}" as="f">
+            <div class="h-ficha {{ f.cls }}"><b>{{ f.v }}</b><span>{{ f.t }}</span></div>
+          </sc-for>
+        </div>
+        <ul class="h-lista">
+          <sc-for list="{{ multReglas }}" as="m">
+            <li><b>{{ m.t }}</b> {{ m.x }}</li>
+          </sc-for>
+        </ul>
+        <h3 class="h-h3">{{ hEjemplos }}</h3>
+        <div class="h-ejs">
+          <sc-for list="{{ ejemplos }}" as="e">
+            <div class="h-ej {{ e.estado }}">
+              <div class="h-ejk">{{ e.titulo }}</div>
+              <div class="hof-mano">
+                <sc-for list="{{ e.cartas }}" as="c">
+                  <div class="{{ c.cls }}" style="--fam:{{ c.col }}"><span class="hof-code">{{ c.code }}</span><span class="rl-ico hof-ci"><img sc-camel-src="{{ c.img }}" alt=""></span><span class="hof-cn">{{ c.nombre }}</span><span class="hof-cm"><i></i>{{ c.fam }}</span><span class="hof-cf">{{ c.fichas }}</span></div>
+                </sc-for>
+              </div>
+              <div class="h-ejdet">
+                <sc-for list="{{ e.det }}" as="d">
+                  <span class="hof-chip on" style="--fam:{{ d.col }}"><i></i>{{ d.t }}</span>
+                </sc-for>
+                <sc-if value="{{ e.sinCombo }}"><span class="hof-chip">{{ lSinCombo }}</span></sc-if>
+              </div>
+              <div class="h-ejcalc">{{ e.calc }}</div>
+              <div class="h-ejver">{{ e.veredicto }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="h-sec">
+        <h2 class="h-h2">{{ hLeyendas }}</h2>
+        <p class="h-p">{{ pLeyendas }}</p>
+        <div class="h-leyendas">
+          <sc-for list="{{ leyendas }}" as="l">
+            <article class="hof-boss h-boss" style="--sup:{{ l.col }}">
+              <div class="hof-bk">{{ l.k }}</div>
+              <div class="hof-bfila"><span class="hof-retrato" aria-hidden="true">{{ l.ini }}</span><div><h3 class="hof-bn">{{ l.nombre }}</h3><div class="hof-ba">{{ l.apodo }}</div></div></div>
+              <p class="hof-regla"><b>{{ lSuRegla }}</b>{{ l.regla }}</p>
+            </article>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="h-sec">
+        <h2 class="h-h2">{{ hRecord }}</h2>
+        <ul class="h-lista">
+          <sc-for list="{{ puntosReglas }}" as="m">
+            <li><b>{{ m.t }}</b> {{ m.x }}</li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <div class="h-fin">
+        <a class="h-btn" href="supersticiones.html">{{ lJugarSuper }}</a>
+        <a class="h-btn sec" href="supersticiones.html?modo=diaria">{{ lJugarHoy }}</a>
+      </div>
+    </main>
+
+    <footer style="border-top:1px solid var(--rule);padding:18px clamp(16px,2.5vw,28px);display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:12px;color:var(--ink-soft)">
+      <a href="supersticiones.html" style="color:var(--ink-soft)">{{ lSuperNav }}</a>
+      <a href="Sobre el Juego.dc.html" style="color:var(--ink-soft)">{{ lSobre }}</a>
+      <a href="Privacidad.dc.html" style="color:var(--ink-soft)">{{ lPrivacidad }}</a>
+      <a href="mailto:contacto@deucecareer.com" style="color:var(--ink-soft);margin-left:auto">contacto@deucecareer.com</a>
+    </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+// Leyendas, reglas y jugadas de ejemplo salen tal cual del Hall of Fame de Supersticiones (HOF_LEYENDAS, hofPuntuar).
+const DATOS = {"leyendas":[{"id":"santanita","n":1,"nombre":"Manolo Santanita","sup":"Tierra","ini":"MS","es":{"apodo":"El pionero","regla":"Sin trucos: un partido limpio para empezar.","sup":"Tierra"},"en":{"apodo":"The pioneer","regla":"No tricks: a clean match to start with.","sup":"Clay"}},{"id":"bumbum","n":2,"nombre":"Boris Bumbum","sup":"Hierba","ini":"BB","es":{"apodo":"El cañonero","regla":"Su marcador sube un 15 % en cada set.","sup":"Hierba"},"en":{"apodo":"The cannon","regla":"His score goes up 15% every set.","sup":"Grass"}},{"id":"mcgrito","n":3,"nombre":"Johnny McGrito","sup":"Hierba","ini":"JM","es":{"apodo":"¡No puede ser!","regla":"Cada maldita que juegues resta 1 al multiplicador.","sup":"Hierba"},"en":{"apodo":"You cannot be serious","regla":"Every cursed card you play takes 1 off your multiplier.","sup":"Grass"}},{"id":"hielo","n":4,"nombre":"Bjorn Hielo","sup":"Tierra","ini":"BH","es":{"apodo":"Sangre fría","regla":"Las cartas de Ritual no cuentan.","sup":"Tierra"},"en":{"apodo":"Ice cold","regla":"Ritual cards don’t count.","sup":"Clay"}},{"id":"saquete","n":5,"nombre":"Pete Saquete","sup":"Hierba","ini":"PS","es":{"apodo":"Saque y volea","regla":"Solo juegas 2 cartas por set.","sup":"Hierba"},"en":{"apodo":"Serve and volley","regla":"You only play 2 cards per set.","sup":"Grass"}},{"id":"arcillal","n":6,"nombre":"Rafa Arcillal","sup":"Tierra","ini":"RA","es":{"apodo":"El rey de la arcilla","regla":"Su marcador es un 30 % más alto si no juegas al menos 2 cartas de Tierra.","sup":"Tierra"},"en":{"apodo":"The king of clay","regla":"His score is 30% higher unless you play at least 2 Clay cards.","sup":"Clay"}},{"id":"federal","n":7,"nombre":"Roger Federal","sup":"Hierba","ini":"RF","es":{"apodo":"El elegante","regla":"Una jugada sin familia ni pareja puntúa la mitad.","sup":"Hierba"},"en":{"apodo":"The elegant","regla":"A play with no family or pair scores half.","sup":"Grass"}},{"id":"agasito","n":8,"nombre":"Andre Agasito","sup":"Dura","ini":"AA","es":{"apodo":"El restador","regla":"Tu carta con más fichas no cuenta.","sup":"Pista dura"},"en":{"apodo":"The returner","regla":"Your card with the most chips doesn’t count.","sup":"Hard"}},{"id":"lendlento","n":9,"nombre":"Ivan Lendlento","sup":"Dura","ini":"IL","es":{"apodo":"El metódico","regla":"Las míticas no cuentan doble para su familia.","sup":"Pista dura"},"en":{"apodo":"The methodical","regla":"Mythics don’t count double for their family.","sup":"Hard"}},{"id":"gomaflex","n":10,"nombre":"Novak Gomaflex","sup":"Dura","ini":"NG","es":{"apodo":"El muro","regla":"La primera carta de cada set no cuenta.","sup":"Pista dura"},"en":{"apodo":"The wall","regla":"The first card of every set doesn’t count.","sup":"Hard"}}],"ejemplos":[{"total":280,"fichas":70,"mult":4,"es":{"cartas":[{"img":"corona","nombre":"Corona de arcilla","fam":"Tierra","col":"#C2673F","code":"M","cls":"hof-carta r-mitica","fichas":"+40 fichas"},{"img":"rastrillo","nombre":"Rastrillo de pista","fam":"Tierra","col":"#C2673F","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"},{"img":"cubo","nombre":"Cubo de arcilla","fam":"Tierra","col":"#C2673F","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"}],"det":[{"t":"Tierra (4) +3","col":"#C2673F"}]},"en":{"cartas":[{"img":"corona","nombre":"Clay crown","fam":"Clay","col":"#C2673F","code":"M","cls":"hof-carta r-mitica","fichas":"+40 chips"},{"img":"rastrillo","nombre":"Court rake","fam":"Clay","col":"#C2673F","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"},{"img":"cubo","nombre":"Bucket of clay","fam":"Clay","col":"#C2673F","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"}],"det":[{"t":"Clay (4) +3","col":"#C2673F"}]}},{"total":200,"fichas":40,"mult":5,"es":{"cartas":[{"img":"calcetines","nombre":"Calcetines sin lavar","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"},{"img":"cuchara","nombre":"Saque de cuchara","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"},{"img":"trebol","nombre":"Trébol de cuatro hojas","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"}],"det":[{"t":"Ritual (3) +2","col":"#2A9D8F"},{"t":"✦ Ritual completo +2","col":""}]},"en":{"cartas":[{"img":"calcetines","nombre":"Unwashed socks","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"},{"img":"cuchara","nombre":"Underarm serve","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"},{"img":"trebol","nombre":"Four-leaf clover","fam":"Ritual","col":"#2A9D8F","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"}],"det":[{"t":"Ritual (3) +2","col":"#2A9D8F"},{"t":"✦ Full ritual +2","col":""}]}},{"total":40,"fichas":40,"mult":1,"es":{"cartas":[{"img":"fresas","nombre":"Cuenco de fresas","fam":"Hierba","col":"#4F9E4A","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"},{"img":"munequera","nombre":"Muñequera azul","fam":"Pista dura","col":"#4A7FC1","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"},{"img":"hucha","nombre":"Hucha de cerdito","fam":"Dinero","col":"#7E9A1E","code":"C","cls":"hof-carta r-comun","fichas":"+10 fichas"}],"det":[]},"en":{"cartas":[{"img":"fresas","nombre":"Bowl of strawberries","fam":"Grass","col":"#4F9E4A","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"},{"img":"munequera","nombre":"Blue wristband","fam":"Hard court","col":"#4A7FC1","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"},{"img":"hucha","nombre":"Piggy bank","fam":"Money","col":"#7E9A1E","code":"C","cls":"hof-carta r-comun","fichas":"+10 chips"}],"det":[]}}],"obj0":130,"fichas":{"común":10,"rara":20,"mítica":40},"set3":15,"prestigio":0.25,"spr":{"corona":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M7 2h2v1h-2zM6 3h1v1h-1zM9 3h1v1h-1zM6 4h1v1h-1zM9 4h1v1h-1zM2 5h1v1h-1zM5 5h1v1h-1zM9 5h1v1h-1zM13 5h2v1h-2zM1 6h1v1h-1zM3 6h1v1h-1zM5 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM15 6h1v1h-1zM1 7h1v1h-1zM4 7h2v1h-2zM10 7h2v1h-2zM14 7h1v1h-1zM1 8h1v1h-1zM14 8h1v1h-1zM1 9h1v1h-1zM14 9h1v1h-1zM1 10h1v1h-1zM14 10h1v1h-1zM2 11h1v1h-1zM13 11h1v1h-1zM2 12h1v1h-1zM13 12h1v1h-1zM2 13h1v1h-1zM13 13h1v1h-1zM3 14h10v1h-10z'/%3E%3Cpath fill='%23d06a3a' d='M7 3h1v1h-1zM7 4h1v1h-1zM6 5h2v1h-2zM6 6h3v1h-3zM2 7h1v1h-1zM6 7h3v1h-3zM12 7h1v1h-1zM2 8h11v1h-11zM2 9h11v1h-11zM3 10h10v1h-10z'/%3E%3Cpath fill='%23efa577' d='M8 3h1v1h-1zM2 6h1v1h-1zM14 6h1v1h-1zM3 11h2v1h-2zM6 11h2v1h-2zM9 11h2v1h-2zM12 11h1v1h-1z'/%3E%3Cpath fill='%23923e20' d='M8 4h1v1h-1zM8 5h1v1h-1zM9 6h1v1h-1zM13 6h1v1h-1zM3 7h1v1h-1zM9 7h1v1h-1zM13 7h1v1h-1zM13 8h1v1h-1zM13 9h1v1h-1zM2 10h1v1h-1zM13 10h1v1h-1zM3 12h2v1h-2zM6 12h2v1h-2zM9 12h2v1h-2zM12 12h1v1h-1zM3 13h10v1h-10z'/%3E%3Cpath fill='%23d6ef45' d='M5 11h1v1h-1zM11 11h1v1h-1z'/%3E%3Cpath fill='%23d8423a' d='M8 11h1v1h-1z'/%3E%3Cpath fill='%2393ad22' d='M5 12h1v1h-1zM11 12h1v1h-1z'/%3E%3Cpath fill='%238e2329' d='M8 12h1v1h-1z'/%3E%3C/svg%3E","rastrillo":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M7 0h8v1h-8zM6 1h1v1h-1zM15 1h1v1h-1zM6 2h1v1h-1zM15 2h1v1h-1zM6 3h1v1h-1zM15 3h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM12 4h1v1h-1zM14 4h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM12 5h1v1h-1zM14 5h1v1h-1zM7 6h2v1h-2zM11 6h1v1h-1zM13 6h1v1h-1zM7 7h1v1h-1zM10 7h1v1h-1zM6 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM9 9h1v1h-1zM5 10h1v1h-1zM8 10h1v1h-1zM4 11h1v1h-1zM7 11h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM3 13h1v1h-1zM6 13h1v1h-1zM2 14h1v1h-1zM5 14h1v1h-1zM3 15h2v1h-2z'/%3E%3Cpath fill='%23e9edf0' d='M7 1h8v1h-8z'/%3E%3Cpath fill='%23a7b0b8' d='M7 2h7v1h-7zM10 3h2v1h-2z'/%3E%3Cpath fill='%236c757e' d='M14 2h1v1h-1zM7 3h3v1h-3zM12 3h3v1h-3zM7 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM13 4h1v1h-1zM7 5h1v1h-1zM9 5h1v1h-1zM11 5h1v1h-1zM13 5h1v1h-1z'/%3E%3Cpath fill='%239b653a' d='M10 4h1v1h-1zM10 5h1v1h-1zM9 6h2v1h-2zM8 7h2v1h-2zM7 8h2v1h-2zM7 9h2v1h-2zM6 10h2v1h-2zM5 11h2v1h-2zM4 12h2v1h-2zM4 13h2v1h-2zM4 14h1v1h-1z'/%3E%3Cpath fill='%235f3b22' d='M3 14h1v1h-1z'/%3E%3C/svg%3E","cubo":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M4 0h1v1h-1zM11 0h1v1h-1zM3 1h1v1h-1zM5 1h6v1h-6zM12 1h1v1h-1zM3 2h1v1h-1zM5 2h6v1h-6zM12 2h1v1h-1zM2 3h1v1h-1zM13 3h1v1h-1zM2 4h1v1h-1zM13 4h1v1h-1zM1 5h1v1h-1zM14 5h1v1h-1zM1 6h1v1h-1zM14 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM2 8h1v1h-1zM13 8h1v1h-1zM2 9h1v1h-1zM13 9h1v1h-1zM3 10h1v1h-1zM12 10h1v1h-1zM3 11h1v1h-1zM12 11h1v1h-1zM3 12h1v1h-1zM12 12h1v1h-1zM3 13h1v1h-1zM12 13h1v1h-1zM4 14h8v1h-8z'/%3E%3Cpath fill='%235f584f' d='M5 0h6v1h-6zM4 1h1v1h-1zM11 1h1v1h-1zM4 2h1v1h-1zM11 2h1v1h-1zM3 3h1v1h-1zM12 3h1v1h-1zM3 4h1v1h-1zM12 4h1v1h-1zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1z'/%3E%3Cpath fill='%23d06a3a' d='M4 3h2v1h-2zM8 3h4v1h-4zM4 4h8v1h-8zM3 5h7v1h-7zM11 5h2v1h-2zM3 6h2v1h-2zM6 6h7v1h-7z'/%3E%3Cpath fill='%23efa577' d='M6 3h2v1h-2z'/%3E%3Cpath fill='%23923e20' d='M10 5h1v1h-1zM5 6h1v1h-1z'/%3E%3Cpath fill='%23a7b0b8' d='M3 7h1v1h-1zM5 7h7v1h-7zM3 8h1v1h-1zM5 8h7v1h-7zM5 10h6v1h-6zM5 11h6v1h-6zM5 12h6v1h-6z'/%3E%3Cpath fill='%23e9edf0' d='M4 7h1v1h-1zM4 8h1v1h-1zM4 9h8v1h-8zM4 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM4 13h1v1h-1z'/%3E%3Cpath fill='%236c757e' d='M12 7h1v1h-1zM12 8h1v1h-1zM3 9h1v1h-1zM12 9h1v1h-1zM11 10h1v1h-1zM11 11h1v1h-1zM11 12h1v1h-1zM5 13h7v1h-7z'/%3E%3C/svg%3E","calcetines":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%23addc70' d='M3 0h1v1h-1zM4 1h1v1h-1zM11 1h1v1h-1zM3 2h1v1h-1zM10 2h1v1h-1zM11 3h1v1h-1z'/%3E%3Cpath fill='%23d3c9b6' d='M6 1h1v1h-1zM8 1h1v1h-1zM2 4h4v1h-4zM5 5h1v1h-1zM9 6h3v1h-3zM5 7h1v1h-1zM9 8h3v1h-3zM5 9h1v1h-1zM5 10h1v1h-1zM9 10h3v1h-3zM7 11h1v1h-1zM9 11h5v1h-5zM7 12h1v1h-1zM9 12h2v1h-2zM12 12h2v1h-2zM2 13h6v1h-6z'/%3E%3Cpath fill='%232c2834' d='M7 2h1v1h-1z'/%3E%3Cpath fill='%231d1518' d='M2 3h4v1h-4zM1 4h1v1h-1zM6 4h1v1h-1zM9 4h4v1h-4zM1 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM13 5h1v1h-1zM1 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM13 6h1v1h-1zM1 7h1v1h-1zM6 7h1v1h-1zM8 7h1v1h-1zM13 7h1v1h-1zM1 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM13 8h1v1h-1zM1 9h1v1h-1zM6 9h1v1h-1zM8 9h1v1h-1zM13 9h1v1h-1zM1 10h1v1h-1zM6 10h3v1h-3zM13 10h2v1h-2zM1 11h1v1h-1zM8 11h1v1h-1zM15 11h1v1h-1zM1 12h1v1h-1zM8 12h1v1h-1zM15 12h1v1h-1zM1 13h1v1h-1zM8 13h1v1h-1zM15 13h1v1h-1zM2 14h6v1h-6zM9 14h6v1h-6z'/%3E%3Cpath fill='%23f7f2e6' d='M2 5h3v1h-3zM2 7h3v1h-3zM2 9h3v1h-3zM2 10h3v1h-3zM2 11h2v1h-2zM5 11h2v1h-2zM2 12h1v1h-1zM4 12h3v1h-3z'/%3E%3Cpath fill='%239a9183' d='M9 5h4v1h-4zM12 6h1v1h-1zM12 8h1v1h-1zM12 10h1v1h-1zM14 11h1v1h-1zM14 12h1v1h-1zM9 13h3v1h-3zM13 13h2v1h-2z'/%3E%3Cpath fill='%23d8423a' d='M2 6h4v1h-4zM9 7h4v1h-4z'/%3E%3Cpath fill='%234f88d2' d='M2 8h4v1h-4zM9 9h4v1h-4z'/%3E%3Cpath fill='%23c9ab74' d='M4 11h1v1h-1zM3 12h1v1h-1zM11 12h1v1h-1zM12 13h1v1h-1z'/%3E%3C/svg%3E","cuchara":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M3 0h2v1h-2zM2 1h1v1h-1zM5 1h2v1h-2zM1 2h1v1h-1zM7 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM8 4h1v1h-1zM1 5h1v1h-1zM9 5h1v1h-1zM1 6h1v1h-1zM9 6h1v1h-1zM2 7h1v1h-1zM9 7h1v1h-1zM3 8h2v1h-2zM8 8h2v1h-2zM5 9h3v1h-3zM10 9h1v1h-1zM8 10h1v1h-1zM11 10h1v1h-1zM9 11h1v1h-1zM12 11h1v1h-1zM10 12h1v1h-1zM13 12h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM12 14h1v1h-1zM15 14h1v1h-1zM13 15h2v1h-2z'/%3E%3Cpath fill='%23a7b0b8' d='M3 1h1v1h-1zM2 2h1v1h-1zM4 2h2v1h-2zM1 3h1v1h-1zM6 3h1v1h-1zM2 4h1v1h-1zM2 5h1v1h-1zM7 5h1v1h-1zM3 6h1v1h-1zM7 6h1v1h-1zM5 7h3v1h-3zM8 9h1v1h-1zM9 10h1v1h-1zM10 11h1v1h-1zM11 12h1v1h-1zM12 13h1v1h-1zM13 14h1v1h-1z'/%3E%3Cpath fill='%236c757e' d='M4 1h1v1h-1zM6 2h1v1h-1zM7 3h1v1h-1zM1 4h1v1h-1zM7 4h1v1h-1zM8 5h1v1h-1zM2 6h1v1h-1zM8 6h1v1h-1zM3 7h2v1h-2zM8 7h1v1h-1zM5 8h3v1h-3zM9 9h1v1h-1zM10 10h1v1h-1zM11 11h1v1h-1zM12 12h1v1h-1zM13 13h1v1h-1zM14 14h1v1h-1z'/%3E%3Cpath fill='%23e9edf0' d='M3 2h1v1h-1zM2 3h1v1h-1zM5 3h1v1h-1zM4 4h3v1h-3zM3 5h4v1h-4zM4 6h3v1h-3z'/%3E%3Cpath fill='%23f7f2e6' d='M3 3h2v1h-2zM3 4h1v1h-1z'/%3E%3C/svg%3E","trebol":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M3 1h4v1h-4zM9 1h4v1h-4zM2 2h1v1h-1zM7 2h2v1h-2zM13 2h1v1h-1zM1 3h1v1h-1zM14 3h1v1h-1zM1 4h1v1h-1zM14 4h1v1h-1zM1 5h1v1h-1zM14 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM13 7h1v1h-1zM1 8h1v1h-1zM14 8h1v1h-1zM1 9h1v1h-1zM14 9h1v1h-1zM1 10h1v1h-1zM14 10h1v1h-1zM2 11h1v1h-1zM7 11h2v1h-2zM13 11h1v1h-1zM3 12h4v1h-4zM9 12h1v1h-1zM11 12h2v1h-2zM9 13h1v1h-1zM11 13h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM10 15h1v1h-1zM12 15h1v1h-1z'/%3E%3Cpath fill='%235ea648' d='M3 2h3v1h-3zM9 2h3v1h-3zM2 3h2v1h-2zM5 3h5v1h-5zM11 3h2v1h-2zM2 4h11v1h-11zM3 5h4v1h-4zM9 5h4v1h-4zM3 6h3v1h-3zM7 6h5v1h-5zM3 7h3v1h-3zM7 7h5v1h-5zM2 8h2v1h-2zM5 8h5v1h-5zM11 8h2v1h-2zM2 9h6v1h-6zM9 9h4v1h-4zM3 10h4v1h-4zM10 10h3v1h-3z'/%3E%3Cpath fill='%232f6b2b' d='M6 2h1v1h-1zM12 2h1v1h-1zM13 3h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM7 5h2v1h-2zM13 5h1v1h-1zM6 6h1v1h-1zM12 6h1v1h-1zM6 7h1v1h-1zM12 7h1v1h-1zM13 8h1v1h-1zM8 9h1v1h-1zM13 9h1v1h-1zM2 10h1v1h-1zM7 10h3v1h-3zM13 10h1v1h-1zM3 11h4v1h-4zM9 11h4v1h-4zM10 12h1v1h-1zM10 13h1v1h-1zM11 14h1v1h-1zM11 15h1v1h-1z'/%3E%3Cpath fill='%23addc70' d='M4 3h1v1h-1zM10 3h1v1h-1zM4 8h1v1h-1zM10 8h1v1h-1z'/%3E%3C/svg%3E","fresas":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M4 2h2v1h-2zM8 2h2v1h-2zM3 3h1v1h-1zM6 3h2v1h-2zM10 3h1v1h-1zM3 4h2v1h-2zM6 4h1v1h-1zM10 4h3v1h-3zM2 5h1v1h-1zM13 5h1v1h-1zM2 6h1v1h-1zM13 6h1v1h-1zM2 7h1v1h-1zM14 7h1v1h-1zM2 8h1v1h-1zM7 8h3v1h-3zM13 8h1v1h-1zM2 9h8v1h-8zM13 9h1v1h-1zM1 10h1v1h-1zM14 10h1v1h-1zM1 11h1v1h-1zM14 11h1v1h-1zM1 12h1v1h-1zM14 12h1v1h-1zM2 13h2v1h-2zM12 13h2v1h-2zM4 14h8v1h-8z'/%3E%3Cpath fill='%235ea648' d='M4 3h2v1h-2zM8 3h2v1h-2zM11 5h2v1h-2z'/%3E%3Cpath fill='%232f6b2b' d='M5 4h1v1h-1z'/%3E%3Cpath fill='%23d8423a' d='M7 4h2v1h-2zM3 5h5v1h-5zM9 5h2v1h-2zM3 6h1v1h-1zM5 6h7v1h-7zM3 7h4v1h-4zM10 7h1v1h-1zM12 7h1v1h-1zM10 8h2v1h-2zM10 9h2v1h-2z'/%3E%3Cpath fill='%238e2329' d='M9 4h1v1h-1zM12 6h1v1h-1zM7 7h2v1h-2zM13 7h1v1h-1zM3 8h2v1h-2zM6 8h1v1h-1zM12 8h1v1h-1zM12 9h1v1h-1z'/%3E%3Cpath fill='%23fff4b0' d='M8 5h1v1h-1zM4 6h1v1h-1zM9 7h1v1h-1zM11 7h1v1h-1zM5 8h1v1h-1z'/%3E%3Cpath fill='%234f88d2' d='M2 10h11v1h-11z'/%3E%3Cpath fill='%232a4f8f' d='M13 10h1v1h-1z'/%3E%3Cpath fill='%23f7f2e6' d='M2 11h11v1h-11zM4 12h8v1h-8z'/%3E%3Cpath fill='%239a9183' d='M13 11h1v1h-1zM2 12h2v1h-2zM12 12h2v1h-2zM4 13h8v1h-8z'/%3E%3C/svg%3E","munequera":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M5 2h6v1h-6zM3 3h2v1h-2zM11 3h2v1h-2zM2 4h1v1h-1zM13 4h1v1h-1zM2 5h1v1h-1zM7 5h2v1h-2zM13 5h1v1h-1zM1 6h1v1h-1zM5 6h2v1h-2zM9 6h2v1h-2zM14 6h1v1h-1zM1 7h1v1h-1zM4 7h1v1h-1zM11 7h1v1h-1zM14 7h1v1h-1zM1 8h1v1h-1zM4 8h1v1h-1zM11 8h1v1h-1zM14 8h1v1h-1zM1 9h1v1h-1zM5 9h2v1h-2zM9 9h2v1h-2zM14 9h1v1h-1zM2 10h1v1h-1zM7 10h2v1h-2zM13 10h1v1h-1zM2 11h1v1h-1zM13 11h1v1h-1zM3 12h2v1h-2zM12 12h1v1h-1zM5 13h7v1h-7z'/%3E%3Cpath fill='%234f88d2' d='M5 3h5v1h-5zM3 4h1v1h-1zM5 4h7v1h-7zM4 5h3v1h-3zM9 5h3v1h-3zM2 6h3v1h-3zM11 6h2v1h-2zM3 7h1v1h-1zM12 7h1v1h-1zM3 8h1v1h-1zM12 8h1v1h-1zM3 9h2v1h-2zM11 9h2v1h-2zM3 10h4v1h-4zM9 10h3v1h-3zM5 11h6v1h-6z'/%3E%3Cpath fill='%232a4f8f' d='M10 3h1v1h-1zM12 4h1v1h-1zM12 5h1v1h-1zM13 6h1v1h-1zM13 7h1v1h-1zM13 8h1v1h-1zM13 9h1v1h-1zM12 10h1v1h-1zM3 11h2v1h-2zM5 12h6v1h-6z'/%3E%3Cpath fill='%23a9def2' d='M4 4h1v1h-1zM3 5h1v1h-1zM2 7h1v1h-1zM2 8h1v1h-1zM2 9h1v1h-1z'/%3E%3Cpath fill='%23f7f2e6' d='M11 11h2v1h-2zM11 12h1v1h-1z'/%3E%3C/svg%3E","hucha":"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' shape-rendering='crispEdges' xmlns='http://www.w3.org/2000/svg' focusable='false'%3E%3Cpath fill='%231d1518' d='M6 2h1v1h-1zM5 3h1v1h-1zM7 3h3v1h-3zM4 4h1v1h-1zM10 4h2v1h-2zM3 5h1v1h-1zM12 5h1v1h-1zM2 6h1v1h-1zM13 6h2v1h-2zM1 7h1v1h-1zM11 7h1v1h-1zM15 7h1v1h-1zM1 8h1v1h-1zM15 8h1v1h-1zM1 9h1v1h-1zM15 9h1v1h-1zM1 10h1v1h-1zM14 10h1v1h-1zM2 11h1v1h-1zM13 11h1v1h-1zM3 12h1v1h-1zM12 12h1v1h-1zM3 13h1v1h-1zM12 13h1v1h-1zM3 14h1v1h-1zM6 14h4v1h-4zM12 14h1v1h-1zM3 15h1v1h-1zM6 15h1v1h-1zM9 15h1v1h-1zM12 15h1v1h-1z'/%3E%3Cpath fill='%23f29a86' d='M6 3h1v1h-1zM5 4h1v1h-1zM4 5h7v1h-7zM3 6h9v1h-9zM2 7h3v1h-3zM6 7h5v1h-5zM12 7h3v1h-3zM2 8h2v1h-2zM5 8h9v1h-9zM2 9h12v1h-12zM3 10h10v1h-10zM4 11h8v1h-8zM6 12h4v1h-4z'/%3E%3Cpath fill='%238e2329' d='M6 4h4v1h-4z'/%3E%3Cpath fill='%23d8423a' d='M11 5h1v1h-1zM12 6h1v1h-1zM14 8h1v1h-1zM14 9h1v1h-1zM2 10h1v1h-1zM13 10h1v1h-1zM3 11h1v1h-1zM12 11h1v1h-1zM4 12h2v1h-2zM10 12h2v1h-2zM4 13h8v1h-8zM4 14h2v1h-2zM10 14h2v1h-2zM4 15h2v1h-2zM10 15h2v1h-2z'/%3E%3Cpath fill='%23f7f2e6' d='M5 7h1v1h-1zM4 8h1v1h-1z'/%3E%3C/svg%3E"},"supCol":{"Tierra":"#C4653A","Hierba":"#3E8A4A","Dura":"#4A8AC0"}};
+
+class Component extends DCLogic {
+  state = {
+    idioma: (() => { try { return localStorage.getItem('deuce.lang') === 'en' ? 'en' : 'es'; } catch (e) { return 'es'; } })(),
+    cookieConsent: (() => { try { return localStorage.getItem('deuce.cookieConsent'); } catch (e) { return null; } })(),
+    // el récord lo guarda el juego en este mismo navegador al terminar un Hall of Fame
+    record: (() => { try { const r = JSON.parse(localStorage.getItem('deuce-rl.hof') || 'null'); return r && r.p > 0 ? r : null; } catch (e) { return null; } })(),
+    ancho: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    menuAbierto: false,
+  };
+
+  medirAncho = () => {
+    const w = window.innerWidth;
+    if (w !== this.state.ancho) this.setState({ ancho: w, menuAbierto: w > 640 ? false : this.state.menuAbierto });
+  };
+
+  cargarAnalytics() {
+    if (window.__gaLoaded) return;
+    window.__gaLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZWT4ZKB3EV';
+    s.async = true;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-ZWT4ZKB3EV');
+  }
+  PAGINAS = { 'Inicio.dc.html': 'index.html', 'Copa v3 - Tarjeta.dc.html': 'juego.html',
+    'Sobre el Juego.dc.html': 'sobre-el-juego.html', 'Privacidad.dc.html': 'privacidad.html' };
+  enlazarPaginas = () => {
+    if (/\.dc\.html$/i.test(location.pathname)) return;
+    document.addEventListener('click', (e) => {
+      const a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      let h = a.getAttribute('href') || '';
+      try { h = decodeURIComponent(h); } catch (err) {}
+      const destino = this.PAGINAS[h];
+      if (!destino) return;
+      e.preventDefault();
+      location.href = destino;
+    });
+  };
+  ponerTitulo() {
+    document.title = this.state.idioma === 'en'
+      ? 'Hall of Fame — the endless mode of Superstitions · deuce'
+      : 'Hall of Fame — el modo infinito de Supersticiones · deuce';
+    document.documentElement.lang = this.state.idioma;
+  }
+  componentDidMount() {
+    this.enlazarPaginas();
+    if (this.state.cookieConsent === 'granted') this.cargarAnalytics();
+    window.addEventListener('resize', this.medirAncho);
+    this.medirAncho();
+    this.ponerTitulo();
+  }
+  componentDidUpdate() { this.ponerTitulo(); }
+  componentWillUnmount() { window.removeEventListener('resize', this.medirAncho); }
+
+  setIdioma = (v) => { try { localStorage.setItem('deuce.lang', v); } catch (e) {} this.setState({ idioma: v }); };
+  aceptarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'granted'); } catch (e) {} this.setState({ cookieConsent: 'granted' }); this.cargarAnalytics(); };
+  rechazarCookies = () => { try { localStorage.setItem('deuce.cookieConsent', 'denied'); } catch (e) {} this.setState({ cookieConsent: 'denied' }); };
+
+  renderVals() {
+    const s = this.state;
+    const en = s.idioma === 'en', L = en ? 'en' : 'es';
+    const T = (a, b) => (en ? b : a);
+    const num = n => Math.round(n || 0).toLocaleString(en ? 'en-GB' : 'es-ES');
+    const multTxt = m => (Math.round(m * 100) / 100).toLocaleString(en ? 'en-GB' : 'es-ES');
+    const chip = (on) => 'cursor:pointer;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;' + (on ? 'background:var(--btn);color:var(--btn-ink)' : 'background:transparent;color:var(--ink-soft)');
+    const r = s.record;
+    const fecha = f => { try { const d = new Date(f + 'T12:00:00'); return d.toLocaleDateString(en ? 'en-GB' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return f || ''; } };
+    const titulosEj = en ? ['One family', 'Family and pair', 'No combo'] : ['Una familia', 'Familia y pareja', 'Sin combinación'];
+    return {
+      esEs: !en, esEn: en, estiloEs: chip(!en), estiloEn: chip(en), langCode: L,
+      anchoAmplio: s.ancho > 640, anchoEstrecho: s.ancho <= 640,
+      menuAbierto: s.ancho <= 640 && s.menuAbierto,
+      alternarMenu: () => this.setState({ menuAbierto: !this.state.menuAbierto }),
+      lMenu: T('Menú', 'Menu'), lInicioMenu: T('Inicio', 'Home'), lCerrarMenu: T('Cerrar menú', 'Close menu'),
+      setEs: () => this.setIdioma('es'), setEn: () => this.setIdioma('en'),
+      lPrivacidad: T('Privacidad', 'Privacy'),
+      lSobre: T('Sobre el juego', 'About the game'),
+      lSuperNav: T('Supersticiones', 'Superstitions'),
+      lPrivacidad2: T('política de privacidad', 'privacy policy'),
+      lJugar: T('Jugar a deuce', 'Play deuce'),
+      lJugarSuper: T('Jugar a Supersticiones', 'Play Superstitions'),
+      lJugarHoy: T('Jugar la carrera del día', 'Play today’s career'),
+      lGuia: T('Cómo se juega el modo', 'How the mode works'),
+
+      // ── cabecera y récord ──
+      lKicker: T('Supersticiones · modo infinito', 'Superstitions · endless mode'),
+      intro: T('Tu carrera termina a los 34. La leyenda empieza después: cada temporada, un partido contra un mito retirado del circuito. Aguanta lo que puedas y suma puntos.',
+        'Your career ends at 34. The legend starts afterwards: every season, a match against a retired great of the tour. Last as long as you can and rack up points.'),
+      hayRecord: !!r, sinRecord: !r,
+      lTuRecord: T('Tu récord en este navegador', 'Your record in this browser'),
+      recPuntos: r ? num(r.p) : '', recLeyendas: r ? String(r.v || 0) : '',
+      lPuntos: T('puntos', 'points'), lLeyendasVencidas: T('leyendas vencidas', 'legends beaten'),
+      recNota: r ? [r.n, r.l ? T('cayó ante ', 'fell to ') + r.l : '', r.f ? fecha(r.f) : ''].filter(Boolean).join(' · ') : '',
+      lSinRecord: T('Todavía no has entrado: llega a la retirada en Supersticiones.', 'You haven’t got in yet: reach retirement in Superstitions.'),
+
+      // ── entrada ──
+      hEntrar: T('Cómo se entra', 'How you get in'),
+      pEntrar1: T('Juega una carrera de Supersticiones hasta la retirada, a los 34 años, sin quedarte sin dinero por el camino. En la pantalla final aparece un botón nuevo:',
+        'Play a Superstitions career all the way to retirement at 34 without running out of money. A new button appears on the final screen:'),
+      lBotonJuego: T('Entrar en el Hall of Fame', 'Enter the Hall of Fame'),
+      pEntrar2: T('Tu carrera cuenta: cada 5 títulos, 1 ficha de salida (hasta 15); cada Gran Open, +0,25 al multiplicador; y haber sido n.º 1, +0,5 más.',
+        'Your career counts: every 5 titles, 1 starting chip (up to 15); every major, +0.25 multiplier; and having been No. 1, another +0.5.'),
+
+      // ── el partido ──
+      hPartido: T('Cada leyenda, un partido a tres sets', 'Every legend, a best-of-three match'),
+      pPartido: T('En cada set juegas hasta tres cartas de tu bolsa. Suman fichas por su rareza y multiplicador por sus combinaciones; si llegas a su marcador, el set es tuyo. Gana dos sets y pasas a la siguiente leyenda.',
+        'Each set you play up to three cards from your bag. They add chips for their rarity and multiplier for their combos; reach their score and the set is yours. Win two sets and you move on to the next legend.'),
+      sets: en ? [
+        { k: 'Set 1', t: 'Any cards', x: 'Your best play, or the one that leaves you well placed for the second set.' },
+        { k: 'Set 2', t: 'The ones you didn’t play', x: 'You can only use the cards you left out of the first. This is where a balanced bag shows.' },
+        { k: 'Set 3', t: 'Any cards again', x: 'At one set all, you pick from all your cards again. But the legend pushes: their score goes up ' + DATOS.set3 + '%.' },
+      ] : [
+        { k: 'Set 1', t: 'Las que quieras', x: 'Tu mejor jugada, o la que te deje bien para el segundo set.' },
+        { k: 'Set 2', t: 'Las que no jugaste', x: 'Solo puedes usar las cartas que dejaste fuera en el primero. Aquí se ve si tu bolsa está equilibrada.' },
+        { k: 'Set 3', t: 'Las que quieras otra vez', x: 'Si vais 1-1, eliges de nuevo entre todas. Pero la leyenda aprieta: su marcador sube un ' + DATOS.set3 + ' %.' },
+      ],
+      pPartido2: T('Lo ves todo antes de jugar: tu total, su marcador y qué cartas anula su regla. El set se cuenta en juegos, como uno de verdad: 6-4, 7-6, 3-6…',
+        'You see everything before you play: your total, their score and which cards their rule cancels. The set is counted in games, like a real one: 6-4, 7-6, 3-6…'),
+
+      // ── puntuación ──
+      hPuntua: T('Cómo se puntúa', 'How scoring works'),
+      pPuntua: T('Puntos de una jugada = fichas × multiplicador. Las fichas salen de la rareza de cada carta, más las que te da tu carrera:',
+        'Points for a play = chips × multiplier. Chips come from each card’s rarity, plus the ones your career gives you:'),
+      fichas: [
+        { v: String(DATOS.fichas['común']), t: T('Común', 'Common'), cls: '' },
+        { v: String(DATOS.fichas['rara']), t: T('Rara', 'Rare'), cls: '' },
+        { v: String(DATOS.fichas['mítica']), t: T('Mítica', 'Mythic'), cls: 'mit' },
+        { v: T('×1,5', '×1.5'), t: T('Maldita', 'Cursed'), cls: 'mal' },
+      ],
+      multReglas: en ? [
+        { t: 'Families.', x: 'Two cards from the same family add +1 to the multiplier; three, +2; four or more, +3.' },
+        { t: 'Mythics count double', x: 'for their family, just like in the career: a mythic and a common from the same family already make three.' },
+        { t: 'Named pairs.', x: 'Every career pair you play together, like Full ritual, adds +2.' },
+        { t: 'Your base.', x: 'You start at ×1 plus whatever your career gave you, and every legend you beat adds +' + multTxt(DATOS.prestigio) + '.' },
+      ] : [
+        { t: 'Familias.', x: 'Dos cartas de la misma familia suman +1 al multiplicador; tres, +2; cuatro o más, +3.' },
+        { t: 'Las míticas cuentan doble', x: 'para su familia, como en la carrera: una mítica y una común de la misma familia ya son tres.' },
+        { t: 'Parejas con nombre.', x: 'Cada pareja de la carrera que juegues junta, como Ritual completo, suma +2.' },
+        { t: 'Tu base.', x: 'Empiezas con ×1 más lo que te dio la carrera, y cada leyenda vencida suma +' + multTxt(DATOS.prestigio) + '.' },
+      ],
+      hEjemplos: T('Tres jugadas contra Manolo Santanita (' + DATOS.obj0 + ' por set)', 'Three plays against Manolo Santanita (' + DATOS.obj0 + ' per set)'),
+      lSinCombo: T('Sin combinación: ×1', 'No combo: ×1'),
+      ejemplos: DATOS.ejemplos.map((e, i) => {
+        const gana = e.total >= DATOS.obj0;
+        return {
+          titulo: titulosEj[i], estado: gana ? 'gana' : 'pierde',
+          cartas: e[L].cartas.map(c => Object.assign({}, c, { img: DATOS.spr[c.img] })),
+          det: e[L].det.filter(d => d.t), sinCombo: !e[L].det.some(d => d.t),
+          calc: num(e.fichas) + T(' fichas (10 de base) × ', ' chips (10 base) × ') + multTxt(e.mult) + ' = ' + num(e.total),
+          veredicto: num(e.total) + T(' contra ', ' against ') + DATOS.obj0 + (gana ? T(': set ganado', ': set won') : T(': set perdido', ': set lost')),
+        };
+      }),
+
+      // ── leyendas ──
+      hLeyendas: T('Las diez leyendas', 'The ten legends'),
+      pLeyendas: T('Se parecen a quien se parecen, pero son otros. Salen siempre en este orden, cada una con su regla, y después de la décima vuelven todas más duras. La primera pide ' + DATOS.obj0 + ' por set; cada una aprieta más que la anterior.',
+        'They look like who they look like, but they are someone else. They always come in this order, each with its own rule, and after the tenth they all come back tougher. The first asks for ' + DATOS.obj0 + ' per set; each one pushes harder than the last.'),
+      lSuRegla: T('Su regla', 'Their rule'),
+      leyendas: DATOS.leyendas.map(l => ({
+        k: T('Leyenda ', 'Legend ') + l.n + ' · ' + l[L].sup, ini: l.ini, nombre: l.nombre,
+        apodo: (en ? '“' : '«') + l[L].apodo + (en ? '”' : '»'), regla: l[L].regla, col: DATOS.supCol[l.sup],
+      })),
+
+      // ── puntos y récord ──
+      hRecord: T('Puntos, prestigio y récord', 'Points, prestige and record'),
+      puntosReglas: en ? [
+        { t: 'Every set scores', x: 'your play’s points, whether you win it or not.' },
+        { t: 'In straight sets,', x: 'the match points are multiplied by 1.5.' },
+        { t: 'Prestige:', x: 'every legend you beat gives you +' + multTxt(DATOS.prestigio) + ' multiplier for good.' },
+        { t: 'A new card', x: 'after every win: one of three, and every third legend, a mythic hand. If your bag is full, you drop one.' },
+        { t: 'Endless laps.', x: 'After Novak Gomaflex they all come back with higher scores. There is no ending: only your record.' },
+        { t: 'Sudden death:', x: 'lose a match and it’s over. Your best mark is saved and you can share it.' },
+      ] : [
+        { t: 'Cada set suma', x: 'los puntos de tu jugada, lo ganes o no.' },
+        { t: 'Sin ceder un set,', x: 'los puntos del partido se multiplican por 1,5.' },
+        { t: 'Prestigio:', x: 'cada leyenda vencida te da +' + multTxt(DATOS.prestigio) + ' de multiplicador para siempre.' },
+        { t: 'Carta nueva', x: 'tras cada victoria: una de tres, y cada tres leyendas, mano mítica. Si la bolsa está llena, dejas otra.' },
+        { t: 'Vueltas infinitas.', x: 'Después de Novak Gomaflex vuelven todas, con marcadores más altos. No hay final: solo tu récord.' },
+        { t: 'Muerte súbita:', x: 'pierdes un partido y se acaba. Tu mejor marca queda guardada y la puedes compartir.' },
+      ],
+
+      // ── cookies ──
+      mostrarCookies: !s.cookieConsent,
+      textoCookies: T('Usamos cookies para analítica y, en el futuro, anuncios. Consulta nuestra', 'We use cookies for analytics and, in the future, ads. Read our'),
+      lRechazar: T('Rechazar', 'Decline'),
+      lAceptar: T('Aceptar', 'Accept'),
+      aceptarCookies: this.aceptarCookies,
+      rechazarCookies: this.rechazarCookies,
+    };
+  }
+}
+
+</script>
+
+
+</body></html>
