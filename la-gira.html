@@ -120,9 +120,9 @@ p{margin:0}
 
 /* portada: como la de deuce, centrada y con la marca arriba */
 .portada{padding-top:0;text-align:center}
-.portada-cab{display:flex;flex-direction:column;align-items:center;line-height:1;margin:0 -16px;padding:16px 16px 13px;border-bottom:1px solid var(--rule)}
-.portada-cab b{font-size:32px;font-weight:700;letter-spacing:-.035em}
-.portada-cab span{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
+.portada-cab{display:flex;flex-direction:column;align-items:center;line-height:1;margin:0 -16px;padding:11px 16px;border-bottom:1px solid var(--rule)}
+.portada-cab b{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.portada-cab span{font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
 .modo{display:flex;flex-direction:column;align-items:center;background:var(--surface);border:1px solid var(--rule);border-radius:24px;padding:26px 18px 28px;box-shadow:var(--shadow)}
 .modo h1{font-size:46px}
 .portada .k{text-align:center}
@@ -551,7 +551,7 @@ p{margin:0}
   }
   // ── niveles (como las apuestas de Balatro): se desbloquea el siguiente ganando la temporada ──
   const NIVELES = [
-    { n: 1, nombre: 'Circuito', txt: 'La gira tal cual.', rival: () => 0 },
+    { n: 1, nombre: 'Circuito', txt: '', rival: () => 0 },
     { n: 2, nombre: 'Profesional', txt: 'Las Series 1000 también tienen jefe.', rival: () => 0, jefes1000: true },
     { n: 3, nombre: 'Élite', txt: 'Empiezas con 12 monedas.', rival: () => 0, jefes1000: true, dinero: 12 },
     { n: 4, nombre: 'Leyenda', txt: 'Rivales +1 en todo el calendario.', rival: () => 1, jefes1000: true, dinero: 12 },
@@ -1165,7 +1165,7 @@ function inicio(p) {
     + '<header class="portada-cab"><a href="index.html" aria-label="deuce, inicio"><b>deuce</b></a><span>La gira</span></header>'
     + '<section class="modo"><h1>La gira</h1><p class="lema">Trece torneos. Gánalos todos.</p></section>'
     + '<div class="k">Nivel</div><div class="niveles" role="radiogroup">' + niveles + '</div>'
-    + '<p class="nivel-txt">' + esc(Nsel.txt) + (Nsel.n === 1 ? ' El mejor para empezar.' : '') + '</p>'
+    + (Nsel.txt ? '<p class="nivel-txt">' + esc(Nsel.txt) + '</p>' : '')
     + '<div class="k">Elige tu estilo</div><div class="estilos" role="radiogroup">'
     + G.ESTILOS.map(E => {
       const f = ESTILO_FUERTE[E.id], cerr = E.id === 'cerebral' && !cerebralLibre();
