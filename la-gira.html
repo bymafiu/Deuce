@@ -381,36 +381,6 @@ p{margin:0}
 .presion.on .sw{background:var(--pierde)}
 .presion.on .sw i{left:19px}
 
-/* la cuenta del set, debajo del marcador */
-.cset{background:var(--night);color:var(--night-ink);border-radius:14px;padding:10px 12px;display:grid;gap:8px}
-.cu-cab{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:8px}
-.cu-set{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--optic)}
-.cu-n{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
-.cu-n.el{align-items:flex-start}
-.cu-n b{font-size:24px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.cu-n small{font-size:10px;font-weight:700;color:#A39C90;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.cu-vs{font-size:11px;font-weight:800;color:#A39C90}
-.cu-p{font-size:14px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--night-2);min-width:48px;text-align:center}
-.cu-p.bien{background:var(--optic);color:var(--on-optic)}
-.cu-p.mal{background:var(--pierde);color:#fff}
-#cu-yo.pop{animation:salta .25s cubic-bezier(.3,1.6,.5,1)}
-.cu-cartas{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.cu-c{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:9px;background:var(--night-2);box-shadow:inset 0 2px 0 var(--fam);opacity:.55;transition:opacity .15s,transform .15s}
-.cu-c .ico{width:26px;height:26px}
-.cu-c em{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10.5px;font-weight:800;padding:1px 5px;border-radius:999px;white-space:nowrap;background:transparent}
-.cu-c.on{opacity:1;transform:translateY(-2px);animation:salta .3s cubic-bezier(.3,1.6,.5,1)}
-.cu-c.on em{background:var(--optic);color:var(--on-optic)}
-.cu-c.neg{opacity:1}
-.cu-c.neg em{background:var(--pierde);color:#fff}
-.cu-c.cero em{color:#A39C90}
-.cu-f{display:contents}
-.cu-base{display:flex;flex-direction:column;align-items:center;justify-content:center;height:40px;padding:0 8px;border-radius:9px;background:var(--night-2);line-height:1}
-.cu-base small{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#A39C90}
-.cu-base b{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:3px}
-.cu-fam{font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;background:var(--night-2);color:#A39C90;box-shadow:inset 3px 0 0 var(--fam,var(--gold))}
-.cu-fam.on{color:var(--optic)}
-.cu-nota{margin:0;font-size:12px;color:#CFC9BC;line-height:1.4}
-.cu-nota:empty{display:none}
 
 /* cartas nuevas y niveles */
 .nuevas{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:10px 12px;animation:pop .45s .3s cubic-bezier(.2,.9,.3,1.2) both}
@@ -419,7 +389,7 @@ p{margin:0}
 .nv .ico{width:26px;height:26px}
 .nuevas-fin{border-color:var(--gold)}
 .nivel-nuevo{margin:0;text-align:center;font-weight:800;color:var(--gold)}
-@media (prefers-reduced-motion: reduce){ .oferta.r-mítica::after{display:none} .cu-c,.nuevas{animation:none!important;transition:none!important} }
+@media (prefers-reduced-motion: reduce){ .oferta.r-mítica::after{display:none} .nuevas{animation:none!important;transition:none!important} }
 
 /* v3: el primer Open como jefe, el código de una gira y la gira para compartir */
 .jefe-gran{display:grid;gap:5px;background:var(--night);color:var(--night-ink);border-radius:18px;padding:16px;box-shadow:inset 0 4px 0 var(--gold);animation:pop .45s cubic-bezier(.2,.9,.3,1.2) both}
@@ -1403,6 +1373,8 @@ function construirTV(spec, rnd) {
         M.juegos.push({ t: tt, set: j.set, a: j.a, b: j.b, w: j.w });
         if (j.cierre) { finSet(j, tt + .05); tt += .6; }
       });
+      // contado el último juego, la bola del marcador pasa al que saca el punto que se va a ver
+      M.saques.push({ t: tt + .1, q: J[e].saca });
       tt += .45 + TV.fundido;
       colocar(J[e], tt - .05, e);
       t = tt;
@@ -1418,6 +1390,7 @@ function construirTV(spec, rnd) {
     M.juegos.push({ t: last.tb + .3 * last.T, set: j.set, a: j.a, b: j.b, w: j.w });
     if (j.partido) M.dec.push({ t0: t, t1: last.tn + .4 });
     t = last.tn + .2;
+    if (!j.partido) M.saques.push({ t, q: otro(j.saca) });   // acabado el juego, saca el otro
     if (j.cierre && !j.partido) { finSet(j, t); kf('y', t + .7, 0, FONDO.y); kf('r', t + .7, 0, FONDO.r); t += TV.setPausa; }
     prev = e;
   });
@@ -1679,6 +1652,36 @@ function tableroPix(b, PW, PH, M, t, C) {
   });
   if (Math.floor(relojPx * 4) % 2 === 0) avancePix(b, Math.round(PW / 2) - 5, Math.round(PH * .64), '#D6EF45');
 }
+// un partido fácil no se juega: su resultado sale un par de segundos, con el estilo del VS
+const RES = { dur: 2.6, marca: .18 };   // lo que dura en pantalla y cuándo aparece el resultado (fracción)
+function planResumen(M) {
+  return Object.assign({}, M, { pantallas: [{ tipo: 'resultado', t0: 0, t1: RES.dur }], dur: RES.dur });
+}
+function resultadoPix(b, PW, PH, M, t, C) {
+  const spec = M.spec, gano = M.gana ? 'y' : 'r', sale = t >= RES.marca * RES.dur;
+  b.fillStyle = rgb(C.night); b.fillRect(0, 0, PW, PH);
+  b.fillStyle = rgb(C.sup);
+  const xa = PW * .6, xb = PW * .4;
+  for (let y = 0; y < PH; y++) b.fillRect(0, y, Math.round(lerp(xa, xb, y / PH)), 1);
+  const yT = Math.round(PH * .07);
+  textoPix(b, spec.ronda, PW / 2, yT, 2, '#D6EF45', '#1d1518');
+  textoPix(b, spec.torneo, PW / 2, yT + 13, 1, '#9a9183');
+  // los dos, más abajo que en el VS para dejar sitio al resultado: el que gana salta con la raqueta arriba
+  const ks = PH >= 120 ? 3 : 2, yPie = Math.round(PH * .82);
+  [['y', PW * .26, false], ['r', PW * .74, true]].forEach(([q, x, espejo]) => {
+    const gana = q === gano, salto = gana && sale ? Math.round(Math.abs(Math.sin((t - RES.marca * RES.dur) * 7)) * 3) : 0;
+    pintaSprite(b, spritePix('frente', 'quieto', gana ? -105 : 105, q), Math.round(x), yPie - salto, ks, espejo);
+    textoPix(b, q === 'y' ? 'Tú' : corto(spec.rival), x, yPie + 5, 1, gana && sale ? '#D6EF45' : '#f7f2e6', '#1d1518');
+  });
+  if (!sale) return;
+  // el resultado, set a set, tan grande como quepa entre el título y las cabezas; entra con un destello blanco
+  const txt = spec.sets.join(' '), arriba = yT + 21, abajo = yPie - 15 * ks - 4;
+  let k = 4; while (k > 1 && (txt.length * 4 * k - k > PW - 14 || 5 * k + 8 > abajo - arriba)) k--;
+  const conEtiqueta = 5 * k + 8 <= abajo - arriba, alto = 5 * k + (conEtiqueta ? 8 : 0);
+  const yS = Math.round(arriba + Math.max(0, (abajo - arriba - alto) / 2)), flash = t < (RES.marca + .03) * RES.dur;
+  textoPix(b, txt, PW / 2, yS, k, flash ? '#ffffff' : '#f7f2e6', '#1d1518');
+  if (conEtiqueta) textoPix(b, M.gana ? 'Partido ganado' : 'Partido perdido', PW / 2, yS + 5 * k + 3, 1, M.gana ? '#D6EF45' : '#f4707f', '#1d1518');
+}
 function dibujaTV(ctx, W, H, M, t, C) {
   const PW = Math.max(60, Math.round(W / 3)), PH = Math.max(60, Math.round(H / 3));
   if (!PIX.buf) { PIX.buf = document.createElement('canvas'); PIX.b = PIX.buf.getContext('2d'); }
@@ -1687,6 +1690,7 @@ function dibujaTV(ctx, W, H, M, t, C) {
   b.imageSmoothingEnabled = false;
   if (p.tipo === 'vs') vsPix(b, PW, PH, M.spec, clamp((t - p.t0) / (p.t1 - p.t0), 0, 1), C);
   else if (p.tipo === 'tablero') tableroPix(b, PW, PH, M, t, C);
+  else if (p.tipo === 'resultado') resultadoPix(b, PW, PH, M, t - p.t0, C);
   else escenaPix(b, PW, PH, M, t, C);
   disolver(b, PW, PH, Math.max(1 - (t - p.t0) / F, 1 - (p.t1 - t) / F, 0), C.night);   // fundido en píxeles al entrar y al salir
   ctx.imageSmoothingEnabled = false;
@@ -1696,17 +1700,18 @@ function paletaPx(cv) {
   const sup = hex2rgb(getComputedStyle(cv).getPropertyValue('--sup'));
   return { sup, supO: mixc(sup, [0, 0, 0], .24), night: [30, 28, 25], night2: [52, 49, 44] };
 }
-function pintaPx(M, t) {
+// tm: el momento del partido que enseña el marcador de abajo (por defecto, el mismo que la pista)
+function pintaPx(M, t, tm) {
   const cv = $('#pista'); if (!cv) return;
-  ultimoDibujo = { M, t };
+  ultimoDibujo = { M, t, tm };
   const W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return;
   const dpr = Math.min(2.5, window.devicePixelRatio || 1);
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   dibujaTV(ctx, W, H, M, t, paletaPx(cv));
-  marcadorDom(M, t);
+  marcadorDom(M, tm == null ? t : tm);
 }
-window.addEventListener('resize', () => { if (ultimoDibujo && $('#pista')) pintaPx(ultimoDibujo.M, ultimoDibujo.t); });
+window.addEventListener('resize', () => { if (ultimoDibujo && $('#pista')) pintaPx(ultimoDibujo.M, ultimoDibujo.t, ultimoDibujo.tm); });
 
 // el marcador y los avisos de debajo de la pista
 let domAnt = {};
@@ -1768,7 +1773,6 @@ function partidos(p) {
     + '<div class="mf" id="f-y"><span class="saque"></span><span class="mn">Tú</span><span class="ms" id="s-y"></span></div>'
     + '<div class="mf" id="f-r"><span class="saque"></span><span class="mn" id="n-r"></span><span class="ms" id="s-r"></span></div>'
     + '</div>'
-    + '<section class="cset" id="cuenta" aria-label="Lo que suma tu bolsa en este set"></section>'
     + '<button class="rapido" data-acc="todo">Saltar</button>'
     + '</section>'
     + '<div id="final" hidden></div>'
@@ -1804,7 +1808,7 @@ async function simular(id) {
     const m = R.partidos[i];
     const sets = m.moneda ? (m.gana ? ['6-4', '6-4'] : ['4-6', '4-6']) : m.sets.filter(s => !s.repetido).map(s => s.juegos);
     const M = construirTV({ ronda: G.nombreRonda(t, m.ronda) + (m.intento > 1 ? ' · otra vez' : ''), rival: m.rival.nombre, sets, torneo: T.nombre, primero: rnd() < .5 ? 'y' : 'r' }, rnd);
-    await (esFacil(m, t) ? resumir(M, id, m) : reproducir(M, id, m));
+    await (esFacil(m, t) ? resumir(M, id) : reproducir(M, id));
   }
   terminar(true);
 }
@@ -1814,90 +1818,33 @@ function esFacil(m, t) {
   if (m.moneda || !m.gana || m.intento > 1 || m.ronda === G.CALENDARIO[t].rondas - 1) return false;
   return m.sets.every(s => !s.repetido && s.probMedia >= .72);
 }
-function resumir(M, id, m) {
+// su resultado sale un par de segundos en la pantalla en píxel, como el VS; el marcador de abajo, ya con el final
+function resumir(M, id) {
   domAnt = {};
-  const el = $('#cuenta'); if (el) el.innerHTML = '<p class="cu-nota">Partido fácil: va resumido.</p>';
-  pintaPx(M, M.dur - .02);
-  return new Promise((res, rej) => setTimeout(() => (id !== animId ? rej('cancelado') : res()), 1400));
+  const R = planResumen(M);
+  return new Promise((res, rej) => {
+    let antes = null, t = 0, sono = false;
+    const paso = ahora => {
+      if (id !== animId) return rej('cancelado');
+      const dt = antes == null ? 0 : Math.min(.05, (ahora - antes) / 1000); antes = ahora;
+      t += dt; relojPx += dt;
+      pintaPx(R, Math.min(t, R.dur), M.dur);
+      if (!sono && t >= R.dur * RES.marca) { sono = true; sonar(M.gana ? 'gana' : 'pierde'); }
+      if (t >= R.dur) return res();
+      requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  });
 }
 
-// la cuenta: lo que suma cada carta de tu bolsa en el set que se juega (como en Balatro, a la vista)
-function cuentaHTML(m) {
-  const cartas = S.e.bolsa.map(id => '<span class="cu-c" data-id="' + id + '" style="--fam:' + famCol(G.CARTA[id].fam) + '">' + ico(id) + '<em></em></span>').join('');
-  return '<div class="cu-cab"><span class="cu-set" id="cu-set">Set 1</span><span class="cu-n"><b id="cu-yo">0</b><small>tu poder</small></span><span class="cu-vs">vs</span><span class="cu-n el"><b id="cu-el">0</b><small>' + esc(corto(m.rival.nombre)) + '</small></span><span class="cu-p" id="cu-p"></span></div>'
-    + '<div class="cu-cartas"><span class="cu-base" id="cu-base" title="Tus atributos, contados según la pista y el set"><small>atributos</small><b>—</b></span>' + (cartas || '') + '<span class="cu-f" id="cu-f"></span></div><p class="cu-nota" id="cu-nota"></p>';
-}
-// los pasos de la cuenta de un set: base, luego cada carta que suma, luego familias y tiradas
-function pasosSet(s) {
-  if (!s || s.moneda) return null;
-  const pasos = [{ k: 'base', v: s.det.base }];
-  const tir = {}; (s.tiradas || []).forEach(x => { if (x.id) tir[x.id] = (tir[x.id] || 0) + x.v; else tir['fam:' + x.f] = (tir['fam:' + x.f] || 0) + x.v; });
-  s.det.cartas.forEach(x => { const v = x.v + (tir[x.id] || 0); pasos.push({ k: 'carta', id: x.id, v, fuera: x.fuera, azar: x.azar }); });
-  s.det.fams.forEach(x => { const v = x.v + (tir['fam:' + x.f] || 0); if (v || x.azar) pasos.push({ k: 'fam', f: x.f, n: x.k, v }); });
-  (s.det.pares || []).forEach(x => { if (x.v) pasos.push({ k: 'par', id: x.id, v: x.v }); });
-  return pasos;
-}
-let cuentaEstado = null;
-function cuentaSet(m, si, t0) {
-  const sets = m.moneda ? [] : m.sets.filter(s => !s.repetido), s = sets[si];
-  const idxReal = m.moneda ? -1 : m.sets.indexOf(s), previo = idxReal > 0 ? m.sets[idxReal - 1] : null;
-  cuentaEstado = { m, si, t0, pasos: pasosSet(s), s, mostrado: 0, repetido: previo && previo.repetido ? previo : null };
-  const el = $('#cuenta'); if (!el) return;
-  $('#cu-set').textContent = m.moneda ? 'Final' : 'Set ' + (si + 1);
-  el.querySelectorAll('.cu-c').forEach(c => { c.classList.remove('on', 'neg', 'cero'); c.querySelector('em').textContent = ''; });
-  const bb = $('#cu-base b'); if (bb) bb.textContent = '—';
-  $('#cu-f').innerHTML = '';
-  if (m.moneda) {
-    $('#cu-yo').textContent = '—'; $('#cu-el').textContent = '—'; $('#cu-p').textContent = (m.sets[0].prob >= .75 ? '75' : '50') + ' %';
-    $('#cu-nota').textContent = 'Moneda del juez de silla: esta final se decide a cara o cruz.';
-    return;
-  }
-  $('#cu-yo').textContent = '0'; $('#cu-el').textContent = Math.round(s.el); $('#cu-p').textContent = '';
-  const notas = [];
-  if (cuentaEstado.repetido) notas.push('Perdiste este set ' + cuentaEstado.repetido.juegos + ' y se repite: ' + repiteNombre(m) + '.');
-  if (s.jefe && G.JEFES[s.jefe]) notas.push('Jefe · ' + G.JEFES[s.jefe].nombre + ': ' + G.JEFES[s.jefe].txt);
-  if (s.cabeza) notas.push('Cuenta tu Cabeza' + (m.ronda === G.CALENDARIO[S.torneoJugado].rondas - 1 ? ' (es la final).' : ' (tercer set).'));
-  $('#cu-nota').textContent = notas.join(' ');
-}
-function repiteNombre(m) { const t = S.torneoJugado, sup = G.supDe(S.e, t); const b = S.e.bolsa; if (b.indexOf('cinta') >= 0 && sup === 'Tierra') return 'Cinta de línea'; if (b.indexOf('paraguas') >= 0 && sup === 'Hierba') return 'Paraguas cerrado'; return 'Ojo de halcón roto'; }
-// avanza la cuenta según el tiempo del partido: cada paso aparece 0,14 s después del anterior
-function cuentaTick(t) {
-  const C = cuentaEstado; if (!C || !C.pasos) return;
-  const el = $('#cuenta'); if (!el) return;
-  const dt = t - C.t0, n = Math.min(C.pasos.length, Math.max(0, Math.floor((dt - .1) / .14) + 1));
-  while (C.mostrado < n) {
-    const ps = C.pasos[C.mostrado]; C.mostrado++;
-    if (ps.k === 'base') { const bb = $('#cu-base b'); if (bb) bb.textContent = Math.round(ps.v); }
-    else if (ps.k === 'carta') {
-      const c = el.querySelector('.cu-c[data-id="' + ps.id + '"]');
-      if (c) { const em = c.querySelector('em'); em.textContent = ps.fuera ? 'no cuenta' : (ps.v > 0 ? '+' : ps.v < 0 ? '−' : '') + Math.abs(Math.round(ps.v * 10) / 10); c.classList.add(ps.v > 0 ? 'on' : ps.v < 0 ? 'neg' : 'cero'); }
-      if (ps.v) sonar('tic', C.mostrado);
-    } else if (ps.k === 'fam' || ps.k === 'par') {
-      const f = $('#cu-f'), txt = ps.k === 'fam' ? G.FAM[ps.f].nombre + ' (' + (ps.n === 2 ? 4 : 2) + ')' : (G.PAREJAS.find(x => x.id === ps.id) || {}).n;
-      f.insertAdjacentHTML('beforeend', '<span class="cu-fam' + (ps.v ? ' on' : '') + '"' + (ps.f ? ' style="--fam:' + famCol(ps.f) + '"' : '') + '>✦ ' + esc(txt) + ' ' + (ps.v ? '+' + ps.v : '+0') + '</span>');
-      if (ps.v) sonar('tic', C.mostrado + 2);
-    }
-    const suma = C.pasos.slice(0, C.mostrado).reduce((a, x) => a + (x.fuera ? 0 : x.v), 0);
-    const yo = $('#cu-yo'); yo.textContent = Math.round(suma); yo.classList.remove('pop'); void yo.offsetWidth; yo.classList.add('pop');
-    if (C.mostrado === C.pasos.length) { $('#cu-p').textContent = pct(C.s.prob); $('#cu-p').className = 'cu-p ' + (C.s.prob >= .5 ? 'bien' : 'mal'); sonar('suma'); }
-  }
-}
-function reproducir(M, id, m) {
+function reproducir(M, id) {
   domAnt = {};
-  const el = $('#cuenta'); if (el) el.innerHTML = cuentaHTML(m);
-  const inicios = [0].concat(M.sets.slice(1).map(x => x.t - .2));
-  let si = -1;
   return new Promise((res, rej) => {
     let antes = null, t = 0;
     const paso = ahora => {
       if (id !== animId) return rej('cancelado');
       const dt = antes == null ? 0 : Math.min(.05, (ahora - antes) / 1000); antes = ahora;
       t += dt; relojPx += dt;
-      // ¿empieza otro set? su cuenta, desde cero
-      let k = 0; inicios.forEach((x, i) => { if (t >= x) k = i; });
-      if (m.moneda) k = 0;
-      if (k !== si) { si = k; cuentaSet(m, k, t); }
-      cuentaTick(t);
       pintaPx(M, Math.min(t, M.dur));
       if (t >= M.dur) return res();
       requestAnimationFrame(paso);
