@@ -421,6 +421,316 @@ p{margin:0}
 .cookies div{display:flex;gap:6px}
 .cookies button{border:1px solid var(--rule);border-radius:999px;background:transparent;color:var(--ink);padding:7px 12px;font:600 12px var(--f);cursor:pointer}
 .cookies button.si{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+/* la marca de arriba, en partida, lleva al menú principal */
+.marca{color:inherit;text-decoration:none;border-radius:6px}
+.marca:focus-visible{outline:3px solid var(--dura);outline-offset:3px}
+.top-cartas{display:none}
+</style>
+<style>
+/* ── escritorio: la mesa de La gira ─────────────────────────────
+   La misma mesa que Supersticiones: tres columnas y dos filas con los bordes alineados.
+   tú | el torneo de ahora | la decisión arriba; tu gira | tu bolsa abajo.
+   Todos los paneles comparten relleno (20), radio (20) y una fila de rótulo de 24 px,
+   así lo de cada fila empieza a la misma altura. Rótulos en mayúsculas de 11 px. */
+:root{--accent-bg:#E8E4D9}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --accent-bg:#26292C } }
+:root[data-theme="dark"]{--accent-bg:#26292C}
+body.esc{--m-fondo:color-mix(in srgb, var(--paper) 45%, var(--accent-bg))}
+
+/* la barra de arriba, de borde a borde: cartas · marca · sonido y torneo */
+body.esc{margin:0}
+body.esc .app{max-width:none;padding:0}
+body.esc .top{position:sticky;top:0;margin:0;height:56px;padding:0 12px;justify-content:center;gap:0;background:var(--paper)}
+body.esc.en-mesa .top{background:var(--m-fondo);flex:none}
+body.esc .top-fila{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+body.esc .marca{grid-column:2;align-items:center}
+body.esc .marca b{font-size:22px}
+body.esc .chips{grid-column:3;justify-self:end;margin-left:0}
+body.esc .escalera{display:none}
+body.esc .top-cartas{grid-column:1;justify-self:start;display:inline-flex;align-items:center;cursor:pointer;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--ink)}
+body.esc .top-cartas:hover{border-color:var(--ink)}
+
+/* la portada y la colección siguen en una columna, un poco más ancha */
+body.esc #pantalla > .pant{max-width:520px;margin:0 auto;padding-inline:16px;padding-bottom:32px}
+body.esc #pantalla > .pant.m-col{max-width:1040px}
+body.esc .portada-cab{margin:0 calc(50% - 50vw);height:56px;justify-content:center;padding:0}
+body.esc .m-col .col{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+
+/* la mesa ocupa la pantalla entera, sin desplazar */
+body.en-mesa{background:var(--m-fondo)}
+body.en-mesa .app{height:100vh;height:100dvh;display:flex;flex-direction:column;padding-block:0}
+body.en-mesa #pantalla{flex:1 1 auto;min-height:0;display:flex}
+.mesa{
+  --m-gap:clamp(16px,1.6vw,24px); --m-pad:20px; --m-art:clamp(40px,8.4vh,84px);
+  --m-chip:clamp(40px,5.6vh,52px);
+  flex:1 1 auto;min-height:0;width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;
+  display:grid;grid-template-columns:clamp(240px,20vw,300px) minmax(0,1fr) clamp(290px,22.5vw,340px);
+  grid-template-rows:minmax(290px,1fr) auto;grid-template-areas:"jug temp dec" "car bolsa bolsa";
+  gap:var(--m-gap);padding:var(--m-gap);overflow:auto;color:var(--ink)
+}
+.m-jug{grid-area:jug}.m-temp{grid-area:temp}.m-dec{grid-area:dec}.m-car{grid-area:car}.m-bolsa{grid-area:bolsa}
+.m-panel{background:var(--paper);border:1.5px solid var(--rule);border-radius:20px;padding:var(--m-pad);display:flex;flex-direction:column;gap:16px;min-width:0;min-height:0;box-sizing:border-box;position:relative}
+.m-kick{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:24px;flex:none}
+.m-k{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.m-meta{font-size:12px;color:var(--ink-soft);white-space:nowrap;flex:none;font-variant-numeric:tabular-nums}
+.m-barra{display:block;height:6px;border-radius:999px;background:var(--rule);overflow:hidden;min-width:0}
+.m-barra b{display:block;height:100%;border-radius:999px;background:var(--ink);transition:width .4s ease}
+.mesa .m-anim{animation:entra .3s ease both}
+.mesa.quieta .m-anim{animation:none}
+
+/* tú: estilo, nivel y los cuatro atributos */
+.m-jug{overflow:hidden}
+.m-quien{display:flex;flex-direction:column;gap:6px;padding-bottom:16px;border-bottom:1px solid var(--rule);flex:none}
+.m-nombre{font-size:24px;font-weight:800;letter-spacing:-.025em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-ficha{font-size:13px;color:var(--ink-soft);line-height:1.3}
+.m-atrs{display:flex;flex-direction:column;gap:16px;flex:none}
+.m-atr{display:grid;grid-template-columns:minmax(0,1fr) 30px;grid-template-rows:auto auto;gap:6px 10px;align-items:center;font-size:13px}
+.m-atr-l{display:flex;align-items:center;gap:6px;white-space:nowrap;min-width:0}
+.m-atr-v{grid-row:1 / span 2;grid-column:2;text-align:right;font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.m-atr .m-barra{grid-column:1}
+.m-atr.clave .m-barra b{background:var(--sup)}
+.m-atr .x2{font-style:normal;font-size:9.5px;font-weight:800;padding:2px 5px;border-radius:4px;background:var(--sup);color:#fff;letter-spacing:.04em}
+.m-atr .x2.cab{background:var(--ink);color:var(--paper)}
+.m-prog{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--rule);flex:none}
+.m-prog-t{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--ink-soft);line-height:1.3}
+.m-prog-t span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.m-prog-t b{color:var(--ink);font-weight:700}
+.m-dot{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--sup);margin-right:6px;vertical-align:0}
+
+/* el centro: los trece torneos en fila y, debajo, lo que toca ahora */
+.m-temp{overflow:hidden}
+.m-tira{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:6px;flex:none}
+.m-chip{box-sizing:border-box;height:var(--m-chip);min-width:0;border-radius:10px;background:var(--surface);border:2px solid var(--rule);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;overflow:hidden;box-shadow:inset 0 4px 0 var(--sup)}
+.m-chip.pend{border-style:dashed;background:transparent}
+.m-chip.pend .m-chip-r{color:var(--ink-soft)}
+.m-chip.tit{background:var(--optic);border-color:var(--optic);box-shadow:none}
+.m-chip.tit .m-chip-c,.m-chip.tit .m-chip-r{color:var(--on-optic)}
+.m-chip.ko{border-color:var(--pierde);border-style:solid}
+.m-chip.ko .m-chip-r{color:var(--pierde)}
+.m-chip.sel{border-color:var(--ink);border-style:solid}
+.m-chip-c{font-size:9.5px;font-weight:800;letter-spacing:.06em;color:var(--ink-soft);line-height:1;white-space:nowrap;margin-top:3px}
+.m-chip-r{font-size:clamp(11px,.95vw,14px);font-weight:800;letter-spacing:-.01em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.m-chip i{position:absolute;top:7px;right:4px;width:5px;height:5px;transform:rotate(45deg);background:var(--ink);border-radius:1px}
+.m-chip.tit i{background:var(--on-optic)}
+.m-escena{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:14px}
+
+/* tienda: las cartas a la venta, de pie, como una mano */
+.m-acc{display:flex;align-items:center;gap:8px;flex:none}
+.m-caja .mon{display:inline-block;font-size:15px;font-weight:800;color:var(--ink);background:var(--surface);border:1.5px solid var(--rule);border-radius:999px;padding:2px 11px;line-height:20px}
+.m-caja.sube .mon{animation:sube 1.5s ease both}
+.m-caja.baja .mon{animation:gasta .6s ease both}
+.m-pill{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 11px;border-radius:999px;border:1.5px solid var(--rule);background:var(--surface);font-size:12px;font-weight:700;white-space:nowrap}
+.m-pill:hover{border-color:var(--ink)}
+.m-pill[disabled]{opacity:.45;cursor:default}
+.m-pill:focus-visible{outline:3px solid var(--dura);outline-offset:2px}
+.m-aviso-l{margin:-4px 0 0;font-size:13px;color:var(--ink-soft);flex:none}
+.m-aviso-l.m-open{color:var(--ink)}
+.m-aviso-l.m-open b{color:var(--gold)}
+.m-ofertas{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:clamp(10px,1.2vw,16px)}
+.m-of{position:relative;display:flex;flex-direction:column;gap:6px;min-width:0;min-height:0;overflow:hidden;background:var(--surface);border:2px solid var(--rule);border-radius:16px;padding:10px 12px 12px;box-shadow:inset 0 4px 0 var(--fam)}
+.m-of.r-rara,.m-of.r-mítica{border-color:var(--ink)}
+.m-of.r-mítica{box-shadow:inset 0 4px 0 var(--fam),0 0 0 2px var(--optic)}
+.m-of.r-mítica::after{content:"";position:absolute;inset:-40% auto -40% -60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:brillo 2.8s ease-in-out infinite;pointer-events:none}
+.m-of.premio{border-color:var(--gold);box-shadow:inset 0 4px 0 var(--fam),0 0 0 2px var(--gold)}
+.m-of.maldita{background:var(--night);color:var(--night-ink);border-color:var(--night-2)}
+.m-of.comprada{opacity:.45}
+.m-of-sh{display:flex;align-items:center;justify-content:space-between;gap:6px;height:14px;margin-top:2px;flex:none}
+.m-of-rar{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.m-of.r-mítica .m-of-rar,.m-of.premio .m-of-rar{color:var(--gold)}
+.m-of.maldita .m-of-rar{color:var(--optic)}
+.m-fdot{width:8px;height:8px;border-radius:2px;transform:rotate(45deg);display:block;flex:none;background:var(--fam)}
+.m-of-arte{height:var(--m-art);border-radius:10px;background:var(--paper);display:grid;place-items:center;flex:none}
+.m-of.maldita .m-of-arte{background:var(--night-2)}
+.m-of.r-mítica:not(.maldita) .m-of-arte{background:color-mix(in srgb,var(--optic) 45%,var(--paper))}
+.m-of-arte .ico{width:min(44px,calc(var(--m-art) * .6));height:min(44px,calc(var(--m-art) * .6))}
+.m-of-n{font-size:14.5px;font-weight:800;letter-spacing:-.015em;line-height:1.2;flex:none}
+.m-of .chipc{align-self:flex-start;margin:0;font-size:12px;font-weight:800;padding:2px 7px;border-radius:7px;background:color-mix(in srgb,var(--fam) 16%,var(--paper));color:var(--ink);flex:none}
+.m-of.maldita .chipc{background:var(--night-2);color:var(--optic)}
+.m-of-fx{margin:0;font-size:12px;line-height:1.38;color:var(--ink-soft);min-height:1.38em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;flex:0 1 auto}
+.m-of.maldita .m-of-fx{color:var(--night-ink);opacity:.8}
+.m-of .tags{margin-top:0;flex:none}
+.m-of .tag{font-size:10.5px;padding:2px 7px}
+.m-of-pie{margin-top:auto;display:flex;padding-top:4px;flex:none}
+.m-of-pie .comprar{width:100%;margin:0;justify-content:center}
+/* lo que cambia tu % va sobre el dibujo, en la esquina */
+.m-of-arte{position:relative;height:min(var(--m-art),22cqh)}
+.m-of-arte .delta{position:absolute;top:6px;right:6px}
+/* si la fila de cartas es baja, el texto largo se recorta a dos líneas o se quita (queda en la pastilla y al pasar el ratón) */
+.m-ofertas{container-type:size}
+@container (max-height: 320px){ .m-of-fx{-webkit-line-clamp:2} }
+@container (max-height: 268px){ .m-of-fx{display:none} }
+.m-of-arte .delta{font-size:11.5px;padding:2px 7px;box-shadow:0 0 0 1.5px var(--rule)}
+.m-of.maldita .delta{background:var(--night-2);color:var(--night-ink)}
+.m-of.maldita .delta.sube{background:var(--optic);color:var(--on-optic)}
+.m-of-pie .comprar{padding:8px 10px;font-size:13.5px}
+.m-of.maldita .comprar{background:var(--night-ink);color:var(--night)}
+.m-of-vale{background:var(--night);color:var(--night-ink);border-color:var(--night);box-shadow:inset 0 4px 0 var(--optic)}
+.m-of-vale .m-of-rar{color:var(--optic)}
+.m-of-vale .m-of-arte{background:var(--night-2)}
+.m-vale-ico{font-size:calc(var(--m-art) * .42);line-height:1;color:var(--optic)}
+.m-of-vale .m-of-fx{color:var(--night-ink);opacity:.8}
+.m-of-vale .comprar{background:var(--optic);color:var(--on-optic)}
+.m-of-vale .comprar[disabled]{background:var(--night-2);color:var(--faint)}
+
+/* el cuadro antes de jugar: un rival por ronda, de pie */
+.m-cuadro{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:clamp(10px,1.2vw,16px)}
+.m-rv{display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--surface);border:2px solid var(--rule);border-radius:16px;padding:14px 14px 14px}
+.m-rv.final{border-color:var(--ink)}
+.m-rv .rk{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.m-rv{container-type:inline-size}
+.m-rv-p{margin:auto 0 0;font-size:min(48px,32cqw,6vh);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.m-rv .dif{align-self:flex-start;justify-self:auto;flex-direction:row;gap:0;font-size:12px;padding:4px 10px}
+.m-rv-pie{margin-top:auto;padding-top:10px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:2px;min-width:0}
+.m-rv-n{font-size:14.5px;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-rv-e{font-size:12px;color:var(--ink-soft)}
+
+/* el partido: la pista en píxel a la izquierda; marcador y cuadro a la derecha */
+.m-partido{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(14px,1.4vw,20px)}
+.m-p-izq{min-height:0;height:100%;display:flex;flex-direction:column;justify-content:center}
+.m-p-izq .vivo{height:100%;display:block}
+.m-p-izq .pista-wrap{height:100%;aspect-ratio:100 / 110;max-width:100%}
+.m-p-izq .pista-wrap canvas{width:100%;height:100%;aspect-ratio:auto}
+.m-p-izq #final{height:100%;display:flex;flex-direction:column;gap:12px;aspect-ratio:100 / 110;max-width:100%}
+.m-p-izq #final > .titulo{flex:1 1 auto;min-height:0}
+.m-p-izq #final[hidden]{display:none}
+.m-p-der{min-width:0;min-height:0;display:flex;flex-direction:column;gap:12px}
+.m-p-der .marcador{flex:none}
+.m-p-der .mf .ms b{width:30px;font-size:20px}
+.m-cuadro-l{flex:1 1 auto;min-height:0;overflow:auto;background:var(--surface);border:1.5px solid var(--rule);border-radius:14px;padding:4px 14px}
+.m-cuadro-l .ronda{padding:9px 0}
+.m-cuadro-l .ronda:first-child{padding-top:9px}
+.m-cuadro-l .ronda.ahora{opacity:1}
+/* la tarjeta del final del torneo, en grande donde estaba la pista */
+/* ocupa lo mismo que la pista: el trofeo arriba, el nombre del torneo en grande abajo */
+.m-p-izq .titulo{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;height:100%;padding:24px 24px 26px;border-radius:16px;box-shadow:inset 0 8px 0 var(--sup),var(--shadow)}
+.m-p-izq .titulo .trofeo{position:absolute;left:24px;top:30px;width:clamp(72px,14vh,120px);height:clamp(72px,14vh,120px)}
+.m-p-izq .titulo .tt{font-size:clamp(34px,6vh,54px);line-height:1}
+.m-p-izq .titulo .tsub{font-size:14px}
+.m-p-izq .titulo .tpremio{position:absolute;right:20px;top:30px;font-size:18px;padding:8px 14px}
+.m-p-izq .titulo.fuera{justify-content:center;background:var(--surface);box-shadow:inset 0 8px 0 var(--pierde),var(--shadow)}
+.m-p-izq #final > .titulo:only-child{flex:1 1 auto}
+.m-p-izq #final .nuevas{flex:none}
+.m-p-izq .confeti i{animation-name:cae2}
+@keyframes cae2{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(340px) rotate(620deg)}}
+
+/* fin de la gira */
+.m-fin{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:18px;max-width:640px}
+.m-fin-t{font-size:clamp(28px,4.4vh,40px);font-weight:800;letter-spacing:-.035em;line-height:1.08;margin:6px 0 0;text-wrap:balance}
+.m-fin .porque{font-size:15px;color:var(--ink-soft);max-width:52ch}
+.m-fin .perfecta{text-align:left;padding:26px 24px}
+.m-fin .perfecta b{font-size:40px}
+.m-fin .fin-num{grid-template-columns:repeat(3,minmax(0,1fr))}
+.m-fin .fin-num b{font-size:36px}
+
+/* la decisión: el torneo de ahora y lo que puedes hacer */
+.m-dec{border-color:var(--ink);background:var(--surface);overflow:auto}
+.m-dec-in{display:flex;flex-direction:column;gap:16px;flex:1 1 auto;min-height:0}
+.m-tor{display:flex;flex-direction:column;gap:8px;flex:none}
+.m-tor-cab{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.m-tor-cab .sup{flex:none}
+.m-tor-n{font-size:clamp(22px,3vh,28px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:0;text-wrap:balance}
+.m-tor-p{display:flex;align-items:baseline;gap:10px}
+.m-tor-p b{font-size:clamp(44px,7.4vh,64px);font-weight:800;letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums}
+.m-tor-p span{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.m-dec .jefe-l{margin:0}
+.m-dec .jefe-gran{padding:12px 14px;gap:3px;border-radius:14px;flex:none}
+.m-dec .jefe-gran b{font-size:17px}
+.m-dec .jefe-gran p{font-size:12.5px}
+.m-opts{display:flex;flex-direction:column;gap:8px;flex:none}
+.m-opt{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:12px 16px;border-radius:14px;border:1.5px solid var(--rule);background:var(--surface);color:var(--ink);font-size:15px;font-weight:700;line-height:1.3;transition:transform .08s ease,border-color .15s}
+.m-opt:hover{border-color:var(--ink)}
+.m-opt.a{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.m-opt i{font-style:normal;opacity:.6;flex:none;font-size:17px;line-height:1}
+.m-opt:active{transform:scale(.98)}
+.m-opt:focus-visible{outline:3px solid var(--dura);outline-offset:2px}
+.m-opt[hidden]{display:none}
+.m-opt[disabled]{opacity:.45;cursor:default;transform:none}
+.m-dec .presion{padding:11px 13px;border-radius:14px;gap:11px}
+.m-dec .presion b{font-size:14.5px}
+.m-dec .presion small{font-size:12px}
+.m-nota{margin:0;font-size:13px;line-height:1.45;color:var(--ink-soft);text-wrap:pretty}
+.m-res{margin-top:auto;display:flex;flex-direction:column;padding-top:4px;flex:none}
+.m-res-f{display:flex;justify-content:space-between;align-items:baseline;gap:14px;font-size:13px;line-height:1.35;padding:8px 0;border-top:1px solid var(--rule)}
+.m-res-f span{color:var(--ink-soft);flex:none}
+.m-res-f b{font-weight:700;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-venta{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;border:1.5px dashed var(--pierde);flex:none}
+.m-venta p{margin:0;font-size:13px;line-height:1.4}
+.m-venta .comprar{align-self:flex-start;background:var(--pierde);color:#fff;margin:0}
+.m-dec .comp-t{font-size:13px;line-height:1.5;background:var(--paper);border:1.5px solid var(--rule);border-radius:14px;padding:12px 14px;margin:0;flex:none}
+
+/* tu gira: cuatro cifras */
+.m-car{overflow:hidden}
+.m-tiles{flex:1 1 auto;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(64px,1fr);gap:10px;min-height:0}
+.m-tile{background:var(--surface);border:1.5px solid var(--rule);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-width:0}
+.m-tl{font-size:12px;color:var(--ink-soft);line-height:1.2}
+.m-tv{font-size:24px;font-weight:800;letter-spacing:-.025em;line-height:1;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+.m-tv small{font-size:14px;font-weight:700;color:var(--ink-soft);letter-spacing:0}
+.m-tile.sube .m-tv{animation:salta .5s cubic-bezier(.3,1.6,.5,1)}
+
+/* tu bolsa, como una mano de cartas */
+.m-bolsa{background:var(--accent-bg);gap:0}
+.m-bfams{display:flex;gap:6px;margin-left:auto;min-width:0;overflow:hidden;justify-content:flex-end}
+.m-bfam{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;background:var(--surface);font-size:12px;font-weight:700;white-space:nowrap}
+.m-bfam i{width:7px;height:7px;transform:rotate(45deg);display:block;flex:none;background:var(--fam)}
+.m-bfam.par{color:var(--gold)}
+.m-bfam.vl{background:var(--night);color:var(--optic)}
+.m-mano{padding-top:22px;display:grid;grid-template-columns:repeat(var(--n,6),minmax(0,1fr));gap:clamp(10px,1.2vw,16px)}
+.m-sl{all:unset;box-sizing:border-box;position:relative;cursor:pointer;border-radius:14px;border:2px solid var(--rule);display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 10px 11px;text-align:left;min-height:calc(var(--m-art) + 108px);min-width:0;background:var(--surface);color:var(--ink);transition:transform .12s ease,border-color .15s}
+.m-sl:not(.fija):hover{transform:translateY(-3px)}
+.m-sl.fija{cursor:default}
+.m-sl.vacio{background:transparent;border:2px dashed color-mix(in srgb, var(--ink-soft) 35%, transparent);cursor:default}
+.m-sl.r-rara,.m-sl.r-mítica{border-color:var(--ink)}
+.m-sl.maldita{background:var(--night);border-color:var(--night-2);color:var(--night-ink)}
+.m-sl.sel{box-shadow:0 0 0 3px var(--pierde);border-style:dashed;border-color:var(--pierde);transform:translateY(-6px)}
+.m-sl:focus-visible{outline:3px solid var(--dura);outline-offset:2px}
+.m-sl-sh{display:flex;align-items:center;justify-content:space-between;height:14px;gap:6px}
+.m-sl-cod{font-size:11px;font-weight:800;line-height:1}
+.m-sl-arte{position:relative;height:var(--m-art);border-radius:10px;background:var(--paper);display:grid;place-items:center;flex:none}
+.m-sl.r-mítica:not(.maldita) .m-sl-arte{background:var(--optic)}
+.m-sl.maldita .m-sl-arte{background:var(--night-2)}
+.m-sl-arte .ico{width:min(48px,calc(var(--m-art) * .62));height:min(48px,calc(var(--m-art) * .62))}
+.m-sl-arte .cb-cu{left:auto;right:6px;top:auto;bottom:6px}
+.m-sl-n{font-size:13px;font-weight:700;line-height:1.25;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
+.m-sl-c{font-size:11.5px;font-weight:800;line-height:1.2;color:var(--gana);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-sl.maldita .m-sl-c{color:var(--optic)}
+.m-sl-f{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);line-height:1.2;margin-top:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-sl.maldita .m-sl-f{color:var(--faint)}
+
+/* escritorios estrechos: el torneo y la decisión arriba, a la vista; la bolsa debajo y luego tú y tu gira */
+@media (max-width:1179px){
+  body.en-mesa .app{height:auto;min-height:100vh}
+  .mesa{grid-template-columns:minmax(0,1fr) 290px;grid-template-rows:460px max-content max-content;grid-template-areas:"temp dec" "bolsa bolsa" "jug car";align-content:start;overflow:visible}
+  .m-jug,.m-car{overflow:visible}
+  .m-car{min-height:240px}
+}
+/* pantallas bajas */
+@media (max-height:800px){
+  .mesa{--m-pad:16px}
+  .m-panel{gap:12px}
+  .m-quien{padding-bottom:12px;gap:4px}
+  .m-nombre{font-size:22px}
+  .m-atrs{gap:9px}
+  .m-prog{padding-top:12px}
+  .m-opt{min-height:44px;padding:10px 14px;font-size:14px}
+  .m-dec-in{gap:12px}
+  .m-tiles{gap:8px;grid-auto-rows:minmax(52px,1fr)}
+  .m-tile{padding:9px 12px}
+  .m-tv{font-size:21px}
+  /* en pantallas bajas la bolsa va en cartas apaisadas: dibujo a la izquierda, nombre y efecto al lado */
+  .m-mano{padding-top:12px}
+  .m-sl{min-height:0;display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto auto;gap:3px 10px;align-items:center;padding:8px 10px}
+  .m-sl.vacio{min-height:64px}
+  .m-sl-sh,.m-sl-f{display:none}
+  .m-sl-arte{grid-row:1 / span 2;height:44px}
+  .m-sl-arte .ico{width:30px;height:30px}
+  .m-sl-arte .cb-cu{right:-6px;bottom:-6px}
+  .m-sl-n{font-size:12.5px;min-height:0;align-self:end}
+  .m-sl-c{align-self:start}
+  .m-tor-p b{font-size:clamp(40px,7vh,56px)}
+  .m-dec .presion small{display:none}
+  .m-dec .presion{padding:9px 12px}
+}
+@media (prefers-reduced-motion: reduce){ .mesa .m-anim,.m-of.r-mítica::after,.m-caja .mon,.m-tile .m-tv{animation:none!important} .m-sl,.m-sl.sel{transform:none} }
 </style>
 </head>
 <body>
@@ -428,7 +738,8 @@ p{margin:0}
 <div class="app">
   <header class="top" id="top" hidden>
     <div class="top-fila">
-      <div class="marca"><b>deuce</b><span>La gira</span></div>
+      <button type="button" class="top-cartas" data-acc="coleccion">Cartas</button>
+      <a class="marca" href="index.html" aria-label="deuce: volver al menú principal"><b>deuce</b><span>La gira</span></a>
       <div class="chips"><button type="button" class="son" id="b-son" data-acc="sonido" aria-pressed="true" aria-label="Quitar el sonido"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 6h3l4-3v10L5 10H2z" fill="currentColor"/><path class="ondas" d="M11 5.5a3.5 3.5 0 0 1 0 5M12.8 3.6a6 6 0 0 1 0 8.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path class="x" d="M11 6l4 4M15 6l-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button><span class="chip" id="chip-titulos"></span></div>
     </div>
     <div class="escalera" id="escalera" aria-hidden="true"></div>
@@ -1026,7 +1337,20 @@ P.desbloq = G.CARTAS.map(c => c.id);   // todo abierto desde la primera gira: si
 let rng = null;
 let estiloSel = 'sacador', nivelSel = Math.min(G.NIVELES.length, Math.max(1, leer('deuce-gira.nivel', 1)));
 function nuevoRng() { rng = G.mulberry(((S && S.semilla) || 1) + ((S && S.paso) || 0) * 7919); }
-function salvar() { if (S) { S.paso = (S.paso || 0) + 1; guardar(CLAVE_S, S); } }
+function salvar() { if (S && !saliendo) { S.paso = (S.paso || 0) + 1; guardar(CLAVE_S, S); } }
+// ── el menú principal: si sales a él (la marca deuce o «Inicio»), la gira a medias se borra
+// y al volver a La gira se empieza de cero. Recargar la página sí la retoma donde estaba ──
+let saliendo = false;
+document.addEventListener('click', ev => {
+  if (ev.button || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;   // abrirlo en otra pestaña no es salir
+  const a = ev.target.closest && ev.target.closest('a[href]'); if (!a) return;
+  const h = (a.getAttribute('href') || '').split(/[?#]/)[0];
+  if (h !== 'index.html' && h !== '/' && h !== './') return;
+  saliendo = true;
+  try { localStorage.removeItem(CLAVE_S); } catch (e) {}
+}, true);
+// con el botón de atrás el navegador puede devolver la página tal cual estaba: entonces se recarga
+window.addEventListener('pageshow', ev => { if (ev.persisted && saliendo) location.reload(); });
 function salvarProg() { guardar(CLAVE_P, P); }
 if (S) nuevoRng();
 const cerebralLibre = () => true;
@@ -1071,6 +1395,7 @@ function escalera() {
     return '<i class="' + (t === ahora ? 'ahora' : S && t < S.e.torneo ? 'hecho' : '') + (T.tier === 'gs' || T.tier === 'fin' ? ' grande' : '') + (jefe ? ' jefe' : '') + '" style="--sup:' + SUP_VAR[G.supDe(S && S.e, t)] + '" title="' + esc(T.nombre + (jefe ? ' · ' + G.JEFES[jefe].nombre : '')) + '"></i>';
   }).join('');
   if (S) $('#chip-titulos').textContent = Math.min(13, ahora + 1) + '/13';
+  const tira = $('#m-tira'); if (tira) tira.innerHTML = tiraChips();
 }
 function atributosCard(e, sup) {
   const a = G.atributos(e), clave = G.CLAVE[sup];
@@ -1119,17 +1444,25 @@ function combina(id, bolsa) {
 function pintar() {
   animId++;
   const p = $('#pantalla');
+  // en escritorio (900 px o más) la partida se juega en la mesa; la portada y la colección, en columna
+  const esc = ESC.matches, enMesa = esc && !!S && S.fase !== 'coleccion';
+  document.body.classList.toggle('esc', esc);
+  document.body.classList.toggle('en-mesa', enMesa);
   $('#top').hidden = !S || S.fase === 'coleccion';
   if (S && S.fase !== 'coleccion') escalera();
   const fase = S ? S.fase + ':' + (S.e ? S.e.torneo : '') : 'inicio';
-  const nueva = fase !== faseAnt;
-  if (nueva) { faseAnt = fase; window.scrollTo(0, 0); }
+  const nueva = fase !== faseAnt || enMesa !== mesaAnt;
+  if (nueva) { faseAnt = fase; mesaAnt = enMesa; window.scrollTo(0, 0); }
   pintarSonido();
   if (!S || S.fase === 'coleccion') (S && S.fase === 'coleccion' ? coleccion : inicio)(p);
+  else if (enMesa) ({ tienda: mTienda, previa: mPrevia, partidos: mPartidos, fin: mFin })[S.fase](p);
   else ({ tienda, previa, partidos, fin })[S.fase](p);
   if (!nueva && p.firstElementChild) p.firstElementChild.classList.add('quieta');
 }
-let faseAnt = null;
+let faseAnt = null, mesaAnt = null;
+const ESC = matchMedia('(min-width: 900px)');
+// al cruzar los 900 px se cambia de la columna a la mesa (o al revés); un partido en directo vuelve a empezar
+if (ESC.addEventListener) ESC.addEventListener('change', () => pintar()); else if (ESC.addListener) ESC.addListener(() => pintar());
 
 // la portada: el nivel, el estilo y tu colección
 const ESTILO_SUP = { sacador: 'var(--hierba)', muro: 'var(--tierra)', atleta: 'var(--dura)', cerebral: 'var(--gold)' };
@@ -1162,7 +1495,7 @@ let filtroCol = 'todas', codigoAbierto = false, codigoInicial = '';
 function coleccion(p) {
   const fams = ['todas'].concat(G.FAMS);
   const cartas = G.CARTAS.filter(c => c.oferta && (filtroCol === 'todas' || c.fam === filtroCol));
-  p.innerHTML = '<div class="pant">'
+  p.innerHTML = '<div class="pant m-col">'
     + '<button class="rapido atras" data-acc="cerrar-col">← Volver</button>'
     + '<h1 class="h-col">Las cartas</h1>'
     + '<p class="lead">Todas pueden salir en la tienda. En los tres primeros torneos, solo las sencillas.</p>'
@@ -1813,7 +2146,9 @@ function terminar(conConfeti) {
   animId++; ultimoDibujo = null;
   const R = S.resultado;
   R.partidos.forEach(m => marcarFila(m));
+  document.querySelectorAll('.ronda.ahora').forEach(f => f.classList.remove('ahora'));
   $('#vivo').hidden = true;
+  const mm = $('#m-marc'), bs = $('#b-saltar'); if (mm) mm.hidden = true; if (bs) bs.hidden = true;
   $('#v-tit').textContent = G.CALENDARIO[S.torneoJugado].nombre;
   const fin = $('#final'); fin.innerHTML = tarjetaFinal(S.torneoJugado, R, conConfeti); fin.hidden = false;
   $('#cuadro').hidden = false; $('#b-sig').hidden = false;
@@ -1821,6 +2156,7 @@ function terminar(conConfeti) {
   if (conConfeti && (S.nuevas || []).length) setTimeout(() => sonar('abre'), 900);
   if (!S.visto) { S.visto = true; salvar(); }
   escalera();
+  refrescarMesa();
 }
 async function simular(id) {
   const R = S.resultado, t = S.torneoJugado, T = G.CALENDARIO[t], rnd = G.mulberry((S.semilla || 1) + t * 101);
@@ -1828,7 +2164,11 @@ async function simular(id) {
     const m = R.partidos[i];
     const sets = m.moneda ? (m.gana ? ['6-4', '6-4'] : ['4-6', '4-6']) : m.sets.filter(s => !s.repetido).map(s => s.juegos);
     const M = construirTV({ ronda: G.nombreRonda(t, m.ronda) + (m.intento > 1 ? ' · otra vez' : ''), rival: m.rival.nombre, sets, torneo: T.nombre, primero: rnd() < .5 ? 'y' : 'r' }, rnd);
+    // el cuadro (en escritorio se ve mientras se juega) marca el partido de ahora y apunta cada resultado
+    const fila = $('#r-' + m.ronda); if (fila) fila.classList.add('ahora');
     await (esFacil(m, t) ? resumir(M, id) : reproducir(M, id));
+    if (fila) fila.classList.remove('ahora');
+    marcarFila(m);
   }
   terminar(true);
 }
@@ -1918,7 +2258,8 @@ async function compartirGira() {
   const pre = $('#t-comp'); if (pre) { const r = document.createRange(); r.selectNodeContents(pre); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
   if (b) b.textContent = 'Selecciónalo y cópialo';
 }
-function fin(p) {
+// lo que se apunta al acabar la gira (récord, giras jugadas), una sola vez; sirve a la columna y a la mesa
+function datosFin() {
   const e = S.e, perfecta = e.seguidos === 13;
   const rec = leer('deuce-gira.record', 0), nuevo = e.seguidos > rec;
   if (nuevo) guardar('deuce-gira.record', e.seguidos);
@@ -1927,7 +2268,10 @@ function fin(p) {
     const nv = apuntar(st => { st.giras++; if (perfecta) { st.perfectas[e.nivel] = (st.perfectas[e.nivel] || 0) + 1; st.nivelMax = Math.max(st.nivelMax || 1, Math.min(G.NIVELES.length, e.nivel + 1)); } });
     S.nuevasFin = (S.nuevasGira || []).concat(nv); salvar();
   }
-  const T = G.CALENDARIO[S.torneoJugado];
+  return { e, perfecta, rec, nuevo, T: G.CALENDARIO[S.torneoJugado] };
+}
+function fin(p) {
+  const { e, perfecta, rec, nuevo, T } = datosFin();
   const nuevas = (S.nuevasFin || []).length ? '<section class="card nuevas-fin"><div class="bolsa-cab"><b>Cartas nuevas en tu colección</b><span>' + S.nuevasFin.length + '</span></div><div class="bolsa3">' + S.nuevasFin.map(id => cartaBolsa(id, -1, false, e, 0)).join('') + '</div></section>' : '';
   const nivelNuevo = '';
   p.innerHTML = '<div class="pant">'
@@ -1940,6 +2284,217 @@ function fin(p) {
     + '<section class="card comp"><div class="bolsa-cab"><b>Tu gira, para compartir</b></div><pre class="comp-t" id="t-comp">' + esc(textoGira()) + '</pre>'
     + '<button class="btn sec" data-acc="compartir" id="b-comp">Compartir</button></section>'
     + '<button class="btn" data-acc="otra">Otra gira</button></div>';
+  if ((S.nuevasFin || []).length && !S.finSonado) { S.finSonado = true; setTimeout(() => sonar('abre'), 300); }
+}
+
+// ── escritorio: la mesa ─────────────────────────────────────────
+// Las mismas piezas que en el móvil, repartidas como en Supersticiones: tú a la izquierda, el torneo
+// de ahora en el centro con los trece en fila encima, lo que decides a la derecha y la bolsa abajo,
+// como una mano. Mientras se juega un torneo, los paneles enseñan cómo llegabas (S.eAntes): el premio,
+// los títulos y las cartas que crecen no se ven hasta que acaba el último partido.
+const COD = { 'Doha': 'DOH', 'Estoril': 'EST', 'Stuttgart': 'STU', 'Rotterdam': 'ROT', 'Barcelona': 'BAR', 'Halle': 'HAL', 'Miami': 'MIA', 'Madrid': 'MAD', 'Australia': 'AUS', 'Francia': 'FRA', 'Londres': 'LON', 'EE. UU.': 'USA', 'Finales': 'FIN' };
+const TIER_TXT = { '250': '250', '500': '500', '1000': '1000', gs: 'Open', fin: 'Final' };
+const eVista = () => (S.fase === 'partidos' && !S.visto && S.eAntes ? S.eAntes : S.e);
+function cambioCaja(din) { const c = cajaVista == null || cajaVista === din ? '' : din > cajaVista ? ' sube' : ' baja'; cajaVista = din; return c; }
+
+// los trece torneos: ✓ los ganados, ✕ donde caíste, el de ahora marcado y un rombo si tiene jefe
+function tiraChips() {
+  if (!S || !S.e) return '';
+  const e = S.e, enJuego = S.fase === 'partidos' && !S.visto;
+  const ahora = (S.fase === 'partidos' || S.fase === 'fin') && S.torneoJugado != null ? S.torneoJugado : e.torneo;
+  const cayo = (S.fase === 'fin' || (S.fase === 'partidos' && S.visto)) && S.resultado && !S.resultado.campeon ? S.torneoJugado : -1;
+  return G.CALENDARIO.map((T, t) => {
+    const ganado = t < e.torneo && !(enJuego && t === S.torneoJugado), jefe = e.jefes && e.jefes[t], sup = G.supDe(e, t);
+    const cls = ganado ? 'tit' : t === cayo ? 'ko' : t === ahora ? '' : 'pend';
+    return '<span class="m-chip ' + cls + (t === ahora ? ' sel' : '') + '" role="listitem" style="--sup:' + SUP_VAR[sup] + '" title="' + esc(T.nombre + ' · ' + SUP_NOM[sup] + (jefe ? ' · jefe: ' + G.JEFES[jefe].nombre : '')) + '">'
+      + '<span class="m-chip-c">' + (COD[T.corto] || T.corto.slice(0, 3).toUpperCase()) + '</span>'
+      + '<span class="m-chip-r">' + (ganado ? '✓' : t === cayo ? '✕' : TIER_TXT[T.tier]) + '</span>' + (jefe ? '<i></i>' : '') + '</span>';
+  }).join('');
+}
+// tú: el estilo, el nivel y los cuatro atributos; el que cuenta doble en esta pista, con su color
+function panelTu(t, e) {
+  const sup = G.supDe(e, t), a = G.atributos(e), clave = G.CLAVE[sup];
+  const E = G.ESTILOS.filter(x => x.id === e.estilo)[0], N = G.NIVELES[(e.nivel || 1) - 1];
+  const filas = G.ATR.map(at => '<div class="m-atr' + (at === clave ? ' clave' : '') + '"><span class="m-atr-l">' + G.ATR_NOM[at]
+    + (at === clave ? '<em class="x2">×2</em>' : at === 'cabeza' ? '<em class="x2 cab">3.er set</em>' : '') + '</span>'
+    + '<span class="m-atr-v">' + a[at] + '</span><span class="m-barra"><b style="width:' + Math.min(100, a[at] / 30 * 100) + '%"></b></span></div>').join('');
+  const sig = t + 1 < 13 ? G.CALENDARIO[t + 1] : null, supSig = sig ? G.supDe(e, t + 1) : null;
+  return '<div class="m-kick"><span class="m-k">Tú</span><span class="m-meta">Nivel ' + (e.nivel || 1) + (N ? ' · ' + esc(N.nombre) : '') + '</span></div>'
+    + '<div class="m-quien"><div class="m-nombre">' + esc(ESTILO_NOM[e.estilo] || '') + '</div><div class="m-ficha">' + esc(E ? E.txt : '') + '</div></div>'
+    + '<div class="m-atrs" style="--sup:' + SUP_VAR[sup] + '">' + filas + '</div>'
+    + '<div class="m-prog"><div class="m-prog-t"><span>' + (sig ? 'Después: <b>' + esc(sig.corto) + '</b>' : 'Es la última parada') + '</span>'
+    + (sig ? '<span style="--sup:' + SUP_VAR[supSig] + '"><i class="m-dot"></i>' + SUP_NOM[supSig] + '</span>' : '') + '</div></div>';
+}
+// tu gira: cuatro cifras
+function panelGira(e, cc) {
+  const rec = leer('deuce-gira.record', 0);
+  return '<div class="m-kick"><span class="m-k">Tu gira</span><span class="m-meta" title="El código de esta gira: con él, otro juega la misma">' + codigoGira(e) + '</span></div>'
+    + '<div class="m-tiles">'
+    + '<div class="m-tile"><span class="m-tl">Títulos</span><span class="m-tv">' + e.seguidos + '<small> / 13</small></span></div>'
+    + '<div class="m-tile' + (cc || '') + '"><span class="m-tl">Caja</span><span class="m-tv">' + mon(e.dinero) + '</span></div>'
+    + '<div class="m-tile"><span class="m-tl">Tu récord</span><span class="m-tv">' + rec + '</span></div>'
+    + '<div class="m-tile"><span class="m-tl">Mejoras</span><span class="m-tv">' + (e.vales || []).length + '</span></div>'
+    + '</div>';
+}
+// una carta de la bolsa, de pie: dibujo, nombre, lo que hace y su familia
+function cartaMano(id, i, sel, e, t) {
+  if (!id) return '<span class="m-sl vacio" aria-label="Hueco libre"></span>';
+  const C = G.CARTA[id], cu = cuentaDe(id, e, t), mald = G.esMaldita(C);
+  return '<button type="button" class="m-sl r-' + C.rar + (mald ? ' maldita' : '') + (sel ? ' sel' : '') + (i < 0 ? ' fija' : '') + '" data-acc="hueco" data-i="' + i + '" style="--fam:' + famCol(C.fam) + '" title="' + esc(C.nombre + ': ' + C.txt) + '" aria-label="' + esc(C.nombre) + ': ' + esc(C.txt) + '"' + (i < 0 ? ' tabindex="-1"' : '') + '>'
+    + '<span class="m-sl-sh"><span class="m-sl-cod">' + (mald ? '✕' : C.rar[0].toUpperCase()) + '</span><i class="m-fdot"></i></span>'
+    + '<span class="m-sl-arte">' + ico(id) + (cu ? '<em class="cb-cu">' + esc(cu) + '</em>' : '') + '</span>'
+    + '<span class="m-sl-n">' + esc(C.nombre) + '</span><span class="m-sl-c">' + esc(C.corto) + '</span>'
+    + '<span class="m-sl-f">' + esc(G.FAM[C.fam].nombre) + ' · ' + (mald ? 'maldita' : C.rar) + '</span></button>';
+}
+// la bolsa como una mano; arriba, las familias y parejas que tienes y tus mejoras
+function panelBolsa(e, enTienda) {
+  const cap = G.huecosDe(e), t = Math.min(12, e.torneo), huecos = [];
+  for (let i = 0; i < cap; i++) huecos.push(cartaMano(e.bolsa[i], enTienda ? i : -1, enTienda && S.sel === i, e, t));
+  const pills = [];
+  G.FAMS.forEach(f => { const k = G.famNivel(e.bolsa, f); if (k) { const F = G.FAM[f]; pills.push('<span class="m-bfam" style="--fam:' + famCol(f) + '"><i></i>' + esc(F.nombre) + ' (' + (k === 2 ? 4 : 2) + ') · ' + esc(F.txt(F.b[k - 1], k)) + '</span>'); } });
+  G.parejasDe(e.bolsa).forEach(pa => pills.push('<span class="m-bfam par" title="' + esc(pa.x) + '">✦ ' + esc(pa.n) + '</span>'));
+  (e.vales || []).forEach(v => pills.push('<span class="m-bfam vl" title="' + esc(G.VALE[v].txt) + '">' + esc(G.VALE[v].nombre) + '</span>'));
+  return '<div class="m-kick"><span class="m-k">Tu bolsa · ' + e.bolsa.length + '/' + cap + '</span><span class="m-bfams">' + pills.join('') + '</span></div>'
+    + '<div class="m-mano" style="--n:' + cap + '">' + huecos.join('') + '</div>';
+}
+// la cabeza del panel de la derecha: el torneo de ahora, su pista, su premio y tu % de ganarlo
+function decTorneo(t, prob, fase, e) {
+  const T = G.CALENDARIO[t], sup = G.supDe(e, t);
+  return '<div class="m-kick"><span class="m-k">Torneo ' + (t + 1) + ' de 13</span><span class="m-meta" id="m-fase">' + fase + '</span></div>'
+    + '<div class="m-tor" style="--sup:' + SUP_VAR[sup] + '"><div class="m-tor-cab"><span class="sup">' + SUP_NOM[sup] + (t === 12 ? ' · sorteada' : '') + '</span><span class="m-meta">' + T.rondas + ' partidos</span></div>'
+    + '<h2 class="m-tor-n">' + esc(T.nombre) + '</h2>'
+    + (prob != null ? '<div class="m-tor-p"><b>' + pct(prob) + '</b><span>de ganarlo</span></div>' : '') + '</div>'
+    + jefeLinea(t);
+}
+// el pie del panel de la derecha: las reglas de este torneo en tres filas
+function decPie(t, e, presion) {
+  const T = G.CALENDARIO[t], sup = G.supDe(e, t), clave = G.CLAVE[sup];
+  const f = (k, v) => '<div class="m-res-f"><span>' + k + '</span><b>' + v + '</b></div>';
+  return '<div class="m-res">' + f('Cuenta doble', G.ATR_NOM[clave] + ' · ' + SUP_NOM[sup].toLowerCase())
+    + f('Premio', T.premio ? mon(G.premioDe(e, t)) + (presion ? ' · con presión' : '') : 'Sin premio') + '</div>';
+}
+function mesa(o) {
+  const e = o.e || S.e;
+  return '<div class="mesa">'
+    + '<section class="m-panel m-jug" aria-label="Tú">' + panelTu(o.t, e) + '</section>'
+    + '<section class="m-panel m-temp" aria-label="La temporada"><div class="m-tira" id="m-tira" role="list" aria-label="Los trece torneos">' + tiraChips() + '</div><div class="m-escena m-anim">' + o.escena + '</div></section>'
+    + '<section class="m-panel m-dec" aria-label="Qué haces"><div class="m-dec-in m-anim">' + o.dec + '</div></section>'
+    + '<section class="m-panel m-car" aria-label="Tu gira">' + panelGira(e, o.cc) + '</section>'
+    + '<section class="m-panel m-bolsa" aria-label="Tu bolsa">' + panelBolsa(e, !!o.tienda) + '</section>'
+    + '</div>';
+}
+// acabado el torneo, los paneles pasan a enseñar cómo has salido de él
+function refrescarMesa() {
+  const m = document.querySelector('.mesa'); if (!m || !S || !S.e) return;
+  const t = S.torneoJugado != null ? S.torneoJugado : S.e.torneo;
+  m.querySelector('.m-jug').innerHTML = panelTu(t, S.e);
+  m.querySelector('.m-car').innerHTML = panelGira(S.e, cambioCaja(S.e.dinero));
+  m.querySelector('.m-bolsa').innerHTML = panelBolsa(S.e, false);
+  const f = $('#m-fase'); if (f) f.textContent = 'Resultado';
+}
+// lo que cambia tu % de ganar el torneo si compras esa carta (lo mismo que en la columna)
+function deltaCompra(id, base, llena, selFija) {
+  const e = S.e, c = JSON.parse(JSON.stringify(e)); c.dinero = 9999;
+  G.comprar(c, id, llena ? (S.sel != null && !selFija ? S.sel : e.bolsa.findIndex(x => !G.CARTA[x].fija)) : null, 0);
+  return Math.round(G.probTitulo(c, e.torneo, S.rivales) * 100) - Math.round(base * 100);
+}
+
+function mTienda(p) {
+  const e = S.e, t = e.torneo, base = G.probTitulo(e, t, S.rivales), cap = G.huecosDe(e), llena = e.bolsa.length >= cap;
+  const selFija = llena && S.sel != null && !!e.bolsa[S.sel] && !!G.CARTA[e.bolsa[S.sel]].fija;
+  const carta = (id, precio, premio) => {
+    const C = G.CARTA[id], mald = G.esMaldita(C), comprada = premio ? !!S.premioCogido || e.bolsa.indexOf(id) >= 0 : S.compradas.indexOf(id) >= 0;
+    const lleno = llena && (S.sel == null || selFija), puede = !comprada && !lleno && e.dinero >= precio;
+    let delta = '';
+    if (!comprada) { const d = deltaCompra(id, base, llena, selFija); delta = '<span class="delta ' + (d > 0 ? 'sube' : d < 0 ? 'baja' : '') + '" title="Cambio en tu probabilidad de ganar este torneo">' + (d > 0 ? '+' + d + ' %' : d < 0 ? '−' + (-d) + ' %' : 'Igual') + '</span>'; }
+    const tags = combina(id, e.bolsa).map(x => '<span class="tag">' + esc(x) + '</span>').join('');
+    // en la mesa el botón solo lleva el precio: que cambias la carta marcada ya lo dice el panel de la derecha
+    const txtBtn = comprada ? (premio ? 'Cogida' : 'Comprada') : lleno ? 'Llena' : (premio ? 'Gratis' : mon(precio));
+    return '<article class="m-of r-' + C.rar + (mald ? ' maldita' : '') + (comprada ? ' comprada' : '') + (premio ? ' premio' : '') + '" style="--fam:' + famCol(C.fam) + '">'
+      + '<div class="m-of-sh"><span class="m-of-rar">' + (premio ? 'gratis · ' + C.rar : (mald ? 'maldita' : C.rar) + ' · ' + esc(G.FAM[C.fam].nombre)) + '</span><i class="m-fdot" title="' + esc(G.FAM[C.fam].nombre) + '"></i></div>'
+      + '<div class="m-of-arte">' + ico(id) + delta + '</div>'
+      + '<b class="m-of-n">' + esc(C.nombre) + '</b><p class="chipc" title="' + esc(C.txt) + '">' + esc(C.corto) + '</p>'
+      + (C.txt.length <= 28 ? '' : '<p class="m-of-fx" title="' + esc(C.txt) + '">' + esc(C.txt) + '</p>')   // las cortas ya lo dicen todo en la pastilla
+      + (tags ? '<div class="tags">' + tags + '</div>' : '')
+      + '<div class="m-of-pie"><button class="comprar" data-acc="comprar" data-id="' + id + '"' + (premio ? ' data-premio="1"' : '') + (puede ? '' : ' disabled')
+      + ' aria-label="' + (comprada || premio ? txtBtn : lleno ? 'Bolsa llena' : (llena ? 'Cambiar por ' : 'Comprar por ') + precio + ' monedas') + '">' + txtBtn + '</button></div></article>';
+  };
+  const ofs = (S.premio ? carta(S.premio, 0, true) : '') + S.ofertas.map(id => carta(id, G.CARTA[id].precio, false)).join('');
+  const n = (S.premio ? 1 : 0) + S.ofertas.length, cc = cambioCaja(e.dinero), co = costeOtras();
+  const V = S.vale && (e.vales || []).indexOf(S.vale) < 0 ? G.VALE[S.vale] : null;
+  const selC = S.sel != null && e.bolsa[S.sel] ? G.CARTA[e.bolsa[S.sel]] : null;
+  const mits = S.ofertas.concat(S.premio ? [S.premio] : []).some(id => G.CARTA[id].rar === 'mítica');
+  if (mits && !S.vistaMitica) { S.vistaMitica = true; setTimeout(() => sonar('mitica'), 120); }
+  const primerOpen = G.CALENDARIO[t].tier === 'gs' && !G.CALENDARIO.slice(0, t).some(T => T.tier === 'gs');
+  if (primerOpen && !S.vistoOpen) { S.vistoOpen = true; setTimeout(() => sonar('mitica'), 150); }
+  const escena = '<div class="m-kick"><span class="m-k">Tienda</span><span class="m-acc">'
+    + '<button class="m-pill" data-acc="otras"' + (e.dinero < co ? ' disabled' : '') + '>Otras cartas ' + (co ? mon(co) : '· gratis') + '</button>'
+    + '<span class="m-caja' + cc + '" aria-live="polite" aria-label="Tienes ' + e.dinero + ' monedas">' + mon(e.dinero) + '</span></span></div>'
+    // como mucho un aviso encima de las cartas: el de la bolsa llena manda sobre el del primer Open
+    + (llena && (S.sel == null || selFija) ? '<p class="m-aviso-l">' + (selFija ? 'Esa carta no se puede vender ni cambiar: marca otra de tu bolsa.' : 'Bolsa llena: marca una carta de tu bolsa, abajo, para cambiarla o venderla.') + '</p>'
+      : primerOpen ? '<p class="m-aviso-l m-open"><b>Llega el primer Open.</b> Cinco partidos, rivales más duros y un jefe que cambia una regla.</p>' : '')
+    + '<div class="m-ofertas" style="--n:' + Math.max(3, n + (V ? 1 : 0)) + '">' + ofs
+    // la mejora de la tienda, como una carta más de la fila (oscura: dura toda la gira)
+    + (V ? '<article class="m-of m-of-vale"><div class="m-of-sh"><span class="m-of-rar">Mejora · toda la gira</span></div><div class="m-of-arte" aria-hidden="true"><span class="m-vale-ico">✦</span></div>'
+      + '<b class="m-of-n">' + esc(V.nombre) + '</b><p class="m-of-fx">' + esc(V.txt) + '</p>'
+      + '<div class="m-of-pie"><button class="comprar" data-acc="vale"' + (e.dinero >= V.precio ? '' : ' disabled') + ' aria-label="Comprar la mejora por ' + V.precio + ' monedas">' + mon(V.precio) + '</button></div></article>' : '')
+    + '</div>';
+  const dec = decTorneo(t, base, 'Tienda', e)
+    + '<div class="m-opts"><button class="m-opt a" data-acc="aprevia">Ver rivales <i>›</i></button></div>'
+    + (selC ? '<div class="m-venta"><p><b>' + esc(selC.nombre) + '</b>: ' + esc(selC.txt) + '</p>' + (selC.fija ? '<p class="m-nota">No se puede vender ni cambiar.</p>' : (llena ? '<p class="m-nota">Si compras otra, cambias esta.</p>' : '') + '<button class="comprar" data-acc="vender">Vender ' + mon(G.precioVenta(e, e.bolsa[S.sel])) + '</button>') + '</div>'
+      : '<p class="m-nota">' + (e.bolsa.length ? 'Marca una carta de tu bolsa para venderla o cambiarla.' : 'El % de cada carta es lo que sube o baja tu probabilidad de ganar este torneo.') + '</p>' + decPie(t, e, false));
+  p.innerHTML = mesa({ t, escena, dec, cc, tienda: true });
+}
+
+function mPrevia(p) {
+  const e = S.e, t = e.torneo, riv = S.presion ? G.apretar(S.rivales) : S.rivales, prob = G.probTitulo(e, t, riv);
+  const rondas = riv.map((r, i) => {
+    const pm = G.probPartido(e, t, i, r);
+    const dif = pm >= .8 ? ['facil', 'Fácil'] : pm >= .55 ? ['igual', 'Igualado'] : ['dificil', 'Difícil'];
+    return '<div class="m-rv' + (i === riv.length - 1 ? ' final' : '') + '"><span class="rk">' + G.nombreRonda(t, i) + '</span>'
+      + '<span class="m-rv-p">' + pct(pm) + '</span><span class="dif ' + dif[0] + '">' + dif[1] + '</span>'
+      + '<div class="m-rv-pie"><span class="m-rv-n" title="' + esc(r.nombre) + '">' + esc(r.nombre) + '</span><span class="m-rv-e">' + ESTILO_NOM[r.estilo] + '</span></div></div>';
+  }).join('');
+  const escena = '<div class="m-kick"><span class="m-k">El cuadro · ' + (S.presion ? 'con presión' : 'tu % de ganar cada partido') + '</span><span class="m-acc"><button class="m-pill" data-acc="atienda">‹ Volver a la tienda</button></span></div>'
+    + '<div class="m-cuadro" style="--n:' + riv.length + '">' + rondas + '</div>';
+  const dec = decTorneo(t, prob, 'Rivales', e)
+    + (t < 12 ? '<button class="presion' + (S.presion ? ' on' : '') + '" data-acc="presion" aria-pressed="' + !!S.presion + '"><span class="sw" aria-hidden="true"><i></i></span><span><b>Jugar con presión</b><small>Rivales +6. Si ganas, carta rara gratis.</small></span></button>' : '')
+    + '<div class="m-opts"><button class="m-opt a" data-acc="jugar">Jugar <i>›</i></button></div>'
+    + decPie(t, e, S.presion);
+  p.innerHTML = mesa({ t, escena, dec, cc: cambioCaja(e.dinero) });
+}
+
+function mPartidos(p) {
+  const t = S.torneoJugado, T = G.CALENDARIO[t], R = S.resultado, ok = R.campeon, sup = G.supDe(S.e, t), ev = eVista();
+  const filas = S.rivalesJugados.map((r, i) => '<div class="ronda pend" id="r-' + i + '"><div style="min-width:0"><div class="rk">' + G.nombreRonda(t, i) + '</div><div class="rn">' + esc(r.nombre) + '</div></div><div class="marc"></div></div>').join('');
+  const escena = '<div class="m-partido" style="--sup:' + SUP_VAR[sup] + '">'
+    + '<div class="m-p-izq"><section class="vivo" id="vivo"><div class="pista-wrap"><canvas id="pista" role="img" aria-label="El partido en la pista"></canvas><div class="aviso-pos"><span class="aviso" id="aviso" hidden></span></div></div></section><div id="final" hidden></div></div>'
+    + '<div class="m-p-der"><div class="m-kick"><span class="m-k" id="v-tit">' + esc(T.nombre) + '</span></div>'
+    + '<div class="marcador" id="m-marc" aria-live="polite"><div class="mf" id="f-y"><span class="saque"></span><span class="mn">Tú</span><span class="ms" id="s-y"></span></div>'
+    + '<div class="mf" id="f-r"><span class="saque"></span><span class="mn" id="n-r"></span><span class="ms" id="s-r"></span></div></div>'
+    + '<section class="m-cuadro-l" id="cuadro"><div class="cuadro">' + filas + '</div></section></div></div>';
+  const prob = S.probJugada != null ? S.probJugada : G.probTitulo(ev, t, S.rivalesJugados);
+  const dec = decTorneo(t, prob, S.visto ? 'Resultado' : 'En directo', ev)
+    + '<div class="m-opts"><button class="m-opt" data-acc="todo" id="b-saltar">Saltar <i>»</i></button>'
+    + '<button class="m-opt a" id="b-sig" data-acc="' + (ok ? (S.e.torneo >= 13 ? 'afin' : 'atienda2') : 'afin') + '" hidden>' + (ok ? (S.e.torneo >= 13 ? 'Ver la temporada' : 'Seguir') : 'Ver por qué') + ' <i>›</i></button></div>'
+    + decPie(t, ev, S.presionJugada);
+  p.innerHTML = mesa({ t, escena, dec, e: ev, cc: cambioCaja(ev.dinero) });
+  if (S.visto || reduce()) return terminar(false);
+  const id = ++animId;
+  simular(id).catch(() => {});
+}
+
+function mFin(p) {
+  const { e, perfecta, rec, nuevo, T } = datosFin();
+  const escena = '<div class="m-fin">'
+    + (perfecta ? '<div class="perfecta"><div class="k" style="color:inherit;opacity:.7">deuce · La gira · nivel ' + e.nivel + '</div><b>Temporada perfecta</b><p>Trece torneos, trece títulos.</p></div>'
+      : '<div><span class="m-k">Fin de la gira · nivel ' + e.nivel + '</span><h2 class="m-fin-t">Caíste en ' + (T.tier === 'gs' ? 'el ' : T.tier === 'fin' ? 'las ' : 'la ') + esc(T.nombre) + '</h2></div><p class="porque">' + esc(porque()) + '</p>')
+    + '<div class="fin-num"><div><b>' + e.seguidos + '</b><span>' + (e.seguidos === 1 ? 'título' : 'títulos') + '</span></div><div><b>' + (nuevo ? '✦' : rec) + '</b><span>' + (nuevo ? 'nuevo récord' : 'tu récord') + '</span></div>'
+    + '<div><b>' + e.nivel + '</b><span>nivel</span></div></div></div>';
+  const dec = '<div class="m-kick"><span class="m-k">Tu gira, para compartir</span></div>'
+    + '<pre class="comp-t" id="t-comp">' + esc(textoGira()) + '</pre>'
+    + '<div class="m-opts"><button class="m-opt" data-acc="compartir" id="b-comp">Compartir</button><button class="m-opt a" data-acc="otra">Otra gira <i>›</i></button></div>';
+  p.innerHTML = mesa({ t: Math.min(12, S.torneoJugado), escena, dec, cc: cambioCaja(e.dinero) });
   if ((S.nuevasFin || []).length && !S.finSonado) { S.finSonado = true; setTimeout(() => sonar('abre'), 300); }
 }
 
@@ -1988,7 +2543,8 @@ document.addEventListener('click', ev => {
   if (a === 'jugar') {
     const t = S.e.torneo, riv = S.presion ? G.apretar(S.rivales) : S.rivales;
     S.antes = { dinero: S.e.dinero, seguidos: S.e.seguidos };
-    S.rivalesJugados = riv; S.presionJugada = !!S.presion;
+    S.rivalesJugados = riv; S.presionJugada = !!S.presion; S.probJugada = G.probTitulo(S.e, t, riv);
+    S.eAntes = JSON.parse(JSON.stringify(S.e));   // la mesa enseña cómo llegabas hasta que acaba el último partido
     const R = G.jugarTorneo(S.e, t, riv, rng);
     S.resultado = R; S.torneoJugado = t; S.visto = false; S.cobrado = 0;
     const final = R.partidos.filter(m => m.ronda === G.CALENDARIO[t].rondas - 1 && !m.gana).length;
