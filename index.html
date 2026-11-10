@@ -48,6 +48,28 @@
       deuce necesita JavaScript para funcionar.
     </div>
   </noscript>
+  <script>
+    // ── Menú principal: llegar aquí da por terminada la partida a medias de cualquier modo ──
+    // Da igual cómo se llegue (la marca deuce, «Inicio», el botón o el gesto de atrás, o abriendo la
+    // web): al entrar después en Supersticiones, la Carrera del día o La gira se empieza de cero.
+    // deuce.menu guarda cuándo se pasó por aquí: las páginas de juego lo miran para recargarse si el
+    // navegador las devuelve tal cual estaban (atrás/adelante). Recargar una partida sí la retoma.
+    (function () {
+      function salirAlMenu() {
+        try {
+          var borrar = [];
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k === 'deuce-rl.partida' || /^deuce-gira\.partida\b/.test(k)) borrar.push(k);
+          }
+          borrar.forEach(function (k) { localStorage.removeItem(k); });
+          localStorage.setItem('deuce.menu', String(Date.now()));
+        } catch (e) { /* modo privado */ }
+      }
+      salirAlMenu();
+      window.addEventListener('pageshow', function (e) { if (e.persisted) salirAlMenu(); });
+    })();
+  </script>
 </head>
 <body>
   <main style="max-width:640px;padding:24px;font-family:Georgia,serif;color:#201e1d"><h1>Deuce, un juego de carrera de tenis</h1><p>Juega una carrera de tenis entera, de los 17 años a la retirada, con una bolsa de cartas: amuletos, manías y maldiciones que cambian cada torneo. Es <a href="https://deucecareer.com/supersticiones.html">Supersticiones</a>.</p><p>Cada día hay una carrera del día, la misma para todos y con un solo intento. Si llegas a la retirada, entras en el <a href="https://deucecareer.com/hall-of-fame.html">Hall of Fame</a>: cada temporada, un partido contra una leyenda.</p><p>Y en <a href="https://deucecareer.com/la-gira.html">La gira</a>, una temporada de trece torneos que tienes que ganar todos, comprando cartas con tus premios. Gratis, sin registro, en el navegador.</p><nav><a href="https://deucecareer.com/">Inicio</a> · <a href="https://deucecareer.com/supersticiones.html">Supersticiones</a> · <a href="https://deucecareer.com/la-gira.html">La gira</a> · <a href="https://deucecareer.com/hall-of-fame.html">Hall of Fame</a> · <a href="https://deucecareer.com/privacidad.html">Privacidad</a></nav></main>

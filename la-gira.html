@@ -1337,9 +1337,11 @@ let rng = null;
 let estiloSel = 'sacador', nivelSel = Math.min(G.NIVELES.length, Math.max(1, leer('deuce-gira.nivel', 1)));
 function nuevoRng() { rng = G.mulberry(((S && S.semilla) || 1) + ((S && S.paso) || 0) * 7919); }
 function salvar() { if (S && !saliendo) { S.paso = (S.paso || 0) + 1; guardar(CLAVE_S, S); } }
-// ── el menú principal: si sales a él (la marca deuce o «Inicio»), la gira a medias se borra
-// y al volver a La gira se empieza de cero. Recargar la página sí la retoma donde estaba ──
+// ── el menú principal: si sales a él (la marca deuce, «Inicio» o el botón de atrás), la gira a medias
+// se borra y al volver a La gira se empieza de cero. Recargar la página sí la retoma donde estaba.
+// El borrado lo hace también index.html al abrirse, así que vale llegues como llegues al menú ──
 let saliendo = false;
+const abiertaEn = Date.now();
 document.addEventListener('click', ev => {
   if (ev.button || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;   // abrirlo en otra pestaña no es salir
   const a = ev.target.closest && ev.target.closest('a[href]'); if (!a) return;
@@ -1348,8 +1350,13 @@ document.addEventListener('click', ev => {
   saliendo = true;
   try { localStorage.removeItem(CLAVE_S); } catch (e) {}
 }, true);
-// con el botón de atrás el navegador puede devolver la página tal cual estaba: entonces se recarga
-window.addEventListener('pageshow', ev => { if (ev.persisted && saliendo) location.reload(); });
+// con atrás/adelante el navegador puede devolver la página tal cual estaba: si entretanto se ha pasado
+// por el menú (index.html apunta cuándo en deuce.menu), se recarga y empieza de cero
+window.addEventListener('pageshow', ev => {
+  if (!ev.persisted || window.parent !== window) return;
+  let menu = 0; try { menu = +localStorage.getItem('deuce.menu') || 0; } catch (e) {}
+  if (saliendo || menu > abiertaEn) location.reload();
+});
 function salvarProg() { guardar(CLAVE_P, P); }
 if (S) nuevoRng();
 const cerebralLibre = () => true;

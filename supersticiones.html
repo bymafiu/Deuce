@@ -48,6 +48,21 @@
       deuce necesita JavaScript para funcionar.
     </div>
   </noscript>
+  <script>
+    // ── Salir al menú principal termina la partida (lo hace index.html al abrirse) ──
+    // Si después el navegador devuelve esta página tal cual estaba (atrás/adelante), se recarga
+    // para empezar de cero. Recargar la página a propósito sí retoma la partida.
+    (function () {
+      if (window.parent !== window || /[?&]vitrina=/.test(location.search)) return;
+      var abierta = Date.now();
+      window.addEventListener('pageshow', function (e) {
+        if (!e.persisted) return;
+        var menu = 0;
+        try { menu = +localStorage.getItem('deuce.menu') || 0; } catch (err) {}
+        if (menu > abierta) location.reload();
+      });
+    })();
+  </script>
 </head>
 <body>
   <main style="max-width:640px;padding:24px;font-family:Georgia,serif;color:#201e1d"><h1>Supersticiones · Deuce</h1><p>Una carrera de tenis entera, con una bolsa de cartas. Cada dos temporadas eliges una carta para tu bolsa: amuletos, manías y maldiciones que cambian cómo te va en cada torneo. Algunas no dicen lo que hacen hasta que pasa, y las parejas y familias de cartas forman sinergias.</p><p>Hay una carrera libre y una carrera del día, la misma para todos. Si llegas a la retirada, entras en el Hall of Fame. Gratis, sin registro, en el navegador.</p><nav><a href="https://deucecareer.com/">Inicio</a> · <a href="https://deucecareer.com/supersticiones.html">Supersticiones</a> · <a href="https://deucecareer.com/la-gira.html">La gira</a> · <a href="https://deucecareer.com/hall-of-fame.html">Hall of Fame</a> · <a href="https://deucecareer.com/privacidad.html">Privacidad</a></nav></main>
