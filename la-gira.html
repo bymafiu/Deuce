@@ -401,9 +401,8 @@ p{margin:0}
 .jefe-gran .k{color:var(--gold)}
 .jefe-gran b{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
 .jefe-gran p{font-size:14px;line-height:1.45;color:#CFC9BC}
-.codigo{display:flex;gap:8px;margin-top:-4px}
-.codigo input{flex:1;min-width:0;border:1.5px solid var(--rule);border-radius:999px;background:var(--surface);color:var(--ink);padding:10px 14px;font:700 15px var(--f);letter-spacing:.06em;text-transform:uppercase}
-.codigo input:focus-visible{outline:3px solid var(--dura);outline-offset:2px}
+.reto,.portada .reto .k{text-align:left}
+.reto .btn{margin-top:8px;background:var(--optic);color:var(--on-optic)}
 .comp{display:grid;gap:10px}
 .comp-t{margin:0;white-space:pre-wrap;font:600 14px/1.55 var(--f);color:var(--ink)}
 @media (prefers-reduced-motion: reduce){ .jefe-gran{animation:none!important} }
@@ -1474,6 +1473,8 @@ function inicio(p) {
   p.innerHTML = '<div class="pant portada">'
     + '<header class="portada-cab"><a href="index.html" aria-label="deuce, inicio"><b>deuce</b></a><span>La gira</span></header>'
     + '<section class="modo"><h1>La gira</h1><p class="lema">Trece torneos. Gánalos todos.</p></section>'
+    + (retoCod ? '<section class="jefe-gran reto"><span class="k">Te han pasado una gira</span><b>Nivel ' + retoCod.nivel + ' · ' + esc(ESTILO_NOM[retoCod.estilo]) + '</b><p>La misma que jugó tu amigo: mismos jefes y rivales. ¿La mejoras?</p>'
+      + '<button class="btn" data-acc="jugar-cod">Jugar esta gira</button></section>' : '')
     + '<div class="k">Nivel</div><div class="niveles" role="radiogroup">' + niveles + '</div>'
     + (Nsel.txt ? '<p class="nivel-txt">' + esc(Nsel.txt) + '</p>' : '')
     + '<div class="k">Elige tu estilo</div><div class="estilos" role="radiogroup">'
@@ -1482,16 +1483,14 @@ function inicio(p) {
       return '<button class="estilo' + (E.id === estiloSel ? ' on' : '') + (cerr ? ' cerrado' : '') + '" style="--sup:' + ESTILO_SUP[E.id] + '" role="radio" aria-checked="' + (E.id === estiloSel) + '" data-acc="estilo" data-id="' + E.id + '"' + (cerr ? ' disabled' : '') + '><b>' + E.nombre + '</b><span>' + (cerr ? esc(E.bloqueo) : E.txt) + '</span>'
         + '<em class="st">' + (cerr ? 'Cerrado' : G.ATR_NOM[f] + ' ' + E.a[f]) + '</em></button>';
     }).join('')
-    + '</div><button class="btn" data-acc="empezar">Empezar la gira</button>'
-    + (codigoAbierto ? '<div class="codigo"><input id="in-cod" value="' + esc(codigoInicial) + '" placeholder="Código, p. ej. G-1A2B3C" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Código de una gira"><button class="comprar" data-acc="jugar-cod">Jugar</button></div><p class="discreto" id="cod-msg">Juegas la misma gira: mismo estilo, nivel, jefes y rivales.</p>'
-      : '<button class="btn sec" data-acc="codigo">Tengo el código de una gira</button>')
+    + '</div><button class="btn' + (retoCod ? ' sec' : '') + '" data-acc="empezar">Empezar la gira</button>'
     + '<button class="btn sec" data-acc="coleccion">Las ' + total + ' cartas</button>'
     + (P.giras ? '<p class="discreto">' + P.giras + (P.giras === 1 ? ' gira' : ' giras') + ' · ' + P.titulos + ' títulos · récord: ' + (leer('deuce-gira.record', 0)) + ' seguidos</p>' : '')
     + '<nav class="enlaces" aria-label="deuce"><a href="la-gira-como-se-juega.html">Cómo se juega</a><a href="index.html">Inicio</a><a href="supersticiones.html">Supersticiones</a><a href="privacidad.html">Privacidad</a></nav>'
     + '</div>';
 }
 // la colección: todas las cartas, las cerradas con lo que hay que hacer para abrirlas
-let filtroCol = 'todas', codigoAbierto = false, codigoInicial = '';
+let filtroCol = 'todas', retoCod = null;   // retoCod: la gira de un enlace compartido (?codigo=), si llegas con uno
 function coleccion(p) {
   const fams = ['todas'].concat(G.FAMS);
   const cartas = G.CARTAS.filter(c => c.oferta && (filtroCol === 'todas' || c.fam === filtroCol));
@@ -2249,7 +2248,7 @@ function textoGira() {
   const COL = { Tierra: '🟧', Dura: '🟦', Hierba: '🟩' };
   const fila = G.CALENDARIO.map((x, t) => (t < ganados ? COL[G.supDe(e, t)] : t === ganados ? '❌' : '⬜')).join('');
   const linea = ganados === 13 ? 'Temporada perfecta: 13 de 13' : ganados + (ganados === 1 ? ' título' : ' títulos') + ' · caí en ' + (T.tier === 'fin' ? 'las ' : '') + T.corto;
-  return 'deuce · La gira · nivel ' + e.nivel + ' · ' + ESTILO_NOM[e.estilo] + '\n' + fila + '\n' + linea + '\n¿La mejoras? Código ' + codigoGira(e) + '\nhttps://deucecareer.com/la-gira.html?codigo=' + codigoGira(e);
+  return 'deuce · La gira · nivel ' + e.nivel + ' · ' + ESTILO_NOM[e.estilo] + '\n' + fila + '\n' + linea + '\n¿La mejoras? https://deucecareer.com/la-gira.html?codigo=' + codigoGira(e);
 }
 async function compartirGira() {
   const txt = textoGira(), b = $('#b-comp');
@@ -2328,7 +2327,7 @@ function panelTu(t, e) {
 // tu gira: cuatro cifras
 function panelGira(e, cc) {
   const rec = leer('deuce-gira.record', 0);
-  return '<div class="m-kick"><span class="m-k">Tu gira</span><span class="m-meta" title="El código de esta gira: con él, otro juega la misma">' + codigoGira(e) + '</span></div>'
+  return '<div class="m-kick"><span class="m-k">Tu gira</span></div>'
     + '<div class="m-tiles">'
     + '<div class="m-tile"><span class="m-tl">Títulos</span><span class="m-tv">' + e.seguidos + '<small> / 13</small></span></div>'
     + '<div class="m-tile' + (cc || '') + '"><span class="m-tl">Caja</span><span class="m-tv">' + mon(e.dinero) + '</span></div>'
@@ -2512,13 +2511,8 @@ document.addEventListener('click', ev => {
   if (a === 'coleccion') { S = { fase: 'coleccion', volver: S }; return pintar(); }
   if (a === 'cerrar-col') { S = S && S.volver ? S.volver : null; return pintar(); }
   if (a === 'filtro-col') { filtroCol = b.dataset.id; return pintar(); }
-  if (a === 'empezar') return empezarGira(estiloSel, (Date.now() % 1e9) | 0, nivelSel);
-  if (a === 'codigo') { codigoAbierto = true; pintar(); const i = $('#in-cod'); if (i) i.focus(); return; }
-  if (a === 'jugar-cod') {
-    const c = leerCodigo(($('#in-cod') || {}).value);
-    if (!c) { const m = $('#cod-msg'); if (m) m.textContent = 'Ese código no es de una gira. Son una G y unas letras, como G-1A2B3C.'; return; }
-    codigoAbierto = false; return empezarGira(c.estilo, c.semilla, c.nivel);
-  }
+  if (a === 'empezar') { olvidarReto(); return empezarGira(estiloSel, (Date.now() % 1e9) | 0, nivelSel); }
+  if (a === 'jugar-cod') { const c = retoCod; if (!c) return; olvidarReto(); return empezarGira(c.estilo, c.semilla, c.nivel); }
   if (a === 'compartir') { compartirGira(); return; }
   if (a === 'comprar') {
     const id = b.dataset.id, premio = !!b.dataset.premio, C = G.CARTA[id];
@@ -2562,8 +2556,10 @@ document.addEventListener('click', ev => {
   if (a === 'afin') { S.fase = 'fin'; salvar(); return pintar(); }
   if (a === 'otra') { S = null; try { localStorage.removeItem(CLAVE_S); } catch (e) {} return pintar(); }
 });
-// un enlace con ?codigo= abre la portada con ese código ya puesto (si no hay una gira a medias)
-try { const q = new URLSearchParams(location.search).get('codigo'); if (q && !S && leerCodigo(q)) { codigoAbierto = true; codigoInicial = q.trim().toUpperCase(); } } catch (e) {}
+// el enlace que se comparte al acabar (la-gira.html?codigo=…) abre la portada con esa gira lista para jugar
+// (si no hay una gira a medias). El código ya no se escribe a mano: solo viaja dentro del enlace
+try { const q = new URLSearchParams(location.search).get('codigo'); if (q && !S) retoCod = leerCodigo(q); } catch (e) {}
+function olvidarReto() { retoCod = null; try { if (location.search) history.replaceState(null, '', location.pathname); } catch (e) {} }
 pintar();
 
 </script>
