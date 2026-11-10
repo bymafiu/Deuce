@@ -1799,8 +1799,11 @@ function pantallaEn(M, t) { const P = M.pantallas; for (let i = 0; i < P.length;
 const HF = .72;
 function camara(W, H) {
   const D = 30, F = 0.86 * W * D / (2 * CT.DO);
-  const Hc = 0.66 * H / (F * (1 / D - 1 / (D + CT.L)));
-  return { W, H, D, F, Hc, hy: 0.14 * H - Hc * F / (D + CT.L), cx: W / 2 };
+  // el fondo de la pista va al 14 % de alto; en escritorio, como poco a 22 píxeles, para que el rival
+  // (y su raqueta al sacar) quepa entero por arriba aunque la pista salga baja
+  const arriba = PIX.esc ? Math.max(0.14 * H, 22) : 0.14 * H;
+  const Hc = (0.80 * H - arriba) / (F * (1 / D - 1 / (D + CT.L)));
+  return { W, H, D, F, Hc, hy: arriba - Hc * F / (D + CT.L), cx: W / 2 };
 }
 const pr = (c, x, z, h) => { const k = c.F / (z + c.D); return { x: c.cx + x * k, y: c.hy + (c.Hc - (h || 0) * HF) * k, k }; };
 const LINEAS = [
@@ -2019,7 +2022,7 @@ function resultadoPix(b, PW, PH, M, t, C) {
   textoPix(b, spec.ronda, PW / 2, yT + (kR === 1 ? 3 : 0), kR, '#D6EF45', '#1d1518');
   textoPix(b, spec.torneo, PW / 2, yT + 13, 1, '#9a9183');
   // los dos, más abajo que en el VS para dejar sitio al resultado: el que gana salta con la raqueta arriba
-  const ks = PH >= 120 ? 3 : 2, yPie = PH - 12;   // los pies abajo del todo: el nombre cabe debajo y el resultado tiene sitio
+  const ks = PH >= 120 ? 3 : 2, yPie = PH - (PIX.esc ? 15 : 12);   // los pies abajo del todo: el nombre cabe debajo y el resultado tiene sitio
   [['y', PW * .26, false], ['r', PW * .74, true]].forEach(([q, x, espejo]) => {
     const gana = q === gano, salto = gana && sale ? Math.round(Math.abs(Math.sin((t - RES.marca * RES.dur) * 7)) * 3) : 0;
     pintaSprite(b, spritePix('frente', 'quieto', gana ? -105 : 105, q), Math.round(x), yPie - salto, ks, espejo);
@@ -2035,7 +2038,12 @@ function resultadoPix(b, PW, PH, M, t, C) {
   if (conEtiqueta) textoPix(b, M.gana ? 'Partido ganado' : 'Partido perdido', PW / 2, yS + 5 * k + 3, 1, M.gana ? '#D6EF45' : '#f4707f', '#1d1518');
 }
 function dibujaTV(ctx, W, H, M, t, C) {
-  const PW = Math.max(60, Math.round(W / 3)), PH = Math.max(60, Math.round(H / 3));
+  // un píxel del dibujo son 3 de pantalla. En escritorio la pista puede salir más baja que en el móvil
+  // (para el que está compuesta, ~130 de alto): ahí el píxel se afina lo justo para tener 150 de alto
+  // y que no se corte nada (el rival arriba, los nombres abajo)
+  PIX.esc = document.body.classList.contains('esc');
+  const div = PIX.esc ? Math.min(3, H / 150) : 3;
+  const PW = Math.max(60, Math.round(W / div)), PH = Math.max(60, Math.round(H / div));
   if (!PIX.buf) { PIX.buf = document.createElement('canvas'); PIX.b = PIX.buf.getContext('2d'); }
   if (PIX.buf.width !== PW || PIX.buf.height !== PH) { PIX.buf.width = PW; PIX.buf.height = PH; }
   const b = PIX.b, p = pantallaEn(M, t), F = TV.fundido;
