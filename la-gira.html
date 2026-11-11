@@ -228,6 +228,14 @@ p{margin:0}
 .aviso{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:7px 13px;border-radius:999px;background:var(--ink);color:var(--paper);white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.25);animation:pop .3s cubic-bezier(.2,.9,.3,1.3) both}
 .aviso.ok{background:var(--optic);color:var(--on-optic)}
 .aviso.ko{background:var(--pierde);color:#fff}
+.aviso.rep{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:14px;background:var(--gold);color:#1d1518;text-align:left}
+.aviso.rep .ico{width:24px;height:24px}
+.aviso.rep small{display:block;margin-top:1px;font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:none;opacity:.75}
+.sc.rep{display:inline-flex;align-items:center;gap:3px;opacity:.75}
+.sc.rep .ico{width:14px;height:14px}
+.sc.rep s{text-decoration-thickness:2px}
+.m-sl.activa{animation:cartaSalta .65s cubic-bezier(.3,1.6,.5,1)}
+@keyframes cartaSalta{0%{transform:none}35%{transform:translateY(-16px) scale(1.05)}100%{transform:none}}
 .marcador{background:var(--surface);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
 .mf{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 10px;transition:background .4s,color .4s}
 .mf + .mf{border-top:1px solid var(--rule)}
@@ -1132,7 +1140,8 @@ body.en-mesa #pantalla{flex:1 1 auto;min-height:0;display:flex}
   function tirarDist(dist, rng) { let x = rng(); for (const [v, p] of dist) { x -= p; if (x <= 0) return v; } return dist[dist.length - 1][0]; }
   function jugarTorneo(e, t, rivales, rng) {
     const T = CALENDARIO[t], partidos = [];
-    let rep = repeticiones(e, contexto(e, t, 0, 1)), setsPerdidos = 0;
+    const c0 = contexto(e, t, 0, 1), repIds = (e.bolsa || []).filter(id => CARTA[id] && CARTA[id].repiteSet && !anulada(CARTA[id], c0) && CARTA[id].repiteSet(c0));
+    let rep = repIds.length, setsPerdidos = 0;
     for (let r = 0; r < T.rondas; r++) {
       const rival = rivales[r], final = r === T.rondas - 1;
       const cf = contexto(e, t, r, 1, { prog: r });
@@ -1153,7 +1162,7 @@ body.en-mesa #pantalla{flex:1 1 auto;min-height:0;display:flex}
             yo.cartas.concat(yo.fams).forEach(x => { if (!x.azar || x.fuera) return; let u = rng(), m = null; for (const [q, mm] of x.azar) { u -= q; if (u <= 0) { m = mm; break; } } const tv = valorDe(m, c); v += tv; tiradas.push({ id: x.id || null, f: x.f || null, v: tv }); });
             const prob = sig(v - el), tira = rng(), gana = tira < prob;
             const set = { s, yo: v, yoMedia: yo.total, el, prob, probMedia: probSetDe(yo, el), gana, juegos: juegosDe(gana, prob, tira), det: { base: yo.base, cartas: yo.cartas.map(x => ({ id: x.id, v: x.v, azar: !!x.azar, fuera: !!x.fuera })), fams: yo.fams.map(x => ({ f: x.f, k: x.k, v: x.v, azar: !!x.azar })), pares: yo.pares }, tiradas, cabeza: c.cabeza, jefe: c.jefe };
-            if (!gana && rep > 0) { set.repetido = true; sets.push(set); rep--; continue; }
+            if (!gana && rep > 0) { set.repetido = true; set.carta = repIds[repIds.length - rep]; sets.push(set); rep--; continue; }
             sets.push(set); gana ? g++ : (p++, setsPerdidos++); s++;
           }
           m = { gana: g === 2, sets, rival, ronda: r };
@@ -1623,7 +1632,7 @@ const CT = { L: 23.77, NET: 11.885, SI: 4.115, DO: 5.485, SERV: 6.40 };
 const DER = { y: 1, r: -1 }, DZ = { y: 1, r: -1 };
 const FONDO = { y: -0.5, r: CT.L + 0.5 };
 // ritmo: un golpe cada medio segundo en la pista; en el corte, un juego cada 0,15 s
-const TV = { T: .5, toss: .3, pre: .9, setPausa: .9, finPausa: 1.4, vs: 1.5, tick: .15, fundido: .3 };
+const TV = { T: .5, toss: .3, pre: .9, setPausa: .9, finPausa: 1.4, vs: 1.5, tick: .15, fundido: .3, repite: 1.7 };
 
 // el orden de los juegos de un set que acabó a-b (a son los tuyos)
 function secuencia(a, b, rnd) {
@@ -1634,15 +1643,18 @@ function secuencia(a, b, rnd) {
 }
 // todos los juegos del partido, con quién saca y si es rotura
 function juegosPartido(spec, rnd) {
-  const out = []; let saca = spec.primero;
+  const out = []; let saca = spec.primero, col = 0;
   spec.sets.forEach((sc, si) => {
+    // un set perdido que una carta manda repetir: se juega y luego se vuelve a jugar en la misma columna
+    const rep = spec.rep && spec.rep[si];
     const [a, b] = sc.split('-').map(Number), seq = secuencia(a, b, rnd); let ga = 0, gb = 0;
     seq.forEach((w, g) => {
       w === 'y' ? ga++ : gb++;
       const cierre = g === seq.length - 1;
-      out.push({ set: si, w, saca, rotura: w !== saca, cierre, tieb: cierre && a + b === 13, a: ga, b: gb, setGana: a > b ? 'y' : 'r' });
+      out.push({ set: col, w, saca, rotura: w !== saca, cierre, tieb: cierre && a + b === 13, a: ga, b: gb, setGana: a > b ? 'y' : 'r', repite: cierre && rep ? rep : null });
       saca = otro(saca);
     });
+    if (!rep) col++;
   });
   out[out.length - 1].partido = true;
   return out;
@@ -1708,7 +1720,12 @@ function construirTV(spec, rnd) {
   const empiezaSet = (si, tt) => { if (!empezados[si]) { empezados[si] = 1; M.sets.push({ t: tt }); } };
   const zSaque = q => (q === 'y' ? -.3 : CT.L + .3);
   const colocar = (j, tt, idx) => { const side = idx % 2 ? 1 : -1, rc = otro(j.saca); kf(j.saca, tt, side * .8, zSaque(j.saca)); kf(rc, tt, -side * 2.5, rc === 'y' ? -.9 : CT.L + .9); return side; };
-  const finSet = (j, tt) => M.avisos.push({ t0: tt, t1: tt + TV.setPausa, txt: j.setGana === 'y' ? 'Set para ti' : 'Set para ' + apellido(spec.rival), tipo: j.setGana === 'y' ? 'ok' : 'ko' });
+  const finSet = (j, tt) => {
+    M.avisos.push({ t0: tt, t1: tt + TV.setPausa, txt: j.setGana === 'y' ? 'Set para ti' : 'Set para ' + apellido(spec.rival), tipo: j.setGana === 'y' ? 'ok' : 'ko' });
+    if (!j.repite) return;
+    M.avisos.push({ t0: tt + TV.setPausa, t1: tt + TV.setPausa + TV.repite, txt: 'Se repite el set', tipo: 'rep', ico: j.repite });
+    M.juegos.push({ t: tt + TV.setPausa + TV.repite * .5, set: j.set, a: 0, b: 0, w: null });
+  };
   pantalla('vs', 0);
   let t = TV.vs, prev = -1;
   el.forEach(e => {
@@ -1721,7 +1738,7 @@ function construirTV(spec, rnd) {
         empiezaSet(j.set, tt - .05); M.saques.push({ t: tt - .05, q: j.saca });
         tt += TV.tick;
         M.juegos.push({ t: tt, set: j.set, a: j.a, b: j.b, w: j.w });
-        if (j.cierre) { finSet(j, tt + .05); tt += .6; }
+        if (j.cierre) { finSet(j, tt + .05); tt += j.repite ? TV.setPausa + TV.repite + .1 : .6; }
       });
       // contado el último juego, la bola del marcador pasa al que saca el punto que se va a ver
       M.saques.push({ t: tt + .1, q: J[e].saca });
@@ -1741,7 +1758,7 @@ function construirTV(spec, rnd) {
     if (j.partido) M.dec.push({ t0: t, t1: last.tn + .4 });
     t = last.tn + .2;
     if (!j.partido) M.saques.push({ t, q: otro(j.saca) });   // acabado el juego, saca el otro
-    if (j.cierre && !j.partido) { finSet(j, t); kf('y', t + .7, 0, FONDO.y); kf('r', t + .7, 0, FONDO.r); t += TV.setPausa; }
+    if (j.cierre && !j.partido) { finSet(j, t); kf('y', t + .7, 0, FONDO.y); kf('r', t + .7, 0, FONDO.r); t += TV.setPausa + (j.repite ? TV.repite : 0); }
     prev = e;
   });
   M.tFin = t;
@@ -2106,7 +2123,15 @@ function marcadorDom(M, t) {
   if (avT !== domAnt.av) {
     const a = $('#aviso');
     if (!av) a.hidden = true;
-    else { a.textContent = av.txt; a.className = 'aviso' + (av.tipo ? ' ' + av.tipo : ''); a.hidden = true; void a.offsetWidth; a.hidden = false; if (av.tipo === 'ok') sonar('gana'); else if (av.tipo === 'ko') sonar('pierde'); }
+    else {
+      const C = av.ico && G.CARTA[av.ico];
+      if (C) a.innerHTML = ico(av.ico) + '<span>' + esc(av.txt) + '<small>' + esc(C.nombre) + '</small></span>'; else a.textContent = av.txt;
+      // en escritorio, la carta salta en la bolsa
+      const sl = C && [...document.querySelectorAll('.m-sl')].find(x => { const im = x.querySelector('.ico'); return im && im.getAttribute('src') === ARTE.spr[av.ico]; });
+      if (sl) { sl.classList.remove('activa'); void sl.offsetWidth; sl.classList.add('activa'); }
+      a.className = 'aviso' + (av.tipo ? ' ' + av.tipo : ''); a.hidden = true; void a.offsetWidth; a.hidden = false;
+      if (av.tipo === 'ok') sonar('gana'); else if (av.tipo === 'ko') sonar('pierde'); else if (av.tipo === 'rep') sonar('abre');
+    }
     domAnt.av = avT;
   }
 }
@@ -2153,8 +2178,8 @@ function partidos(p) {
 function marcarFila(m) {
   const f = $('#r-' + m.ronda); if (!f) return;
   f.classList.remove('pend');
-  const sets = m.sets.filter(s => !s.repetido);
-  f.querySelector('.marc').innerHTML = (m.moneda ? '<span class="sc ' + (m.gana ? 'w' : 'l') + '">' + (m.gana ? 'Cara' : 'Cruz') + '</span>' : sets.map(s => '<span class="sc ' + (s.gana ? 'w' : 'l') + '">' + s.juegos + '</span>').join(''));
+  const sets = m.sets, repe = s => { const C = s.carta && G.CARTA[s.carta]; return '<span class="sc l rep" title="' + esc('Set repetido' + (C ? ' · ' + C.nombre : '')) + '">' + (C ? ico(s.carta) : '') + '<s>' + s.juegos + '</s></span>'; };
+  f.querySelector('.marc').innerHTML = (m.moneda ? '<span class="sc ' + (m.gana ? 'w' : 'l') + '">' + (m.gana ? 'Cara' : 'Cruz') + '</span>' : sets.map(s => s.repetido ? repe(s) : '<span class="sc ' + (s.gana ? 'w' : 'l') + '">' + s.juegos + '</span>').join(''));
 }
 function terminar(conConfeti) {
   animId++; ultimoDibujo = null;
@@ -2176,8 +2201,8 @@ async function simular(id) {
   const R = S.resultado, t = S.torneoJugado, T = G.CALENDARIO[t], rnd = G.mulberry((S.semilla || 1) + t * 101);
   for (let i = 0; i < R.partidos.length; i++) {
     const m = R.partidos[i];
-    const sets = m.moneda ? (m.gana ? ['6-4', '6-4'] : ['4-6', '4-6']) : m.sets.filter(s => !s.repetido).map(s => s.juegos);
-    const M = construirTV({ ronda: G.nombreRonda(t, m.ronda) + (m.intento > 1 ? ' · otra vez' : ''), rival: m.rival.nombre, sets, torneo: T.nombre, primero: rnd() < .5 ? 'y' : 'r' }, rnd);
+    const sets = m.moneda ? (m.gana ? ['6-4', '6-4'] : ['4-6', '4-6']) : m.sets.map(s => s.juegos), rep = m.moneda ? [] : m.sets.map(s => s.repetido ? s.carta || '?' : null);
+    const M = construirTV({ ronda: G.nombreRonda(t, m.ronda) + (m.intento > 1 ? ' · otra vez' : ''), rival: m.rival.nombre, sets, rep, torneo: T.nombre, primero: rnd() < .5 ? 'y' : 'r' }, rnd);
     // el cuadro (en escritorio se ve mientras se juega) marca el partido de ahora y apunta cada resultado
     const fila = $('#r-' + m.ronda); if (fila) fila.classList.add('ahora');
     await (esFacil(m, t) ? resumir(M, id) : reproducir(M, id));
